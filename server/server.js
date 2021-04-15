@@ -4,7 +4,6 @@ const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
-keys = require("./keys");
 const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
@@ -31,7 +30,7 @@ var db = "";
 if (process.env.DATABASE_URL) {
   db = process.env.DATABASE_URL;
 } else {
-  db = require("./keys").mongoURI;
+  db = process.env.mongoURI;
 }
 // ----- Google Auth stuff ------------end
 
