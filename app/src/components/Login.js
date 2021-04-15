@@ -3,6 +3,7 @@ import { GoogleLogin } from "react-google-login";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const handleGoogleLogin = (response) => {
+  console.log(response);
   fetch("/api/users/login", {
     method: "POST",
     headers: {
