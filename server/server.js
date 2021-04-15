@@ -30,7 +30,7 @@ var db = "";
 if (process.env.DATABASE_URL) {
   db = process.env.DATABASE_URL;
 } else {
-  db = process.env.mongoURI;
+  db = process.env.MONGO_URI;
 }
 // ----- Google Auth stuff ------------end
 
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected..."))
-  .catch((err) => console("mongoose connection error!", err));
+  .catch((err) => console.log("mongoose connection error!", err));
 
 app.use("/api/users", require("./routes/api/users"));
 
