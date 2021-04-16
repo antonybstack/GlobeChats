@@ -2,23 +2,25 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let User = new Schema({
-  username: {
+  googleId: {
     type: String,
     required: true,
-    min: 4,
-    max: 20,
   },
-  password: {
+  email: {
     type: String,
     required: true,
-    min: 4,
-    max: 20,
   },
-  avatar: {
-    type: Number,
-    default: function () {
-      return Math.floor(Math.random() * Math.floor(16)) + 1;
-    },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  googleImg: {
+    type: String,
+    required: true,
   },
   register_date: {
     type: Date,
