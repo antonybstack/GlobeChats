@@ -19,4 +19,8 @@ eventRoutes.post("/new", (req, res) => {
     });
 });
 
+eventRoutes.get("/list", (req, res) => {
+  Event.db.collections.events.find({}).toArray((error, doc) => {res.status(200).json(doc)});
+});
+
 module.exports = eventRoutes;

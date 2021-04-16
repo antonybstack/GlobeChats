@@ -1,6 +1,5 @@
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .map-container {
@@ -58,7 +57,9 @@ html {
   display: inline-block;
 }
 
-.event-input-text, .event-textarea, .event-input-date {
+.event-input-text,
+.event-textarea,
+.event-input-date {
   width: 404px;
   padding: 12px;
   border: 1px solid #ccc;
@@ -142,7 +143,9 @@ html {
   margin-top: 12px;
 }
 
-.event-col-25, .event-col-75, .event-submit-buttons {
+.event-col-25,
+.event-col-75,
+.event-submit-buttons {
   width: 100%;
   margin-top: 0;
 }
@@ -169,7 +172,7 @@ html {
   margin-left: 12px;
   background-color: black;
   transform: rotate(45deg);
-  Z-index: 1;
+  z-index: 1;
 }
 
 .event-close-x-right {
@@ -177,7 +180,7 @@ html {
   width: 2px;
   background-color: black;
   transform: rotate(90deg);
-  Z-index: 2;
+  z-index: 2;
 }
 
 .create-buttons {
@@ -215,27 +218,27 @@ html {
 }
 
 .outer-icon {
-  padding-top:12.5px;
-  height:87.5px;
-  width:100px;
+  padding-top: 12.5px;
+  height: 87.5px;
+  width: 100px;
 }
 
 .inner-calendar-icon {
-  margin-left:auto;
-  margin-right:auto;
-  width:75px;
-  height:75px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75px;
+  height: 75px;
   filter: invert(100%);
-  background: url('https://api.iconify.design/fluent:calendar-add-20-filled.svg') no-repeat center center / contain;
+  background: url("https://api.iconify.design/fluent:calendar-add-20-filled.svg") no-repeat center center / contain;
 }
 
 .inner-group-icon {
-  margin-left:auto;
-  margin-right:auto;
-  width:75px;
-  height:75px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75px;
+  height: 75px;
   filter: invert(100%);
-  background: url('https://api.iconify.design/fluent:people-team-add-20-filled.svg') no-repeat center center / contain;
+  background: url("https://api.iconify.design/fluent:people-team-add-20-filled.svg") no-repeat center center / contain;
 }
 
 .switch {
@@ -260,8 +263,8 @@ html {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -272,16 +275,16 @@ html {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
@@ -299,3 +302,61 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.friend-item {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: black;
+  background-color: #eee;
+  width: 300px;
+}
+
+.friends-list-container {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 2;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.friends-list-header {
+  font-size: 15pt;
+  color: white;
+  display: flex;
+  max-inline-size: 300px;
+  justify-content: center;
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: black;
+  background-color: rgb(52, 81, 109);
+}
+
+.bi.bi-circle-fill {
+  fill: rgb(44, 248, 44);
+}
+
+.friend-list-group {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.friend-list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid rgb(0, 0, 0, 0.125);
+}
+
+.friend-list-group-item:first-child {
+  border-radius: inherit;
+}
+
+.friend-list-group-item:last-child {
+  border-radius: inherit;
+}

@@ -28,3 +28,9 @@
 .bi.bi-circle-fill {
   fill: rgb(44, 248, 44);
 }
+
+.bi.bi-person-plus-fill {
+  position: relative;
+  top: 8px;
+  left: 100px;
+}

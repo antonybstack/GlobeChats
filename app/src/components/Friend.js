@@ -1,5 +1,4 @@
 import React from "react";
-import "./Friend.css";
 
 const isOnline = () => {
   return;
@@ -7,10 +6,10 @@ const isOnline = () => {
 
 const Friend = (props) => {
   return (
-    <div className="friend">
-      <div class="list-group">
+    <div className="friend-item">
+      <div class="friend-list-group">
         {" "}
-        <span class="list-group-item">
+        <span class="friend-list-group-item">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="10"
