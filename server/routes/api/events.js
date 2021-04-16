@@ -5,10 +5,9 @@ const passportconfig = require("../../passport-google");
 
 const Event = require("../../models/event.model");
 
-eventRoutes.post("/new", passport.authenticate("bearer", { session: false }), (req, res) => {
+eventRoutes.post("/new", (req, res) => {
     //mongodb statement to add new event
-    
-    res.sendStatus(200);
+    res.send("hello");
 });
 
 module.exports = eventRoutes;
