@@ -48,7 +48,7 @@ function CreateEvent(props) {
           </div>
         </div>
       </div>
-      <form class="event-form" onSubmit={submitNewEvent}>
+      <form class="event-form" onSubmit={props.handleClose}>
         <div class="event-row">
           <div class="event-col-25">
             <label class="event-form-label">Event Title</label>
