@@ -27,6 +27,10 @@ let Chatroom = new Schema({
   eventDate: {
     type: Date,
   },
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Chatroom", Chatroom);
