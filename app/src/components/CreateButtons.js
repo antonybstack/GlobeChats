@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CreateChat from './CreateChat';
 import CreateEvent from "./CreateEvent";
 
 function CreateButtons() {
@@ -7,24 +8,28 @@ function CreateButtons() {
         {
             displayEvent: false,
         });
-    const [ displayChat, setDisplayChat ] = useState(false);
+    const [ displayChat, setDisplayChat ] = useState(
+        {
+            displayChat: false,
+        });
 
     const newEventClick = (event) => {
         setDisplayEvent({
             displayEvent: !displayEvent.displayEvent,
         });
-        console.log(displayEvent);
     }
 
     const newGroupClick = (event) => {
-        setDisplayEvent(true);
+        setDisplayChat({
+            displayChat: !displayChat.displayChat,
+        });
     }
 
     return (
         <div>
             <div>
                 { displayEvent.displayEvent ? <CreateEvent handleClose={newEventClick} /> : null}
-                { displayChat ? console.log('hey') : null}
+                { displayChat.displayChat ? <CreateChat handleClose={newGroupClick} /> : null}
             </div>
             <div class="create-buttons">
                 <div class="circleBase type1 create-buttons-left" onClick={newEventClick}>
