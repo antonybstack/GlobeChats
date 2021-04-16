@@ -2,9 +2,10 @@ import React from "react";
 import Friend from "./Friend";
 
 const FriendsList = (props) => {
+
   return (
-    <div className="container">
-      <span className="Header">
+    <div className="friends-list-container">
+      <span className="friends-list-header">
         Friends
       </span>
       {props.friend.map((c) => (

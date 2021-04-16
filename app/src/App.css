@@ -287,3 +287,63 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.friend-item {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: black;
+  background-color: #eee;
+  width: 300px;
+}
+
+.friends-list-container {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 2;
+  width: 100%;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.friends-list-header {
+  font-size: 15pt;
+  color: white;
+  display: flex;
+  max-inline-size: 300px;
+  justify-content: center;
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: black;
+  background-color: rgb(52, 81, 109);
+}
+
+.bi.bi-circle-fill {
+  fill: rgb(44, 248, 44);
+}
+
+.friend-list-group {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.friend-list-group-item {
+  position: relative;
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid rgb(0,0,0,0.125);
+}
+
+.friend-list-group-item:first-child {
+  border-radius: inherit;
+}
+
+.friend-list-group-item:last-child {
+  border-radius: inherit;
+}
