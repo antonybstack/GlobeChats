@@ -48,6 +48,7 @@ mongoose
 
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/events", require("./routes/api/events"));
+app.use("/api/chatrooms", require("./routes/api/chatrooms"));
 
 //serve static assets if in heroku production
 if (process.env.NODE_ENV === "production") {
