@@ -1,45 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useContext, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../contexts/AuthContext";
 import Chatroom from './Chatroom';
 
 function CreateChat(props) {
+  const [name, setName] = useState("");
+  const [topics, setTopics] = useState("");
+  const [pub, setPub] = useState("");
+  const [anon, setAnon] = useState("");
+  const { user, isAuthenticated } = useContext(AuthContext);
 
-    const [ name, setName ] = useState("");
-    const [ topics, setTopics ] = useState("");
-    const [ pub, setPub] = useState("");
-    const [ anon, setAnon ] = useState("");
+  const settingName = (chatroom) => setName(chatroom.target.value);
+  const settingTopics = (chatroom) => setTopics(chatroom.target.value);
+  const settingPublic = (chatroom) => setPub(chatroom.target.value);
+  const settingAnon = (chatroom) => setAnon(chatroom.target.value);
 
-    const [ displayChatroom, setDisplayChatroom ] = useState(false);
+  const [ displayChatroom, setDisplayChatroom ] = useState(false);
 
-    const settingName = (event) => setName(event.target.value);
-    const settingTopics = (event) => setTopics(event.target.value);
-    const settingPublic = (event) => setPub(event.target.value);
-    const settingAnon = (event) => setAnon(event.target.value);
+  const settingName = (event) => setName(event.target.value);
+  const settingTopics = (event) => setTopics(event.target.value);
+  const settingPublic = (event) => setPub(event.target.value);
+  const settingAnon = (event) => setAnon(event.target.value);
 
-    var chatroomid = -1;
+  var chatroomid = -1;
 
-    const submitNewChatroom = (event) => {
-        event.preventDefault();
+  const submitNewChatroom = (chatroom) => {
+    chatroom.preventDefault();
 
-        if (!name || !topics || !pub || !anon) {
-            alert("Please make sure to enter all the fields!");
-            return;
-        }
+    if (!name) {
+      alert("Please make sure to enter all the fields!");
+      return;
+    }
 
-        console.log('name ' + name + ' topics ' + topics + ' pub ' + pub + ' anon ' + anon);
+    console.log("name " + name + " topics " + topics + " pub " + pub + " anon " + anon);
 
-        setDisplayChatroom(true);
-        document.getElementById("create-chat").innerHTML = "";
+    console.log(name);
+    console.log(topics);
 
-        axios
-        .post('/api/chatroom/new', {name, topics, pub, anon})
-        .then((res) => {
-            chatroomid = res.data._id;
-            console.log("success!")
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    console.log(pub);
+    console.log(anon);
+
+    setDisplayChatroom(true);
+    document.getElementById("create-chat").innerHTML = "";
+    
+    var isPrivate = pub == "true";
+    var verifyUsers = anon == "true";
+
+    axios
+      .post("/api/chatrooms/add", {
+        adminId: user._id,
+        name: name,
+        tags: topics,
+        isPrivate: isPrivate,
+        verifyUsers: verifyUsers,
+        location: 1,
+      })
+      .then((res) => {
+        console.log("success!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
 
     }
@@ -51,7 +72,7 @@ function CreateChat(props) {
     return (
         <div>
             <div>
-                { displayChatroom ? <Chatroom handleClose={handleCloseChatroom} chatroomid={chatroomid} /> : console.log("test")}
+                { displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : console.log("test")}
             </div>
             <div id="create-chat">
                 <div class="event-create-container">
@@ -117,7 +138,6 @@ function CreateChat(props) {
                 </div>
             </div>
         </div>
-        
     );
 }
 
