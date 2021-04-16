@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "../contexts/AuthContext";
 
 function CreateEvent(props) {
   const [title, setTitle] = useState("");
@@ -7,6 +8,7 @@ function CreateEvent(props) {
   const [loc, setLoc] = useState("");
   const [creator, setCreator] = useState("");
   const [date, setDate] = useState("");
+  const { user, isAuthenticated } = useContext(AuthContext);
 
   const settingTitle = (event) => setTitle(event.target.value);
   const settingDesc = (event) => setDesc(event.target.value);
@@ -26,10 +28,8 @@ function CreateEvent(props) {
     var locSplitStringArr = loc.split(",");
     var locSplitNumberArr = locSplitStringArr.map(Number);
 
-    setCreator("testing");
-
     axios
-      .post("/api/events/new", { title: title, description: desc, location: locSplitNumberArr, eventDate: date, creator: creator })
+      .post("/api/events/new", { title: title, description: desc, location: locSplitNumberArr, eventDate: date, creator: user._id })
       .then((res) => {
         console.log("success!");
       })
