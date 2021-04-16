@@ -9,6 +9,7 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import FriendsList from "./components/FriendsList";
 import AuthProvider from "./contexts/AuthContext";
+import ProfileButton from "./components/ProfileButton";
 //import AuthenticatedRoute from "./hocs/AuthenticatedRoute";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -27,6 +28,7 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
+          <ProfileButton/>
           <Nav />
           <CreateButtons />
           <FriendsList friend={friend} />
