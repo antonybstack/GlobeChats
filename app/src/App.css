@@ -301,7 +301,6 @@ input:checked + .slider:before {
   top: 80px;
   left: 20px;
   z-index: 2;
-  width: 100%;
   padding-right: 1.5rem;
   padding-left: 1.5rem;
   margin-right: auto;
@@ -346,4 +345,8 @@ input:checked + .slider:before {
 
 .friend-list-group-item:last-child {
   border-radius: inherit;
+}
+
+.chatroom-container {
+  padding: 10px;
 }
