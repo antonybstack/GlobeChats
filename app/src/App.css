@@ -360,3 +360,45 @@ input:checked + .slider:before {
 .friend-list-group-item:last-child {
   border-radius: inherit;
 }
+
+.chatroom-container {
+  padding: 10px;
+  grid-area: msg;
+  grid-column: 1;
+  grid-row: 1;
+  background-color: white;
+  padding: 0.1em;
+  /* width: 100%; */
+  color: black;
+  overflow: auto;
+  word-wrap: break-word;
+  /* line-height: 0.8em; */
+  padding-bottom: 1em;
+}
+
+.msgContainer {
+  display: flex;
+}
+
+.chatUserId {
+  display: block;
+  width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatMessage {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatTime {
+  display: block;
+
+  text-overflow: ellipsis;
+  float: right;
+  padding-left: 50px;
+}

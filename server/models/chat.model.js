@@ -18,8 +18,8 @@ let Chat = new Schema(
       required: "Message is required",
     },
     timestamp: {
-      type: Schema.Types.Mixed,
-      default: {},
+      type: Date,
+      default: Date.now,
     },
   },
   { minimize: false }

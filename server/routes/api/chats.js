@@ -5,6 +5,12 @@ const passportconfig = require("../../passport-google");
 
 const Chat = require("../../models/chat.model");
 
+chatRoutes.route("/").get(function (req, res) {
+  Chat.find({}, (err, chats) => {
+    res.send(chats);
+  });
+});
+
 chatRoutes.post("/add", (req, res) => {
   let chat = new Chat(req.body);
   chat
