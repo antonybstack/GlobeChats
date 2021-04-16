@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "app-install": "npm install --prefix ../app",
-    "start": "node -r dotenv/config server.js",
-    "server": "nodemon -r dotenv/config server.js",
-    "app": "npm start --prefix ../app",
+    "app-install": "npm install --prefix ./app",
+    "start": "cd server && node -r dotenv/config server.js",
+    "server": "cd server && nodemon -r dotenv/config server.js",
+    "app": "npm start --prefix ./app",
     "dev": "concurrently \"npm run server\" \"npm run app\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../app && npm run build --prefix ../app"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ./app && npm run build --prefix ./app"
   },
   "keywords": [],
   "author": "",
@@ -28,7 +28,8 @@
     "mongoose": "^5.12.3",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "passport-http-bearer": "^1.0.1"
+    "passport-http-bearer": "^1.0.1",
+    "passport-jwt": "^4.0.0"
   },
   "engines": {
     "node": "14.16.x"
