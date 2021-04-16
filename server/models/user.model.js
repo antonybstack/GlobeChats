@@ -24,6 +24,13 @@ let User = new Schema({
     type: Date,
     default: Date.now,
   },
+
+  friendlist: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Friend",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", User);
