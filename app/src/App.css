@@ -1,6 +1,5 @@
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 .map-container {
@@ -34,6 +33,17 @@ code {
   padding: 0.5em;
 }
 
+.nav-profile {
+  display: inline-block;
+  padding: .5em;
+  height: 20px;
+  width: 20px;
+  float: right;
+  margin-top: 10px;
+  background: url('https://api.iconify.design/gg:profile.svg') no-repeat center center / contain;
+
+}
+
 html {
   background-color: rgb(52, 81, 109);
 }
@@ -47,7 +57,9 @@ html {
   display: inline-block;
 }
 
-.event-input-text, .event-textarea, .event-input-date {
+.event-input-text,
+.event-textarea,
+.event-input-date {
   width: 404px;
   padding: 12px;
   border: 1px solid #ccc;
@@ -131,7 +143,9 @@ html {
   margin-top: 12px;
 }
 
-.event-col-25, .event-col-75, .event-submit-buttons {
+.event-col-25,
+.event-col-75,
+.event-submit-buttons {
   width: 100%;
   margin-top: 0;
 }
@@ -158,7 +172,7 @@ html {
   margin-left: 12px;
   background-color: black;
   transform: rotate(45deg);
-  Z-index: 1;
+  z-index: 1;
 }
 
 .event-close-x-right {
@@ -166,7 +180,7 @@ html {
   width: 2px;
   background-color: black;
   transform: rotate(90deg);
-  Z-index: 2;
+  z-index: 2;
 }
 
 .create-buttons {
@@ -204,27 +218,27 @@ html {
 }
 
 .outer-icon {
-  padding-top:12.5px;
-  height:87.5px;
-  width:100px;
+  padding-top: 12.5px;
+  height: 87.5px;
+  width: 100px;
 }
 
 .inner-calendar-icon {
-  margin-left:auto;
-  margin-right:auto;
-  width:75px;
-  height:75px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75px;
+  height: 75px;
   filter: invert(100%);
-  background: url('https://api.iconify.design/fluent:calendar-add-20-filled.svg') no-repeat center center / contain;
+  background: url("https://api.iconify.design/fluent:calendar-add-20-filled.svg") no-repeat center center / contain;
 }
 
 .inner-group-icon {
-  margin-left:auto;
-  margin-right:auto;
-  width:75px;
-  height:75px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75px;
+  height: 75px;
   filter: invert(100%);
-  background: url('https://api.iconify.design/fluent:people-team-add-20-filled.svg') no-repeat center center / contain;
+  background: url("https://api.iconify.design/fluent:people-team-add-20-filled.svg") no-repeat center center / contain;
 }
 
 .switch {
@@ -249,8 +263,8 @@ html {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -261,16 +275,16 @@ html {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
@@ -336,7 +350,7 @@ input:checked + .slider:before {
   padding: 0.5rem 1rem;
   color: #212529;
   background-color: #fff;
-  border: 1px solid rgb(0,0,0,0.125);
+  border: 1px solid rgb(0, 0, 0, 0.125);
 }
 
 .friend-list-group-item:first-child {
@@ -345,4 +359,46 @@ input:checked + .slider:before {
 
 .friend-list-group-item:last-child {
   border-radius: inherit;
+}
+
+.chatroom-container {
+  padding: 10px;
+  grid-area: msg;
+  grid-column: 1;
+  grid-row: 1;
+  background-color: white;
+  padding: 0.1em;
+  /* width: 100%; */
+  color: black;
+  overflow: auto;
+  word-wrap: break-word;
+  /* line-height: 0.8em; */
+  padding-bottom: 1em;
+}
+
+.msgContainer {
+  display: flex;
+}
+
+.chatUserId {
+  display: block;
+  width: 80px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatMessage {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chatTime {
+  display: block;
+
+  text-overflow: ellipsis;
+  float: right;
+  padding-left: 50px;
 }
