@@ -1,38 +1,288 @@
-.App {
-  text-align: center;
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.map-container {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.sidebar {
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #ffffff;
+  padding: 6px 12px;
+  font: 15px/24px monospace;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+#account-wrapper {
+  float: right;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 0.5em;
+}
+
+html {
+  background-color: rgb(52, 81, 109);
+}
+
+.event-form {
+  padding: 10px;
+}
+
+.event-form-label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+.event-input-text, .event-textarea, .event-input-date {
+  width: 404px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: "Arial";
+  font-size: inherit;
+}
+
+.event-submit-buttons {
+  background-color: rgba(52, 81, 109);
   color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-top: 12px;
+  font-size: inherit;
 }
 
-.App-link {
-  color: #61dafb;
+.event-submit-buttons:hover {
+  background-color: rgba(25, 40, 54);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.event-create-container {
+  border-radius: 5px;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  width: 450px;
+  font-family: "Arial";
+  background-color: white;
+  margin: 8px;
+  top: 50%;
+  left: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+}
+
+.event-header {
+  padding: 10px;
+  border-width: 0px;
+  border-color: black;
+  border-bottom-width: 2px;
+  border-style: solid;
+  background-color: rgba(52, 81, 109);
+  text-align: center;
+  color: #fff;
+  height: 20px;
+  font-size: inherit;
+}
+
+.event-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.event-col-25 {
+  float: left;
+  width: 15%;
+  margin-top: 6px;
+}
+
+.event-col-75 {
+  float: left;
+  width: 85%;
+  margin-top: 6px;
+}
+
+.event-col-50-left {
+  float: left;
+  width: 49%;
+  margin-top: 12px;
+}
+
+.event-col-50-right {
+  float: right;
+  width: 49%;
+  margin-top: 12px;
+}
+
+.event-col-25, .event-col-75, .event-submit-buttons {
+  width: 100%;
+  margin-top: 0;
+}
+
+.event-header-middle {
+  display: inline;
+}
+
+.event-close-outside {
+  width: 25px;
+  height: 25px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid black;
+  float: right;
+}
+
+.event-close-outside:hover {
+  cursor: pointer;
+}
+
+.event-close-x-left {
+  height: 25px;
+  width: 2px;
+  margin-left: 12px;
+  background-color: black;
+  transform: rotate(45deg);
+  Z-index: 1;
+}
+
+.event-close-x-right {
+  height: 25px;
+  width: 2px;
+  background-color: black;
+  transform: rotate(90deg);
+  Z-index: 2;
+}
+
+.create-buttons {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 30px;
+}
+
+.create-buttons-left {
+  float: left;
+}
+
+.create-buttons-left:hover {
+  cursor: pointer;
+}
+
+.create-buttons-right {
+  margin-left: 25px;
+  float: right;
+}
+
+.create-buttons-right:hover {
+  cursor: pointer;
+}
+
+.circleBase {
+  border-radius: 50%;
+}
+
+.type1 {
+  width: 100px;
+  height: 100px;
+  background: rgba(52, 81, 109);
+}
+
+.outer-icon {
+  padding-top:12.5px;
+  height:87.5px;
+  width:100px;
+}
+
+.inner-calendar-icon {
+  margin-left:auto;
+  margin-right:auto;
+  width:75px;
+  height:75px;
+  filter: invert(100%);
+  background: url('https://api.iconify.design/fluent:calendar-add-20-filled.svg') no-repeat center center / contain;
+}
+
+.inner-group-icon {
+  margin-left:auto;
+  margin-right:auto;
+  width:75px;
+  height:75px;
+  filter: invert(100%);
+  background: url('https://api.iconify.design/fluent:people-team-add-20-filled.svg') no-repeat center center / contain;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
