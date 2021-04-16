@@ -1,0 +1,30 @@
+.friend {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: black;
+  background-color: #eee;
+  width: 300px;
+}
+
+.container {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 2;
+}
+
+.Header {
+  font-size: 15pt;
+  color: white;
+  display: flex;
+  max-inline-size: 300px;
+  justify-content: center;
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: black;
+  background-color: rgb(52, 81, 109);
+}
+
+.bi.bi-circle-fill {
+  fill: rgb(44, 248, 44);
+}
