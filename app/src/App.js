@@ -11,6 +11,7 @@ import Chatroom from "./components/Chatroom";
 import FriendsList from "./components/FriendsList";
 import AuthProvider from "./contexts/AuthContext";
 import ChatProvider from "./contexts/ChatContext";
+import ProfileButton from "./components/ProfileButton";
 //import AuthenticatedRoute from "./hocs/AuthenticatedRoute";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -29,6 +30,7 @@ function App() {
       <Router>
         <AuthProvider>
           <ChatProvider>
+            <ProfileButton/>
             <Nav />
             <CreateButtons />
             <FriendsList friend={friend} />

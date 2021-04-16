@@ -33,6 +33,17 @@ code {
   padding: 0.5em;
 }
 
+.nav-profile {
+  display: inline-block;
+  padding: .5em;
+  height: 20px;
+  width: 20px;
+  float: right;
+  margin-top: 10px;
+  background: url('https://api.iconify.design/gg:profile.svg') no-repeat center center / contain;
+
+}
+
 html {
   background-color: rgb(52, 81, 109);
 }

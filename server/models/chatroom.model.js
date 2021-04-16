@@ -31,6 +31,10 @@ let Chatroom = new Schema({
     type: Date,
     default: Date.now,
   },
+  moderatorIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
+  }
 });
 
 module.exports = mongoose.model("Chatroom", Chatroom);
