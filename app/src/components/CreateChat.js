@@ -17,11 +17,6 @@ function CreateChat(props) {
 
   const [ displayChatroom, setDisplayChatroom ] = useState(false);
 
-  const settingName = (event) => setName(event.target.value);
-  const settingTopics = (event) => setTopics(event.target.value);
-  const settingPublic = (event) => setPub(event.target.value);
-  const settingAnon = (event) => setAnon(event.target.value);
-
   var chatroomid = -1;
 
   const submitNewChatroom = (chatroom) => {
