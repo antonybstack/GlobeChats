@@ -30,7 +30,7 @@
 }
 
 .bi.bi-person-plus-fill {
-  padding-left: 10px;
-  margin-inline-start: 15px;
-  margin-top: 8px;
+  position: relative;
+  top: 8px;
+  left: 100px;
 }
