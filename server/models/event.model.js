@@ -10,7 +10,6 @@ let Event = new Schema({
   },
   description: {
     type: String,
-    require: true,
     min: 1,
     max: 2000,
   },
@@ -23,7 +22,8 @@ let Event = new Schema({
     require: true,
   },
   creator: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     require: true,
   },
 });
