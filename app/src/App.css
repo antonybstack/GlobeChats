@@ -346,3 +346,7 @@ input:checked + .slider:before {
 .friend-list-group-item:last-child {
   border-radius: inherit;
 }
+
+.chatroom-container {
+  padding: 10px;
+}
