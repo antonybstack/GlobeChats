@@ -402,3 +402,12 @@ input:checked + .slider:before {
   float: right;
   padding-left: 50px;
 }
+
+.profile-text{
+  text-align: center;
+}
+
+.profile-title{
+  font-weight: bold;
+  text-align: center;
+}
