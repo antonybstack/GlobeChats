@@ -16,6 +16,7 @@ let Chat = new Schema(
     message: {
       type: String,
       required: "Message is required",
+      default: "",
     },
     timestamp: {
       type: Date,

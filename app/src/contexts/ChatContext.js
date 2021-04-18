@@ -15,8 +15,8 @@ export default ({ children }) => {
     const getChats = async () => {
       setChats([]);
       await axios.get("/api/chats").then((res) => {
-        console.log(res.data);
-        let temp = res.data;
+        console.log(res.data.chats);
+        let temp = res.data.chats;
         temp.forEach((currentData) => {
           setChats((currentChats) => [...currentChats, currentData]);
         });
