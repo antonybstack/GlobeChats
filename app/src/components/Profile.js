@@ -1,29 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
+import { AuthContext } from "../contexts/AuthContext";
 
 
 function Profile(props) {
+    const { user, isAuthenticated } = useContext(AuthContext);
 
     var email; 
     var first;
     var last;
+
+    
+        
+        let infoPacket = {
+          userId: user._id,
+          first: user.firstName,
+          last: user.lastName,
+          email: user.email
+          
+        };
+        console.log(infoPacket);
+    
     
     
 
-    /*axios
-        .get('/api/profile/spec', {doc.cookies.userId})
+    axios
+        .get('/api/profile/spec', infoPacket)
         .then((res) => {
-            console.log(res.data);
-            email = res.data.email;
-            first = res.data.first;
-            last = res.data.last;
+            email = infoPacket.email;
+            first = infoPacket.last;
+            last = infoPacket.first;
         
             console.log("success!")
         })
         .catch((error) => {
             console.log(error);
         });
-*/
+
+    
+
     
 
     return (
@@ -42,12 +57,11 @@ function Profile(props) {
                     </div>
                 </div>
                 <div class="event-form">
-                        User:
-                        <div> joshaboyer2@gmail.com </div>
-                        
-
-                        
-                    </div>
+                    <div class="profile-title">User:</div>
+                    <div class="profile-text"> {infoPacket.first} {infoPacket.last} </div>
+                    <div class="profile-title">Email:</div>
+                    <div class="profile-text"> {infoPacket.email} </div>
+                </div>
             </div>
             
                 
