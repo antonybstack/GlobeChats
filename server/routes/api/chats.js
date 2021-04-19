@@ -13,11 +13,20 @@ chatRoutes.route("/").get(function (req, res) {
 });
 
 chatRoutes.route("/:id").get(function (req, res) {
-  ChatModel.findByIdAndRemove(req.params.id, function (err, chat) {
+  ChatModel.findById(req.params.id, function (err, chat) {
     if (err) {
       return res.status(500).send({ message: { msgBody: "Error retrieving specific chat", msgError: true } }, { chat });
     }
     return res.status(200).json({ chat });
+  });
+});
+
+chatRoutes.route("/chatroom/:id").get(function (req, res) {
+  ChatModel.find({ 'chatroomId': req.params.id}, function (err, chats) {
+    if (err) {
+      return res.status(500).send({ message: { msgBody: "Error retrieving chat by chatroom", msgError: true } }, { chats });
+    }
+    return res.status(200).json({ chats });
   });
 });
 
@@ -49,7 +58,6 @@ chatRoutes.put("/update/:id", (req, res) => {
     if (!chat) {
       res.status(404).send("data is not found");
     } else {
-      console.log(req.body);
       if(req.body.message) chat.message = req.body.message;
       chat
       .save()

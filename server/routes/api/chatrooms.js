@@ -13,7 +13,7 @@ chatroomRoutes.route("/").get(function (req, res) {
 });
 
 chatroomRoutes.route("/:id").get(function (req, res) {
-  ChatroomModel.findByIdAndRemove(req.params.id, function (err, chatroom) {
+  ChatroomModel.findById(req.params.id, function (err, chatroom) {
     if (err) {
       return res.status(500).send({ message: { msgBody: "Error retrieving specific chatroom", msgError: true } }, { chatroom });
     }
