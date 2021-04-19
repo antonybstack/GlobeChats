@@ -1,49 +1,27 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import axios from 'axios';
-import { AuthContext } from "../contexts/AuthContext";
-
 
 function Profile(props) {
-    const { user, isAuthenticated } = useContext(AuthContext);
+    const [ email, setEmail ] = useState("");
+    const [ first, setFirst ] = useState("");
+    const [ last, setLast ] = useState("");
 
-    var email; 
-    var first;
-    var last;
-
-    
-        
-        let infoPacket = {
-          userId: user._id,
-          first: user.firstName,
-          last: user.lastName,
-          email: user.email
-          
-        };
-        console.log(infoPacket);
-    
-    
-    
-
-    axios
-        .get('/api/profile/spec', infoPacket)
+    useEffect(() => {
+        axios.post('/api/profile/spec', {googleId: props.googleId})
         .then((res) => {
-            email = infoPacket.email;
-            first = infoPacket.last;
-            last = infoPacket.first;
-        
+            console.log(res.data);
+            setEmail(res.data.email);
+            setFirst(res.data.firstName);
+            setLast(res.data.lastName);
+            console.log(email + " " + first + " " + last);
             console.log("success!")
         })
         .catch((error) => {
             console.log(error);
         });
-
-    
-
-    
+    });
 
     return (
-        
-
             <div class="event-create-container">
                 
                 <div class="event-header">
@@ -58,19 +36,11 @@ function Profile(props) {
                 </div>
                 <div class="event-form">
                     <div class="profile-title">User:</div>
-                    <div class="profile-text"> {infoPacket.first} {infoPacket.last} </div>
+                    <div class="profile-text">{first} {last}</div>
                     <div class="profile-title">Email:</div>
-                    <div class="profile-text"> {infoPacket.email} </div>
+                    <div class="profile-text">{email}</div>
                 </div>
             </div>
-            
-                
-
-                
-
-            
-                    
-                
     );
 };
 
