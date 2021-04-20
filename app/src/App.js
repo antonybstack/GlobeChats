@@ -10,6 +10,7 @@ import Logout from "./components/Logout";
 import Chatroom from "./components/Chatroom";
 import FriendsList from "./components/FriendsList";
 import AuthProvider from "./contexts/AuthContext";
+import ChatroomProvider from "./contexts/ChatroomContext";
 import ChatProvider from "./contexts/ChatContext";
 import ProfileButton from "./components/ProfileButton";
 //import AuthenticatedRoute from "./hocs/AuthenticatedRoute";
@@ -29,13 +30,16 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-          <ChatProvider>
-            <ProfileButton/>
-            <Nav />
-            <CreateButtons />
-            <FriendsList friend={friend} />
-            <Route path="/" exact component={Map} />
-          </ChatProvider>
+          <ChatroomProvider>
+            <ChatProvider>
+              <ProfileButton />
+              <Nav />
+              <Chatroom />
+              <CreateButtons />
+              <FriendsList friend={friend} />
+              <Route path="/" exact component={Map} />
+            </ChatProvider>
+          </ChatroomProvider>
         </AuthProvider>
       </Router>
     </div>

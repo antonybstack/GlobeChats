@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+var Float = require("mongoose-float").loadType(mongoose);
 const Schema = mongoose.Schema;
 
 let Event = new Schema({
@@ -14,7 +15,7 @@ let Event = new Schema({
     max: 2000,
   },
   location: {
-    type: [Number],
+    type: [Float],
     require: true,
   },
   eventDate: {

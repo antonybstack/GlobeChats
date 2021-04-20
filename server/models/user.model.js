@@ -22,11 +22,15 @@ let User = new Schema({
     type: String,
     required: true,
   },
+  joinedChatroomIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Chatroom",
+    default: [null],
+  },
   register_date: {
     type: Date,
     default: Date.now,
   },
-
   friendlist: [
     {
       type: Schema.Types.ObjectId,

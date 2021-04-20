@@ -7,7 +7,6 @@ require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
-console.log(require("dotenv").config());
 
 app.use(express.json());
 app.use(cookieParser());
@@ -16,6 +15,7 @@ app.use(cookieParser());
 const session = require("express-session");
 const passport = require("passport");
 
+//express-session
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -26,6 +26,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// if production, it will use heroku variable that provides mongo uri  
 var db = "";
 if (process.env.DATABASE_URL) {
   db = process.env.DATABASE_URL;
@@ -41,11 +42,13 @@ app.use((req, res, next) => {
   next();
 });
 
+//connection to mongoDB
 mongoose
   .connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log("mongoose connection error!", err));
 
+//express routes
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/events", require("./routes/api/events"));
 app.use("/api/profile", require("./routes/api/profile"));

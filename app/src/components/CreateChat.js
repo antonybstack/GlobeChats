@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
+
 import { AuthContext } from "../contexts/AuthContext";
-import { ChatContext } from "../contexts/ChatContext";
 import Chatroom from "./Chatroom";
 
 function CreateChat(props) {
@@ -9,8 +9,7 @@ function CreateChat(props) {
   const [topics, setTopics] = useState("");
   const [pub, setPub] = useState("");
   const [anon, setAnon] = useState("");
-  const { user, isAuthenticated } = useContext(AuthContext);
-  const { chats, setChats } = useContext(ChatContext);
+  const { user } = useContext(AuthContext);
 
   const settingName = (chatroom) => setName(chatroom.target.value);
   const settingTopics = (chatroom) => setTopics(chatroom.target.value);
@@ -18,8 +17,20 @@ function CreateChat(props) {
   const settingAnon = (chatroom) => setAnon(chatroom.target.value);
 
   const [displayChatroom, setDisplayChatroom] = useState(false);
+  const [lng, setLng] = useState(-80.8315);
+  const [lat, setLat] = useState(35.21);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setLng(position.coords.longitude);
+      setLat(position.coords.latitude);
+    });
+  }, []);
 
   var chatroomid = -1;
+
+  var coordLng = 0.0;
+  var coordLat = 0.0;
 
   const submitNewChatroom = (chatroom) => {
     chatroom.preventDefault();
@@ -28,14 +39,6 @@ function CreateChat(props) {
       alert("Please make sure to enter all the fields!");
       return;
     }
-
-    console.log("name " + name + " topics " + topics + " pub " + pub + " anon " + anon);
-
-    console.log(name);
-    console.log(topics);
-
-    console.log(pub);
-    console.log(anon);
 
     setDisplayChatroom(true);
     document.getElementById("create-chat").innerHTML = "";
@@ -50,10 +53,10 @@ function CreateChat(props) {
         tags: topics,
         isPrivate: isPrivate,
         verifyUsers: verifyUsers,
-        location: 1,
+        location: [lng, lat],
       })
       .then((res) => {
-        console.log("success!");
+        console.log(res);
       })
       .catch((error) => {
         console.log(error);

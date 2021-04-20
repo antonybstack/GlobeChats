@@ -7,7 +7,7 @@ const JwtStrategy = require("passport-jwt").Strategy;
 
 // Bearer Token ---------------
 passport.use(
-  new BearerStrategy((token, done) => {
+  new BearerStrategy(async (token, done) => {
     googleClient
       .verifyIdToken({
         idToken: token,
@@ -20,10 +20,9 @@ passport.use(
         //check if this google account is in our database, if it isnt, we add it
         try {
           let user = await User.findOne({ googleId: sub });
-
           if (user) {
             console.log("Google account already exists.");
-            done(null, user);
+            return done(null, user);
           } else {
             console.log("Creating new record of google account in db");
             const newUser = {
@@ -33,8 +32,8 @@ passport.use(
               lastName: family_name,
               googleImg: picture,
             };
-            let user = User.create(newUser);
-            done(null, user);
+            let user = await User.create(newUser);
+            return done(null, user);
           }
         } catch (err) {
           console.error(err);
