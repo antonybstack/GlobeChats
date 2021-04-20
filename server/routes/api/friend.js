@@ -3,12 +3,13 @@ const friendRoutes = express.Router();
 
 const Friend = require("../../models/friend.model");
 
-friendRoutes.post("/friends-list", (req, res) => {
-  const newFriend = new Friend({
-    name: req.body.user.username,
-  });
-
-  newFriend.save().then((friend) => res.json(friend));
+friendRoutes.get("/friends-list", (req, res) => {
+  User.db.collections.users
+    .find({ googleId: req.body.googleId })
+    .toArray((error, doc) => {
+      console.log(doc[0].friendlist);
+      res.status(200).json(doc[0].friendlist);
+    });
 });
 
 module.exports = friendRoutes;
