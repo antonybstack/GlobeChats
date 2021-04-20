@@ -19,17 +19,19 @@ export default ({ children }) => {
       const getChats = async () => {
         setChatrooms([]);
         user.joinedChatroomIds.forEach(async (chatroomId) => {
-          await axios
-            .get("/api/chats/chatroom/" + chatroomId)
-            .then((res) => {
-              res.data.chats.forEach((chat) => {
-                if (res.data.chats) setChats((currentChats) => [...currentChats, chat]);
+          if (chatroomId) {
+            await axios
+              .get("/api/chats/chatroom/" + chatroomId)
+              .then((res) => {
+                res.data.chats.forEach((chat) => {
+                  if (res.data.chats) setChats((currentChats) => [...currentChats, chat]);
+                });
+                //if (res.data.chats) setChats((currentChats) => [...currentChats, res.data.chats]);
+              })
+              .catch((err) => {
+                console.log(err);
               });
-              //if (res.data.chats) setChats((currentChats) => [...currentChats, res.data.chats]);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          }
         });
       };
       const load = async () => {

@@ -17,25 +17,29 @@ export default ({ children }) => {
     if (isAuthenticated) {
       setChatrooms([]);
       const getChatrooms = async () => {
-        if (user.joinedChatroomIds) {
-          user.joinedChatroomIds.forEach(async (chatroomId) => {
+        user.joinedChatroomIds.forEach(async (chatroomId) => {
+          if (chatroomId) {
             await axios
               .get("/api/chatrooms/" + chatroomId)
               .then((res) => {
+                console.log("chatroomcontext");
+                console.log(res);
                 if (res.data.chatroom) setChatrooms((currentChatrooms) => [...currentChatrooms, res.data.chatroom]);
               })
               .catch((err) => {
                 console.log(err);
               });
-          });
-        }
+          }
+        });
       };
 
-      setGlobalChatrooms([]);
       const getGlobalChatrooms = async () => {
+        setGlobalChatrooms([]);
         await axios
           .get("/api/chatrooms/")
           .then((res) => {
+            console.log(res);
+            console.log(res.data.chatrooms);
             if (res.data.chatrooms) setGlobalChatrooms(res.data.chatrooms);
           })
           .catch((err) => {
@@ -52,7 +56,7 @@ export default ({ children }) => {
       load();
     }
     //rerenders when user logs in and user updates so that it notifies that the user has joined the chatroom
-  }, [authLoaded]);
+  }, [user]);
 
   // provider passes context to all children compoents, no matter how deep it is
   return <>{!setChatroomsLoaded ? null : <ChatroomContext.Provider value={{ chatrooms, setChatrooms, globalChatrooms, setGlobalChatrooms, chatroomsLoaded }}>{children}</ChatroomContext.Provider>}</>;
