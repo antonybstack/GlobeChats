@@ -8,28 +8,30 @@ import axios from "axios";
 export const ChatContext = createContext(); //creating Context object with empty object
 
 export default ({ children }) => {
-  const { user,  isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
   const { chatrooms, setChatrooms, chatroomsLoaded } = useContext(ChatroomContext);
   const [chats, setChats] = useState([]);
   const [chatsLoaded, setChatsLoaded] = useState(false);
   useEffect(() => {
     setChatsLoaded(false);
-    console.log(isAuthenticated);
-    console.log(chatroomsLoaded);
-    if(isAuthenticated && chatroomsLoaded){
-      console.log(chatrooms);
+    if (isAuthenticated && user.joinedChatroomIds) {
       setChats([]);
       const getChats = async () => {
-        
-          setChatrooms([]);
-          chatrooms.forEach(async chatroom => {
-            console.log(chatroom);
-            await axios.get("/api/chats/chatroom/"+chatroom._id).then((res) => {
+        setChatrooms([]);
+        user.joinedChatroomIds.forEach(async (chatroomId) => {
+          await axios
+            .get("/api/chats/chatroom/" + chatroomId)
+            .then((res) => {
               console.log(res.data.chats);
-              if(res.data.chats) setChats((currentChats) => [...currentChats, res.data.chats]);
+              res.data.chats.forEach((chat) => {
+                if (res.data.chats) setChats((currentChats) => [...currentChats, chat]);
+              });
+              //if (res.data.chats) setChats((currentChats) => [...currentChats, res.data.chats]);
+            })
+            .catch((err) => {
+              console.log(err);
             });
-          });
-        
+        });
       };
       const load = async () => {
         await getChats();
@@ -39,7 +41,7 @@ export default ({ children }) => {
       load();
     }
     //rerenders when user logs in and user updates so that it notifies that the user has joined the chatroom
-  }, [chatroomsLoaded]);
+  }, [isAuthenticated]);
 
   // provider passes context to all children compoents, no matter how deep it is
   return <ChatContext.Provider value={{ chats, setChats }}>{children}</ChatContext.Provider>;

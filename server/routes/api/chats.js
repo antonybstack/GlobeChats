@@ -7,7 +7,7 @@ chatRoutes.route("/").get(function (req, res) {
   ChatModel.find(function (err, chats) {
     if (err) {
     } else {
-      res.status(200).json({chats});
+      res.status(200).json({ chats });
     }
   });
 });
@@ -22,7 +22,7 @@ chatRoutes.route("/:id").get(function (req, res) {
 });
 
 chatRoutes.route("/chatroom/:id").get(function (req, res) {
-  ChatModel.find({ 'chatroomId': req.params.id}, function (err, chats) {
+  ChatModel.find({ chatroomId: req.params.id }, function (err, chats) {
     if (err) {
       return res.status(500).send({ message: { msgBody: "Error retrieving chat by chatroom", msgError: true } }, { chats });
     }
@@ -32,12 +32,11 @@ chatRoutes.route("/chatroom/:id").get(function (req, res) {
 
 chatRoutes.post("/add", (req, res) => {
   let Chat = new ChatModel(req.body);
-  Chat
-    .save()
+  Chat.save()
     .then((chat) => {
       console.log(chat);
       res.status(200).json({ chat });
-    })  
+    })
     .catch((err) => {
       console.log(err);
       res.status(400).json({ message: { msgBody: "Error creating chat", msgError: true } }, { chat });
@@ -58,15 +57,15 @@ chatRoutes.put("/update/:id", (req, res) => {
     if (!chat) {
       res.status(404).send("data is not found");
     } else {
-      if(req.body.message) chat.message = req.body.message;
+      if (req.body.message) chat.message = req.body.message;
       chat
-      .save()
-      .then((chat) => {
-        res.json({ chat });
-      })
-      .catch((err) => {
-        res.status(400).json({ message: { msgBody: "Error updating chat", msgError: true } });
-      });
+        .save()
+        .then((chat) => {
+          res.json({ chat });
+        })
+        .catch((err) => {
+          res.status(400).json({ message: { msgBody: "Error updating chat", msgError: true } });
+        });
     }
   });
 });

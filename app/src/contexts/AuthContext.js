@@ -17,13 +17,12 @@ export default ({ children }) => {
       await axios
         .get("/api/users/authenticated")
         .then((res) => {
-          console.log(res.data.user);
           setUser(res.data.user);
           setIsAuthenticated(res.data.isAuthenticated);
         })
         .catch((err) => {
           console.log(err);
-          setUser({ googleId: "" } );
+          setUser({ googleId: "" });
           setIsAuthenticated(false);
         });
     };
@@ -37,7 +36,5 @@ export default ({ children }) => {
   }, [isAuthenticated]);
 
   // providing user and isAuthenticated variables to be global variables
-  return (<>{!authLoaded ? null : (<AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, authLoaded }}>{children}</AuthContext.Provider>)}</>);
-
-  
+  return <>{!authLoaded ? null : <AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, authLoaded }}>{children}</AuthContext.Provider>}</>;
 };

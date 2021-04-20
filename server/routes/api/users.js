@@ -14,7 +14,7 @@ const signToken = (userID) => {
       sub: userID, //subject
     },
     process.env.SESSION_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "6h" }
   );
 };
 
@@ -40,25 +40,24 @@ userRoutes.get("/authenticated", passport.authenticate("jwt", { session: false }
   res.status(200).json({ isAuthenticated: true, user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } });
 });
 
-
 userRoutes.put("/update/:id", (req, res) => {
   User.findById(req.params.id, function (err, user) {
     if (!user) {
       res.status(404).send("data is not found");
     } else {
-      if(req.body.firstName) user.firstName = req.body.firstName;
-      if(req.body.lastName) user.lastName = req.body.lastName;
-      if(req.body.joinedChatroomIds) user.joinedChatroomIds = req.body.joinedChatroomIds;
-      if(req.body.friendlist) user.friendlist = req.body.friendlist;
-      
+      if (req.body.firstName) user.firstName = req.body.firstName;
+      if (req.body.lastName) user.lastName = req.body.lastName;
+      if (req.body.joinedChatroomIds) user.joinedChatroomIds = req.body.joinedChatroomIds;
+      if (req.body.friendlist) user.friendlist = req.body.friendlist;
+
       user
-      .save()
-      .then((user) => {
-        res.json({ user });
-      })
-      .catch((err) => {
-        res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
-      });
+        .save()
+        .then((user) => {
+          res.json({ user });
+        })
+        .catch((err) => {
+          res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+        });
     }
   });
 });

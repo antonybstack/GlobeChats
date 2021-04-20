@@ -13,16 +13,19 @@ export default ({ children }) => {
 
   useEffect(() => {
     setChatroomsLoaded(false);
-    if(isAuthenticated){
+    if (isAuthenticated) {
       setChatrooms([]);
       const getChatrooms = async () => {
-        if(user.joinedChatroomIds){
-          user.joinedChatroomIds.forEach(async chatroomId => {
-            console.log(chatroomId);
-            await axios.get("/api/chatrooms/"+chatroomId).then((res) => {
-              console.log(res.data.chatroom);
-              if(res.data.chatroom) setChatrooms((currentChatrooms) => [...currentChatrooms, res.data.chatroom]);
-            });
+        if (user.joinedChatroomIds) {
+          user.joinedChatroomIds.forEach(async (chatroomId) => {
+            await axios
+              .get("/api/chatrooms/" + chatroomId)
+              .then((res) => {
+                if (res.data.chatroom) setChatrooms((currentChatrooms) => [...currentChatrooms, res.data.chatroom]);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           });
         }
       };
@@ -33,11 +36,10 @@ export default ({ children }) => {
       };
 
       load();
-      console.log(chatrooms);
     }
     //rerenders when user logs in and user updates so that it notifies that the user has joined the chatroom
   }, [authLoaded]);
 
   // provider passes context to all children compoents, no matter how deep it is
-  return (<>{!setChatroomsLoaded ? null : (<ChatroomContext.Provider value={{ chatrooms, setChatrooms, chatroomsLoaded }}>{children}</ChatroomContext.Provider>)}</>);
+  return <>{!setChatroomsLoaded ? null : <ChatroomContext.Provider value={{ chatrooms, setChatrooms, chatroomsLoaded }}>{children}</ChatroomContext.Provider>}</>;
 };

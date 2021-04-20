@@ -30,14 +30,15 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-        <ChatroomProvider>
-          <ChatProvider>
-            <ProfileButton/>
-            <Nav />
-            <CreateButtons />
-            <FriendsList friend={friend} />
-            <Route path="/" exact component={Map} />
-          </ChatProvider>
+          <ChatroomProvider>
+            <ChatProvider>
+              <ProfileButton />
+              <Nav />
+              <Chatroom />
+              <CreateButtons />
+              <FriendsList friend={friend} />
+              <Route path="/" exact component={Map} />
+            </ChatProvider>
           </ChatroomProvider>
         </AuthProvider>
       </Router>
