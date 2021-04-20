@@ -34,14 +34,20 @@ code {
 }
 
 .nav-profile {
-  padding: .5em;
+  padding: 0.5em;
   height: 20px;
   width: 20px;
   float: right;
   margin-top: 12px;
-  background: url('https://api.iconify.design/gg:profile.svg') no-repeat center center / contain;
+  background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
   margin-right: 8px;
   margin-bottom: 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  border: 1px solid #233f5a;
+}
+.nav-profile:hover {
+  border: 1px solid #5482af;
 }
 
 html {
@@ -94,8 +100,8 @@ html {
   font-family: "Arial";
   background-color: white;
   margin: 8px;
-  top: 50%;
-  left: 50%;
+  top: 15%;
+  left: 70%;
   position: fixed;
   transform: translate(-50%, -50%);
 }
@@ -196,6 +202,7 @@ html {
 
 .create-buttons-left:hover {
   cursor: pointer;
+  background: rgb(67 104 140);
 }
 
 .create-buttons-right {
@@ -205,6 +212,7 @@ html {
 
 .create-buttons-right:hover {
   cursor: pointer;
+  background: rgb(67 104 140);
 }
 
 .circleBase {
