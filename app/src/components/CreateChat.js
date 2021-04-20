@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 
 import { AuthContext } from "../contexts/AuthContext";
+import { ChatroomContext } from "../contexts/ChatroomContext";
 import Chatroom from "./Chatroom";
 
 function CreateChat(props) {
@@ -10,6 +11,7 @@ function CreateChat(props) {
   const [pub, setPub] = useState("");
   const [anon, setAnon] = useState("");
   const { user } = useContext(AuthContext);
+  const { globalChatrooms, setGlobalChatrooms } = useContext(ChatroomContext);
 
   const settingName = (chatroom) => setName(chatroom.target.value);
   const settingTopics = (chatroom) => setTopics(chatroom.target.value);
@@ -27,11 +29,6 @@ function CreateChat(props) {
     });
   }, []);
 
-  var chatroomid = -1;
-
-  var coordLng = 0.0;
-  var coordLat = 0.0;
-
   const submitNewChatroom = (chatroom) => {
     chatroom.preventDefault();
 
@@ -46,6 +43,14 @@ function CreateChat(props) {
     var isPrivate = pub == "true";
     var verifyUsers = anon == "true";
 
+    let longitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
+    let latitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
+
+    console.log(longitude_buffer_for_privacy);
+    console.log(latitude_buffer_for_privacy);
+    console.log(lng + longitude_buffer_for_privacy);
+    console.log(lat + latitude_buffer_for_privacy);
+
     axios
       .post("/api/chatrooms/add", {
         adminId: user._id,
@@ -53,10 +58,16 @@ function CreateChat(props) {
         tags: topics,
         isPrivate: isPrivate,
         verifyUsers: verifyUsers,
-        location: [lng, lat],
+        location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
       })
       .then((res) => {
+        console.log(globalChatrooms);
         console.log(res);
+
+        const newChatroom = res.data.chatroom;
+
+        setGlobalChatrooms((currentGlobalChatrooms) => [...currentGlobalChatrooms, newChatroom]);
+        console.log(globalChatrooms);
       })
       .catch((error) => {
         console.log(error);

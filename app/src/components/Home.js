@@ -1,13 +1,12 @@
 import React, { useState, createContext, useContext, useEffect } from "react";
-import Login from "./Login";
-import Logout from "./Logout";
 import Chatroom from "./Chatroom";
 import FriendsList from "./FriendsList";
 import ProfileButton from "./ProfileButton";
-import CreateEvent from "./CreateEvent";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import { AuthContext } from "../contexts/AuthContext";
+import ChatroomProvider from "../contexts/ChatroomContext";
+import ChatProvider from "../contexts/ChatContext";
 
 const Home = () => {
   const { user, isAuthenticated, authLoaded } = useContext(AuthContext);
@@ -24,11 +23,15 @@ const Home = () => {
     <>
       {isAuthenticated ? (
         <div className="home">
-          <ProfileButton />
-          <Chatroom />
-          <CreateButtons />
-          <FriendsList friend={friend} />
-          <Map />
+          <ChatroomProvider>
+            <ChatProvider>
+              <ProfileButton />
+              <Chatroom />
+              <CreateButtons />
+              <FriendsList friend={friend} />
+              <Map />
+            </ChatProvider>
+          </ChatroomProvider>
         </div>
       ) : (
         <div className="home">

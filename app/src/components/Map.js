@@ -1,9 +1,14 @@
-import React, { useEffect, useContext, useState, useRef, Component } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
+import ReactDOM from "react-dom";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
+
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import profileIcon from "../assets/users1.png";
 import { ChatroomContext } from "../contexts/ChatroomContext";
+import { AuthContext } from "../contexts/AuthContext";
+import MapMarkerPopup from "./MapMarkerPopup";
+import AuthProvider from "../contexts/AuthContext";
 
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
@@ -13,8 +18,9 @@ const Map = () => {
   const [lng, setLng] = useState(-80.8315);
   const [lat, setLat] = useState(35.21);
   const [zoom, setZoom] = useState(10.66);
+  const [markersGenerated, setMarkersGenerated] = useState(false);
+  const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
   const { globalChatrooms, setGlobalChatrooms } = useContext(ChatroomContext);
-  console.log(globalChatrooms);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -25,7 +31,6 @@ const Map = () => {
     });
 
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log(position);
       setLng(position.coords.longitude);
       setLat(position.coords.latitude);
       map.setCenter([position.coords.longitude, position.coords.latitude]);
@@ -64,42 +69,26 @@ const Map = () => {
     map.on("load", function () {
       map.loadImage(profileIcon, function (error, image) {
         if (error) throw error;
-
-        // Add the image to the map style.
         map.addImage("cat", image);
-
-        // Add a data source containing one point feature.
-
-        // Add a layer to use the image to represent the data.
-        // map.addLayer({
-        //   id: "points",
-        //   type: "symbol",
-        //   source: "point", // reference the data source
-        //   layout: {
-        //     "icon-image": "cat", // reference the image
-        //     "icon-size": 0.25,
-        //   },
-        // });
       });
 
       var feature = {};
       var features = [];
       feature.features = features;
-      console.log(feature);
-      console.log(globalChatrooms);
+
       globalChatrooms.forEach((chatroom) => {
-        console.log(chatroom);
         var coord = [lng, lat];
-        console.log(coord);
-        console.log(chatroom.location[0]);
-        console.log(chatroom.location[1]);
         if (chatroom.location.length === 2) coord = [chatroom.location[0], chatroom.location[1]];
-        console.log(coord);
         let featuree = {
           type: "Feature",
           properties: {
-            description:
-              '<div style="font-size:18pt;font-weight:bold;">Test_Chatroom</div><p style="font-size: 15pt;"><button className="joinChatroomButton" onClick={joinChatroom()}>Click to join</button></p><p><div style="font-size: 12pt;">tags</div></p>',
+            chatroom_id: chatroom._id,
+            name: chatroom.name,
+            tags: chatroom.tags,
+            verifyUsers: chatroom.verifyUsers,
+            isPrivate: chatroom.isPrivate,
+            timestamp: chatroom.timestamp,
+            current_user: user._id,
             icon: "cat",
           },
           geometry: {
@@ -109,7 +98,6 @@ const Map = () => {
         };
         feature.features.push(featuree);
       });
-      console.log(feature.features);
 
       map.addSource("places", {
         // This GeoJSON contains features that include an "icon"
@@ -146,7 +134,16 @@ const Map = () => {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-        new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
+        const popupNode = document.createElement("div");
+        popupNode.style.cssText = "min-width:150px;min-height:120px;";
+        ReactDOM.render(
+          <AuthProvider>
+            <MapMarkerPopup feature={e.features[0].properties} />
+          </AuthProvider>,
+          popupNode
+        );
+
+        new mapboxgl.Popup().setLngLat(coordinates).setDOMContent(popupNode).addTo(map);
       });
 
       // Change the cursor to a pointer when the mouse is over the places layer.
@@ -159,6 +156,8 @@ const Map = () => {
         map.getCanvas().style.cursor = "";
       });
     });
+
+    setMarkersGenerated(true);
 
     return () => map.remove();
   }, [globalChatrooms]);

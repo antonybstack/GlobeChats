@@ -18,15 +18,6 @@ function Chatroom(props) {
   const [text, setText] = useState();
 
   useEffect(() => {
-    setTitle(
-      chatrooms.map((chatroom) => {
-        return <Tab key={chatroom.name}>{chatroom.name}</Tab>;
-      })
-    );
-    setText();
-  }, [setChatrooms]);
-
-  useEffect(() => {
     if (document.getElementById("chatMessages")) {
       var elem = document.getElementById("chatMessages");
       elem.scrollTop = elem.scrollHeight;
@@ -99,6 +90,15 @@ function Chatroom(props) {
       });
   };
 
+  useEffect(() => {
+    console.log("setTitle");
+    setTitle(
+      chatrooms.map((chatroom) => {
+        return <Tab key={chatroom._id}>{chatroom.name}</Tab>;
+      })
+    );
+  }, [chatrooms]);
+
   return (
     <div class="chatroom-window-container">
       <div class="chatroom-window-header">
@@ -110,11 +110,7 @@ function Chatroom(props) {
           setTabSelect(tabSelect);
         }}
       >
-        <TabList>
-          {chatrooms.map((chatroom) => (
-            <Tab key={chatroom._id}>{chatroom.name}</Tab>
-          ))}
-        </TabList>
+        <TabList>{title}</TabList>
         {chatrooms.map((chatroom) => (
           <TabPanel key={chatroom._id}>
             <div className="chat">
