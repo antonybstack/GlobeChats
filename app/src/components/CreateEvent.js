@@ -6,7 +6,6 @@ function CreateEvent(props) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [loc, setLoc] = useState("");
-  const [creator, setCreator] = useState("");
   const [date, setDate] = useState("");
   const { user, isAuthenticated } = useContext(AuthContext);
 
@@ -23,15 +22,14 @@ function CreateEvent(props) {
       return;
     }
 
-    console.log("title " + title + " desc " + desc + " loc " + loc + " date " + date);
-
     var locSplitStringArr = loc.split(",");
     var locSplitNumberArr = locSplitStringArr.map(Number);
 
     axios
       .post("/api/events/new", { title: title, description: desc, location: locSplitNumberArr, eventDate: date, creator: user._id })
       .then((res) => {
-        console.log("success!");
+        console.log(res);
+        alert("Event added successfully.");
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +46,7 @@ function CreateEvent(props) {
           </div>
         </div>
       </div>
-      <form class="event-form" onSubmit={props.handleClose}>
+      <form class="event-form" onSubmit={submitNewEvent}>
         <div class="event-row">
           <div class="event-col-25">
             <label class="event-form-label">Event Title</label>

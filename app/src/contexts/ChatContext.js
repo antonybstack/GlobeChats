@@ -1,31 +1,46 @@
 /* eslint-disable import/no-anonymous-default-export */
 import React, { useState, createContext, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { ChatroomContext } from "../contexts/ChatroomContext";
 
 import axios from "axios";
 
 export const ChatContext = createContext(); //creating Context object with empty object
 
 export default ({ children }) => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { user, isAuthenticated } = useContext(AuthContext);
+  const { chatrooms, setChatrooms, chatroomsLoaded } = useContext(ChatroomContext);
   const [chats, setChats] = useState([]);
-
-  console.log("sdfdddddddddddddddd");
+  const [chatsLoaded, setChatsLoaded] = useState(false);
   useEffect(() => {
-    const getChats = async () => {
+    setChatsLoaded(false);
+    if (isAuthenticated && user.joinedChatroomIds) {
       setChats([]);
-      await axios.get("/api/chats").then((res) => {
-        console.log(res.data);
-        let temp = res.data;
-        temp.forEach((currentData) => {
-          setChats((currentChats) => [...currentChats, currentData]);
+      const getChats = async () => {
+        setChatrooms([]);
+        user.joinedChatroomIds.forEach(async (chatroomId) => {
+          await axios
+            .get("/api/chats/chatroom/" + chatroomId)
+            .then((res) => {
+              res.data.chats.forEach((chat) => {
+                if (res.data.chats) setChats((currentChats) => [...currentChats, chat]);
+              });
+              //if (res.data.chats) setChats((currentChats) => [...currentChats, res.data.chats]);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         });
-      });
-    };
-    getChats();
+      };
+      const load = async () => {
+        await getChats();
+        setChatsLoaded(true);
+      };
 
+      load();
+    }
     //rerenders when user logs in and user updates so that it notifies that the user has joined the chatroom
-  }, []);
+  }, [isAuthenticated]);
 
   // provider passes context to all children compoents, no matter how deep it is
   return <ChatContext.Provider value={{ chats, setChats }}>{children}</ChatContext.Provider>;
