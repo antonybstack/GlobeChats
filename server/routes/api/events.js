@@ -23,4 +23,8 @@ eventRoutes.get("/list", (req, res) => {
   Event.db.collections.events.find({}).toArray((error, doc) => {res.status(200).json(doc)});
 });
 
+eventRoutes.get("/spec", (req, res) => {
+  Event.db.collections.events.find({id: req.params.id}).toArray((error, doc) => {res.status(200).json(doc)});
+});
+
 module.exports = eventRoutes;
