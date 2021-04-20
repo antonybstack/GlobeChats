@@ -29,7 +29,7 @@ let User = new Schema({
 
   friendlist: [
     {
-      type: Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "Friend",
     },
   ],

@@ -24,7 +24,9 @@ function Chatroom(props) {
               &nbsp;
               <div className="chatMessage">{message}</div>
               &nbsp;
-              <div className="chatTime">{new Date(timestamp).toLocaleDateString("en-US", DATE_OPTIONS)}</div>
+              <div className="chatTime">
+                {new Date(timestamp).toLocaleDateString("en-US", DATE_OPTIONS)}
+              </div>
             </div>
           </div>
         </div>
@@ -58,7 +60,15 @@ function Chatroom(props) {
       .post("/api/chats/add", chatPacket)
       .then((res) => {
         console.log("success!");
-        setChats((currentChats) => [...currentChats, { userId: user._id, chatroomId: "60799aba0a36b521ac90b19f", message: message, timestamp: date }]);
+        setChats((currentChats) => [
+          ...currentChats,
+          {
+            userId: user._id,
+            chatroomId: "60799aba0a36b521ac90b19f",
+            message: message,
+            timestamp: date,
+          },
+        ]);
       })
       .catch((error) => {
         console.log(error);
@@ -82,7 +92,17 @@ function Chatroom(props) {
         })} */}
       </div>
       <div className="chatbar">
-        <textarea id="textarea" className="chatinput" type="textarea" name="message" placeholder="Your Message Here" wrap="hard" value={message} onChange={handleChange} onKeyPress={handleKeyPress} />
+        <textarea
+          id="textarea"
+          className="chatinput"
+          type="textarea"
+          name="message"
+          placeholder="Your Message Here"
+          wrap="hard"
+          value={message}
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+        />
         <button className="chatSend" onClick={send}>
           Send
         </button>

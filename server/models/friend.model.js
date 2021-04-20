@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Friend = new Schema({
-  user: {
-    type: User,
-    ref: "User",
+  googleId: {
+    type: String,
+    required: true,
   },
   friendStatus: {
     type: Number,

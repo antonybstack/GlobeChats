@@ -15,25 +15,16 @@ import ProfileButton from "./components/ProfileButton";
 //import AuthenticatedRoute from "./hocs/AuthenticatedRoute";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-const friend = [
-  { id: 1, name: "Roderick" },
-  { id: 2, name: "Matt" },
-  { id: 3, name: "Antony" },
-  { id: 4, name: "Josh" },
-  { id: 5, name: "Tony" },
-  { id: 6, name: "Anna" },
-];
-
 function App() {
   return (
     <div className="App">
       <Router>
         <AuthProvider>
           <ChatProvider>
-            <ProfileButton/>
+            <ProfileButton />
             <Nav />
             <CreateButtons />
-            <FriendsList friend={friend} />
+            <FriendsList />
             <Route path="/" exact component={Map} />
           </ChatProvider>
         </AuthProvider>
