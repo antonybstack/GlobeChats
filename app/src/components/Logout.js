@@ -11,10 +11,7 @@ const Logout = () => {
     axios
       .post("/api/users/logout", null, {})
       .then((res) => {
-        console.log(res);
         const { isAuthenticated, user } = res.data;
-        console.log(isAuthenticated);
-        console.log(user);
         authContext.setUser(user);
         authContext.setIsAuthenticated(false);
       })

@@ -23,15 +23,13 @@ function CreateEvent(props) {
       return;
     }
 
-    console.log("title " + title + " desc " + desc + " loc " + loc + " date " + date);
-
     var locSplitStringArr = loc.split(",");
     var locSplitNumberArr = locSplitStringArr.map(Number);
 
     axios
       .post("/api/events/new", { title: title, description: desc, location: locSplitNumberArr, eventDate: date, creator: user._id })
       .then((res) => {
-        console.log("success!");
+        console.log(res);
       })
       .catch((error) => {
         console.log(error);

@@ -22,7 +22,6 @@ export default ({ children }) => {
           await axios
             .get("/api/chats/chatroom/" + chatroomId)
             .then((res) => {
-              console.log(res.data.chats);
               res.data.chats.forEach((chat) => {
                 if (res.data.chats) setChats((currentChats) => [...currentChats, chat]);
               });

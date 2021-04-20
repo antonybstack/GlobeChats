@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+var Float = require("mongoose-float").loadType(mongoose);
 const Schema = mongoose.Schema;
 
 let Chatroom = new Schema({
@@ -27,8 +28,8 @@ let Chatroom = new Schema({
     default: false,
   },
   location: {
-    type: [Number],
-    default: [0,0],
+    type: [Float],
+    default: [0, 0],
   },
   eventDate: {
     type: Date,
@@ -42,7 +43,7 @@ let Chatroom = new Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: "User",
     default: [null],
-  }
+  },
 });
 
 module.exports = mongoose.model("Chatroom", Chatroom);

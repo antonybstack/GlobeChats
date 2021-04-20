@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import Login from "./Login";
 import Logout from "./Logout";
 import { AuthContext } from "../contexts/AuthContext";
 
 const NavigationBar = () => {
-  const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const unauthenticatedNavBar = () => {
     return (

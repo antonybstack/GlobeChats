@@ -9,6 +9,7 @@ export const ChatroomContext = createContext(); //creating Context object with e
 export default ({ children }) => {
   const { user, isAuthenticated, authLoaded } = useContext(AuthContext);
   const [chatrooms, setChatrooms] = useState([]);
+  const [globalChatrooms, setGlobalChatrooms] = useState([]);
   const [chatroomsLoaded, setChatroomsLoaded] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,20 @@ export default ({ children }) => {
         }
       };
 
+      setGlobalChatrooms([]);
+      const getGlobalChatrooms = async () => {
+        await axios
+          .get("/api/chatrooms/")
+          .then((res) => {
+            if (res.data.chatrooms) setGlobalChatrooms(res.data.chatrooms);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+
       const load = async () => {
+        await getGlobalChatrooms();
         await getChatrooms();
         setChatroomsLoaded(true);
       };
@@ -41,5 +55,5 @@ export default ({ children }) => {
   }, [authLoaded]);
 
   // provider passes context to all children compoents, no matter how deep it is
-  return <>{!setChatroomsLoaded ? null : <ChatroomContext.Provider value={{ chatrooms, setChatrooms, chatroomsLoaded }}>{children}</ChatroomContext.Provider>}</>;
+  return <>{!setChatroomsLoaded ? null : <ChatroomContext.Provider value={{ chatrooms, setChatrooms, globalChatrooms, setGlobalChatrooms, chatroomsLoaded }}>{children}</ChatroomContext.Provider>}</>;
 };

@@ -1,11 +1,10 @@
-import React, { useEffect, useContext, useState, Component } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { ChatroomContext } from "../contexts/ChatroomContext";
 import { ChatContext } from "../contexts/ChatContext";
-import Chat from "./Chat";
 import moment from "moment-timezone";
 import profileIcon from "../assets/5.png";
 
@@ -33,10 +32,6 @@ function Chatroom(props) {
       elem.scrollTop = elem.scrollHeight;
     }
   }, [tabSelect, chats, chatrooms, message]);
-
-  console.log(user);
-  console.log(chatrooms);
-  console.log(chats);
 
   const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
   const displayChats = (chatroom_id) => {
@@ -92,12 +87,10 @@ function Chatroom(props) {
       message: message,
       timestamp: date,
     };
-    console.log(chatPacket);
 
     axios
       .post("/api/chats/add", chatPacket)
       .then((res) => {
-        console.log("success!");
         setChats((currentChats) => [...currentChats, chatPacket]);
         setMessage("");
       })
@@ -114,7 +107,6 @@ function Chatroom(props) {
       <Tabs
         defaultIndex={tabSelect}
         onSelect={(tabSelect) => {
-          console.log(tabSelect);
           setTabSelect(tabSelect);
         }}
       >
