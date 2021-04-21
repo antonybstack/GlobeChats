@@ -2,18 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Friend = new Schema({
-  googleId: {
-    type: String,
-    required: true,
-  },
-  friendStatus: {
-    type: Number,
-    enums: [
-      0, //Add a friend,
-      1, //Requested as a friend
-      2, //Pending friend request
-      3, //Friend
-    ],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
   },
   friendedDate: {
     type: Date,

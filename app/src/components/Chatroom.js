@@ -3,6 +3,7 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { ProfileContext } from "../contexts/ProfileContext";
 import { ChatroomContext } from "../contexts/ChatroomContext";
 import { ChatContext } from "../contexts/ChatContext";
 import moment from "moment-timezone";
@@ -10,6 +11,7 @@ import profileIcon from "../assets/5.png";
 
 function Chatroom(props) {
   const { user, isAuthenticated } = useContext(AuthContext);
+  const { profiles } = useContext(ProfileContext);
   const { chatrooms, setChatrooms } = useContext(ChatroomContext);
   const { chats, setChats } = useContext(ChatContext);
   const [message, setMessage] = useState("");
@@ -17,14 +19,10 @@ function Chatroom(props) {
   const [title, setTitle] = useState();
   const [text, setText] = useState();
 
-  useEffect(() => {
-    setTitle(
-      chatrooms.map((chatroom) => {
-        return <Tab key={chatroom.name}>{chatroom.name}</Tab>;
-      })
-    );
-    setText();
-  }, [setChatrooms]);
+  console.log(profiles);
+  var imgStyle = {
+    borderRadius: "20px",
+  };
 
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
@@ -41,26 +39,19 @@ function Chatroom(props) {
 
     return filteredChats.map((chat, i) => {
       const { userId, message, timestamp } = chat;
+      let profile = findProfile(userId);
+
       return (
         <div className="chatBlock">
           <div className="chatMessage">
-<<<<<<< HEAD
-            <div className="msgContainer">
-              <div className="chatUserId">{userId}</div>
-              &nbsp;
-              <div className="chatMessage">{message}</div>
-              &nbsp;
-              <div className="chatTime">
-                {new Date(timestamp).toLocaleDateString("en-US", DATE_OPTIONS)}
-              </div>
-=======
             <div className="chatProfile">
               <span>
-                <img src={profileIcon} alt="profileIcon" width="20" />
+                <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
                 &nbsp;
               </span>
-              <span>{userId}</span>
->>>>>>> e7586cd2dbba6a89b58deb78b57b0c9031586d1b
+              <span className="profileName">
+                {profile.firstName} {profile.lastName[0]}.
+              </span>
             </div>
             <div className="msgContainer">{message}</div>
           </div>
@@ -71,6 +62,23 @@ function Chatroom(props) {
         </div>
       );
     });
+  };
+
+  const findProfile = (id) => {
+    var tempProfile = {
+      user: "",
+      message: "",
+    };
+    profiles.forEach((profile) => {
+      if (profile._id === id) {
+        tempProfile = {
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          googleImg: profile.googleImg,
+        };
+      }
+    });
+    return tempProfile;
   };
 
   const handleChange = (e) => {
@@ -102,64 +110,27 @@ function Chatroom(props) {
     axios
       .post("/api/chats/add", chatPacket)
       .then((res) => {
-<<<<<<< HEAD
-        console.log("success!");
-        setChats((currentChats) => [
-          ...currentChats,
-          {
-            userId: user._id,
-            chatroomId: "60799aba0a36b521ac90b19f",
-            message: message,
-            timestamp: date,
-          },
-        ]);
-=======
         setChats((currentChats) => [...currentChats, chatPacket]);
         setMessage("");
->>>>>>> e7586cd2dbba6a89b58deb78b57b0c9031586d1b
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  useEffect(() => {
+    console.log("setTitle");
+    setTitle(
+      chatrooms.map((chatroom) => {
+        return <Tab key={chatroom._id}>{chatroom.name}</Tab>;
+      })
+    );
+  }, [chatrooms]);
+
   return (
-<<<<<<< HEAD
-    <div class="event-create-container">
-      <div class="event-header">
-        <div class="event-header-middle">Chatroom</div>
-        <div class="event-close-outside" onClick={props.handleClose}>
-          <div class="event-close-x-left">
-            <div class="event-close-x-right"></div>
-          </div>
-        </div>
-      </div>
-      <div class="chatroom-container">
-        {displayChats()}
-        {/* {chats.map((currentChat) => {
-          return <Chat chat={currentChat} />;
-        })} */}
-      </div>
-      <div className="chatbar">
-        <textarea
-          id="textarea"
-          className="chatinput"
-          type="textarea"
-          name="message"
-          placeholder="Your Message Here"
-          wrap="hard"
-          value={message}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-        />
-        <button className="chatSend" onClick={send}>
-          Send
-        </button>
-=======
     <div class="chatroom-window-container">
       <div class="chatroom-window-header">
         <div class="chatroom-window-header-middle">Chatroom</div>
->>>>>>> e7586cd2dbba6a89b58deb78b57b0c9031586d1b
       </div>
       <Tabs
         defaultIndex={tabSelect}
@@ -167,11 +138,7 @@ function Chatroom(props) {
           setTabSelect(tabSelect);
         }}
       >
-        <TabList>
-          {chatrooms.map((chatroom) => (
-            <Tab key={chatroom._id}>{chatroom.name}</Tab>
-          ))}
-        </TabList>
+        <TabList>{title}</TabList>
         {chatrooms.map((chatroom) => (
           <TabPanel key={chatroom._id}>
             <div className="chat">

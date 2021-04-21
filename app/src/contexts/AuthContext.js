@@ -36,5 +36,5 @@ export default ({ children }) => {
   }, [isAuthenticated]);
 
   // providing user and isAuthenticated variables to be global variables
-  return <>{!authLoaded ? null : <AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, authLoaded }}>{children}</AuthContext.Provider>}</>;
+  return <AuthContext.Provider value={{ user, setUser, isAuthenticated, setIsAuthenticated, authLoaded }}>{children}</AuthContext.Provider>;
 };

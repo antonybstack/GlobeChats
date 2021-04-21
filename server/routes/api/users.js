@@ -40,26 +40,61 @@ userRoutes.get("/authenticated", passport.authenticate("jwt", { session: false }
   res.status(200).json({ isAuthenticated: true, user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } });
 });
 
-userRoutes.put("/update/:id", (req, res) => {
-  User.findById(req.params.id, function (err, user) {
-    if (!user) {
-      res.status(404).send("data is not found");
+userRoutes.get("/", (req, res) => {
+  User.find(function (err, users) {
+    if (err) {
     } else {
-      if (req.body.firstName) user.firstName = req.body.firstName;
-      if (req.body.lastName) user.lastName = req.body.lastName;
-      if (req.body.joinedChatroomIds) user.joinedChatroomIds = req.body.joinedChatroomIds;
-      if (req.body.friendlist) user.friendlist = req.body.friendlist;
-
-      user
-        .save()
-        .then((user) => {
-          res.json({ user });
-        })
-        .catch((err) => {
-          res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
-        });
+      res.status(200).json({ users });
     }
   });
+});
+
+userRoutes.put("/update/:id", (req, res) => {
+  if (req.params.id) {
+    User.findById(req.params.id, function (err, user) {
+      if (!user) {
+        res.status(404).send("data is not found");
+      } else {
+        if (req.body.firstName) user.firstName = req.body.firstName;
+        if (req.body.lastName) user.lastName = req.body.lastName;
+        if (req.body.joinedChatroomIds) user.joinedChatroomIds = req.body.joinedChatroomIds;
+        if (req.body.friendlist) user.friendlist = req.body.friendlist;
+
+        user
+          .save()
+          .then((user) => {
+            res.json({ user });
+          })
+          .catch((err) => {
+            res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+          });
+      }
+    });
+  }
+});
+
+userRoutes.put("/joinchatroom/:id", (req, res) => {
+  if (req.params.id) {
+    User.findById(req.params.id, function (err, user) {
+      if (!user) {
+        res.status(404).send("data is not found");
+      } else {
+        console.log(user.joinedChatroomIds);
+        console.log(req.body);
+        console.log(req.body.chatroom_id);
+        if (req.body.chatroom_id) user.joinedChatroomIds.push(req.body.chatroom_id);
+        console.log(user.joinedChatroomIds);
+        user
+          .save()
+          .then((user) => {
+            res.json({ user });
+          })
+          .catch((err) => {
+            res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+          });
+      }
+    });
+  }
 });
 
 module.exports = userRoutes;
