@@ -9,6 +9,7 @@ const Friend = (props) => {
   const [friendClicked, setFriendClicked] = useState({
     friendClicked: false,
   });
+  const [name, setName] = useState("");
 
   const friendOnClick = () => {
     console.log("Clicked");
@@ -18,17 +19,15 @@ const Friend = (props) => {
   };
 
   useEffect(() => {
-    axios
-      .post("/api/friends/add", { googleId: props.googleId })
+    /*axios
+      .post("/api/friends/friend-info", { googleId: props.googleId })
       .then((res) => {
         console.log(res.data);
-        setFriendList(res.data.friendList);
-        console.log(friendList);
-        console.log("Added Friends!");
+        setName(res.data.firstname);
       })
       .catch((error) => {
         console.log(error);
-      });
+      });*/
   });
 
   return (
@@ -53,7 +52,7 @@ const Friend = (props) => {
               <circle cx="8" cy="8" r="8" />
             </svg>
             &nbsp;
-            {friendList}
+            {name}
           </span>
         </div>
       </div>
