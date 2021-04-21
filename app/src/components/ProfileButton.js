@@ -19,13 +19,13 @@ function ProfileButton(props) {
 
   const ProfileClick = (event) => {
     setDisplayProfile({
-      displayProfile: !displayProfile.displayProfile,
+      displayProfile: !displayProfile.displayProfile
     });
   };
 
   return (
     <div>
-      <div>{displayProfile.displayProfile ? <Profile googleId={user.googleId} handleClose={ProfileClick} /> : null}</div>
+      <div>{displayProfile.displayProfile ? <Profile googleId={user.googleId} handleClose={ProfileClick} loggedInProfile={true} /> : null}</div>
       <div className="nav-profile" style={style} onClick={ProfileClick}></div>
     </div>
   );

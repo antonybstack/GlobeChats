@@ -100,7 +100,7 @@ html {
   font-family: "Arial";
   background-color: white;
   margin: 8px;
-  top: 15%;
+  top: 40%;
   left: 70%;
   position: fixed;
   transform: translate(-50%, -50%);
@@ -371,11 +371,20 @@ input:checked + .slider:before {
 
 .profile-text {
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .profile-title {
   font-weight: bold;
   text-align: center;
+}
+
+.profile-pic {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
 .chat {
@@ -618,6 +627,7 @@ input:checked + .slider:before {
   outline: none;
   width: 15%;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .chatSend:hover {
@@ -654,4 +664,29 @@ input:checked + .slider:before {
 
 .react-tabs__tab {
   margin: 0px 0px 0px 5px;
+}
+
+.add-friend {
+  border: none;
+  background-color: rgb(230, 230, 230);
+  transition-duration: 0.15s;
+  color: rgb(92, 92, 92);
+  outline: none;
+  overflow: hidden;
+  display: inline;
+  margin-top: 10px;
+  width: 100%;
+  height: 30px;
+  cursor: pointer;
+}
+
+.add-friend:hover {
+  background-color: rgb(209, 209, 209);
+  transition-duration: 0.15s;
+}
+
+.add-friend:active {
+  background-color: rgb(133, 133, 133);
+  transition-duration: 0.15s;
+  outline: none;
 }
