@@ -5,8 +5,10 @@ import ProfileButton from "./ProfileButton";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import { AuthContext } from "../contexts/AuthContext";
+import ProfileProvider from "../contexts/ProfileContext";
 import ChatroomProvider from "../contexts/ChatroomContext";
 import ChatProvider from "../contexts/ChatContext";
+import Profile from "./Profile";
 
 const Home = () => {
   const { user, isAuthenticated, authLoaded } = useContext(AuthContext);
@@ -23,15 +25,17 @@ const Home = () => {
     <>
       {isAuthenticated ? (
         <div className="home">
-          <ChatroomProvider>
-            <ChatProvider>
-              <ProfileButton />
-              <Chatroom />
-              <CreateButtons />
-              <FriendsList friend={friend} />
-              <Map />
-            </ChatProvider>
-          </ChatroomProvider>
+          <ProfileProvider>
+            <ChatroomProvider>
+              <ChatProvider>
+                <ProfileButton />
+                <Chatroom />
+                <CreateButtons />
+                <FriendsList friend={friend} />
+                <Map />
+              </ChatProvider>
+            </ChatroomProvider>
+          </ProfileProvider>
         </div>
       ) : (
         <div className="home">

@@ -24,7 +24,7 @@ export default ({ children }) => {
               .get("/api/chats/chatroom/" + chatroomId)
               .then((res) => {
                 res.data.chats.forEach((chat) => {
-                  if (res.data.chats) setChats((currentChats) => [...currentChats, chat]);
+                  if (chat) setChats((currentChats) => [...currentChats, chat]);
                 });
                 //if (res.data.chats) setChats((currentChats) => [...currentChats, res.data.chats]);
               })

@@ -486,6 +486,8 @@ input:checked + .slider:before {
   -webkit-hyphens: auto;
   hyphens: auto;
   white-space: pre-wrap;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 /* .chatUserId {
@@ -506,7 +508,6 @@ input:checked + .slider:before {
   color: black;
   overflow: auto;
   word-wrap: break-word;
-  line-height: 0.8em;
   padding-bottom: 1em;
 }
 
@@ -531,13 +532,16 @@ input:checked + .slider:before {
 
 .chatMessage {
   margin: 0.35em;
-  line-height: 1.25em;
   /* max-width: 80%; */
   border-radius: 0.5em;
   background-color: white;
   transition-duration: 0.25s;
   background-color: rgba(199, 199, 199, 0.274);
   display: flex;
+}
+
+.profileName {
+  margin: auto;
 }
 
 .chatTime {
@@ -563,8 +567,7 @@ input:checked + .slider:before {
   padding-right: 0.5em;
   width: auto;
   display: flex;
-  padding-left: 0.5em;
-  padding-top: 0.5em;
+  padding: 0.5em;
 }
 
 .chatBlock {
@@ -640,7 +643,6 @@ input:checked + .slider:before {
   color: black;
   overflow: auto;
   word-wrap: break-word;
-  line-height: 0.8em;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 15%;
