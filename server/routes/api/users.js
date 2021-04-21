@@ -40,6 +40,15 @@ userRoutes.get("/authenticated", passport.authenticate("jwt", { session: false }
   res.status(200).json({ isAuthenticated: true, user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } });
 });
 
+userRoutes.get("/", (req, res) => {
+  User.find(function (err, users) {
+    if (err) {
+    } else {
+      res.status(200).json({ users });
+    }
+  });
+});
+
 userRoutes.put("/update/:id", (req, res) => {
   if (req.params.id) {
     User.findById(req.params.id, function (err, user) {

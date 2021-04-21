@@ -3,6 +3,7 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { AuthContext } from "../contexts/AuthContext";
+import { ProfileContext } from "../contexts/ProfileContext";
 import { ChatroomContext } from "../contexts/ChatroomContext";
 import { ChatContext } from "../contexts/ChatContext";
 import moment from "moment-timezone";
@@ -10,12 +11,18 @@ import profileIcon from "../assets/5.png";
 
 function Chatroom(props) {
   const { user, isAuthenticated } = useContext(AuthContext);
+  const { profiles } = useContext(ProfileContext);
   const { chatrooms, setChatrooms } = useContext(ChatroomContext);
   const { chats, setChats } = useContext(ChatContext);
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
   const [title, setTitle] = useState();
   const [text, setText] = useState();
+
+  console.log(profiles);
+  var imgStyle = {
+    borderRadius: "20px",
+  };
 
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
@@ -32,15 +39,19 @@ function Chatroom(props) {
 
     return filteredChats.map((chat, i) => {
       const { userId, message, timestamp } = chat;
+      let profile = findProfile(userId);
+
       return (
         <div className="chatBlock">
           <div className="chatMessage">
             <div className="chatProfile">
               <span>
-                <img src={profileIcon} alt="profileIcon" width="20" />
+                <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
                 &nbsp;
               </span>
-              <span>{userId}</span>
+              <span className="profileName">
+                {profile.firstName} {profile.lastName[0]}.
+              </span>
             </div>
             <div className="msgContainer">{message}</div>
           </div>
@@ -51,6 +62,23 @@ function Chatroom(props) {
         </div>
       );
     });
+  };
+
+  const findProfile = (id) => {
+    var tempProfile = {
+      user: "",
+      message: "",
+    };
+    profiles.forEach((profile) => {
+      if (profile._id === id) {
+        tempProfile = {
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          googleImg: profile.googleImg,
+        };
+      }
+    });
+    return tempProfile;
   };
 
   const handleChange = (e) => {
