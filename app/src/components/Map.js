@@ -20,149 +20,151 @@ const Map = () => {
   const [zoom, setZoom] = useState(10.66);
   const [markersGenerated, setMarkersGenerated] = useState(false);
   const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
-  const { globalChatrooms, setGlobalChatrooms } = useContext(ChatroomContext);
+  const { globalChatrooms, setGlobalChatrooms, globalChatroomsLoaded } = useContext(ChatroomContext);
 
   useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [lng, lat],
-      zoom: zoom,
-    });
-
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setLng(position.coords.longitude);
-      setLat(position.coords.latitude);
-      map.setCenter([position.coords.longitude, position.coords.latitude]);
-    });
-
-    navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
-      permissionStatus.onchange = function () {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          map.setCenter([position.coords.longitude, position.coords.latitude]);
-        });
-      };
-    });
-
-    map.on("move", () => {
-      setLng(map.getCenter().lng.toFixed(4));
-      setLat(map.getCenter().lat.toFixed(4));
-      setZoom(map.getZoom().toFixed(2));
-    });
-
-    map.addControl(
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        fitBoundsOptions: {
-          maxZoom: 10.66,
-        },
-        showAccuracyCircle: false,
-        showUserLocation: false,
-        trackUserLocation: true,
-      })
-    );
-
-    //var marker = new mapboxgl.Marker().setLngLat([-80.8431, 35.2271]).addTo(map);
-
-    if (globalChatrooms) {
-      map.on("load", function () {
-        map.loadImage(profileIcon, function (error, image) {
-          if (error) throw error;
-          map.addImage("cat", image);
-        });
-
-        var feature = {};
-        var features = [];
-        feature.features = features;
-
-        globalChatrooms.forEach((chatroom) => {
-          var coord = [lng, lat];
-          if (chatroom.location.length === 2) coord = [chatroom.location[0], chatroom.location[1]];
-          let featuree = {
-            type: "Feature",
-            properties: {
-              chatroom_id: chatroom._id,
-              name: chatroom.name,
-              tags: chatroom.tags,
-              verifyUsers: chatroom.verifyUsers,
-              isPrivate: chatroom.isPrivate,
-              timestamp: chatroom.timestamp,
-              current_user: user._id,
-              icon: "cat",
-            },
-            geometry: {
-              type: "Point",
-              coordinates: coord,
-            },
-          };
-          feature.features.push(featuree);
-        });
-
-        map.addSource("places", {
-          // This GeoJSON contains features that include an "icon"
-          // property. The value of the "icon" property corresponds
-          // to an image in the Mapbox Streets style's sprite.
-          type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: feature.features,
-          },
-        });
-        // Add a layer showing the places.
-        map.addLayer({
-          id: "places",
-          type: "symbol",
-          source: "places",
-          layout: {
-            "icon-image": "{icon}",
-            "icon-size": 0.3,
-            "icon-allow-overlap": true,
-          },
-        });
-
-        // When a click event occurs on a feature in the places layer, open a popup at the
-        // location of the feature, with description HTML from its properties.
-        map.on("click", "places", function (e) {
-          var coordinates = e.features[0].geometry.coordinates.slice();
-          var description = e.features[0].properties.description;
-
-          // Ensure that if the map is zoomed out such that multiple
-          // copies of the feature are visible, the popup appears
-          // over the copy being pointed to.
-          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-          }
-
-          const popupNode = document.createElement("div");
-          popupNode.style.cssText = "min-width:150px;min-height:120px;";
-          ReactDOM.render(
-            <AuthProvider>
-              <MapMarkerPopup feature={e.features[0].properties} />
-            </AuthProvider>,
-            popupNode
-          );
-
-          new mapboxgl.Popup().setLngLat(coordinates).setDOMContent(popupNode).addTo(map);
-        });
-
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on("mouseenter", "places", function () {
-          map.getCanvas().style.cursor = "pointer";
-        });
-
-        // Change it back to a pointer when it leaves.
-        map.on("mouseleave", "places", function () {
-          map.getCanvas().style.cursor = "";
-        });
+    if (globalChatroomsLoaded) {
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [lng, lat],
+        zoom: zoom,
       });
+
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setLng(position.coords.longitude);
+        setLat(position.coords.latitude);
+        map.setCenter([position.coords.longitude, position.coords.latitude]);
+      });
+
+      navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
+        permissionStatus.onchange = function () {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            map.setCenter([position.coords.longitude, position.coords.latitude]);
+          });
+        };
+      });
+
+      map.on("move", () => {
+        setLng(map.getCenter().lng.toFixed(4));
+        setLat(map.getCenter().lat.toFixed(4));
+        setZoom(map.getZoom().toFixed(2));
+      });
+
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          fitBoundsOptions: {
+            maxZoom: 10.66,
+          },
+          showAccuracyCircle: false,
+          showUserLocation: false,
+          trackUserLocation: true,
+        })
+      );
+
+      //var marker = new mapboxgl.Marker().setLngLat([-80.8431, 35.2271]).addTo(map);
+
+      if (globalChatrooms.length > 0) {
+        map.on("load", function () {
+          map.loadImage(profileIcon, function (error, image) {
+            if (error) throw error;
+            map.addImage("cat", image);
+          });
+
+          var feature = {};
+          var features = [];
+          feature.features = features;
+
+          globalChatrooms.forEach((chatroom) => {
+            var coord = [lng, lat];
+            if (chatroom.location.length === 2) coord = [chatroom.location[0], chatroom.location[1]];
+            let featuree = {
+              type: "Feature",
+              properties: {
+                chatroom_id: chatroom._id,
+                name: chatroom.name,
+                tags: chatroom.tags,
+                verifyUsers: chatroom.verifyUsers,
+                isPrivate: chatroom.isPrivate,
+                timestamp: chatroom.timestamp,
+                current_user: user._id,
+                icon: "cat",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: coord,
+              },
+            };
+            feature.features.push(featuree);
+          });
+
+          map.addSource("places", {
+            // This GeoJSON contains features that include an "icon"
+            // property. The value of the "icon" property corresponds
+            // to an image in the Mapbox Streets style's sprite.
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              features: feature.features,
+            },
+          });
+          // Add a layer showing the places.
+          map.addLayer({
+            id: "places",
+            type: "symbol",
+            source: "places",
+            layout: {
+              "icon-image": "{icon}",
+              "icon-size": 0.3,
+              "icon-allow-overlap": true,
+            },
+          });
+
+          // When a click event occurs on a feature in the places layer, open a popup at the
+          // location of the feature, with description HTML from its properties.
+          map.on("click", "places", function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = e.features[0].properties.description;
+
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            const popupNode = document.createElement("div");
+            popupNode.style.cssText = "min-width:150px;min-height:120px;";
+            ReactDOM.render(
+              <AuthProvider>
+                <MapMarkerPopup feature={e.features[0].properties} />
+              </AuthProvider>,
+              popupNode
+            );
+
+            new mapboxgl.Popup().setLngLat(coordinates).setDOMContent(popupNode).addTo(map);
+          });
+
+          // Change the cursor to a pointer when the mouse is over the places layer.
+          map.on("mouseenter", "places", function () {
+            map.getCanvas().style.cursor = "pointer";
+          });
+
+          // Change it back to a pointer when it leaves.
+          map.on("mouseleave", "places", function () {
+            map.getCanvas().style.cursor = "";
+          });
+        });
+      }
+
+      setMarkersGenerated(true);
+
+      return () => map.remove();
     }
-
-    setMarkersGenerated(true);
-
-    return () => map.remove();
-  }, [globalChatrooms]);
+  }, [globalChatroomsLoaded]);
 
   return (
     <div>

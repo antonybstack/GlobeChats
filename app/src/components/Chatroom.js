@@ -12,14 +12,14 @@ import profileIcon from "../assets/5.png";
 function Chatroom(props) {
   const { user, isAuthenticated } = useContext(AuthContext);
   const { profiles } = useContext(ProfileContext);
-  const { chatrooms, setChatrooms } = useContext(ChatroomContext);
+  const { chatrooms, setChatrooms, chatroomsLoaded } = useContext(ChatroomContext);
   const { chats, setChats } = useContext(ChatContext);
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
   const [title, setTitle] = useState();
   const [text, setText] = useState();
 
-  console.log(profiles);
+  console.log(chatrooms);
   var imgStyle = {
     borderRadius: "20px",
   };
@@ -118,11 +118,32 @@ function Chatroom(props) {
       });
   };
 
+  const closeTab = (e) => {
+    console.log(e.target.id);
+
+    axios
+      .put("/api/users/leavechatroom/" + user._id, { chatroom_id: e.target.id })
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    console.log("setTitle");
+    console.log(chatrooms);
+    setTitle([]);
     setTitle(
       chatrooms.map((chatroom) => {
-        return <Tab key={chatroom._id}>{chatroom.name}</Tab>;
+        return (
+          <Tab key={chatroom._id}>
+            {chatroom.name}&nbsp;
+            <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
+              x
+            </div>
+          </Tab>
+        );
       })
     );
   }, [chatrooms]);

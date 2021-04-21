@@ -666,6 +666,11 @@ input:checked + .slider:before {
   margin: 0px 0px 0px 5px;
 }
 
+.tabCloseButton {
+  display: inline-block;
+  font-size: 8pt;
+}
+
 .add-friend {
   border: none;
   background-color: rgb(230, 230, 230);

@@ -79,19 +79,74 @@ userRoutes.put("/joinchatroom/:id", (req, res) => {
       if (!user) {
         res.status(404).send("data is not found");
       } else {
-        console.log(user.joinedChatroomIds);
-        console.log(req.body);
-        console.log(req.body.chatroom_id);
-        if (req.body.chatroom_id) user.joinedChatroomIds.push(req.body.chatroom_id);
-        console.log(user.joinedChatroomIds);
-        user
-          .save()
-          .then((user) => {
-            res.json({ user });
-          })
-          .catch((err) => {
-            res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+        if (req.body.chatroom_id) {
+          console.log(user.joinedChatroomIds);
+          console.log(req.body);
+          console.log(req.body.chatroom_id);
+          console.log("~~~~~~~~~~~");
+          console.log("~~~~~~~~~~~");
+          var chatroomIdExists = false;
+          user.joinedChatroomIds.forEach((chatroomId) => {
+            console.log(chatroomId);
+            console.log(req.body.chatroom_id);
+            console.log("~~~~~~~~~~~");
+            if (chatroomId == req.body.chatroom_id) chatroomIdExists = true;
           });
+
+          if (!chatroomIdExists) {
+            user.joinedChatroomIds.push(req.body.chatroom_id);
+            console.log(user.joinedChatroomIds);
+            user
+              .save()
+              .then((user) => {
+                res.json({ user });
+              })
+              .catch((err) => {
+                res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+              });
+          }
+        }
+      }
+    });
+  }
+});
+
+userRoutes.put("/leavechatroom/:id", (req, res) => {
+  if (req.params.id) {
+    User.findById(req.params.id, function (err, user) {
+      if (!user) {
+        res.status(404).send("data is not found");
+      } else {
+        if (req.body.chatroom_id) {
+          console.log(user.joinedChatroomIds);
+          console.log(req.body);
+          console.log(req.body.chatroom_id);
+          console.log("~~~~~~~~~~~");
+          console.log("~~~~~~~~~~~");
+          var indexOfElementToDelete = -1;
+          user.joinedChatroomIds.forEach((chatroomId, index) => {
+            console.log("index" + index);
+            console.log(chatroomId);
+            console.log(req.body.chatroom_id);
+            console.log("~~~~~~~~~~~");
+            if (chatroomId == req.body.chatroom_id) {
+              indexOfElementToDelete = index;
+            }
+          });
+
+          if (indexOfElementToDelete != -1) {
+            user.joinedChatroomIds.splice(indexOfElementToDelete, 1);
+            console.log(user.joinedChatroomIds);
+            user
+              .save()
+              .then((user) => {
+                res.json({ user });
+              })
+              .catch((err) => {
+                res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+              });
+          }
+        }
       }
     });
   }

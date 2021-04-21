@@ -25,7 +25,7 @@ let User = new Schema({
   joinedChatroomIds: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Chatroom",
-    default: [null],
+    default: [],
   },
   register_date: {
     type: Date,
