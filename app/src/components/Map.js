@@ -5,10 +5,10 @@ import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import profileIcon from "../assets/users1.png";
-import { ChatroomContext } from "../contexts/ChatroomContext";
-import { AuthContext } from "../contexts/AuthContext";
 import MapMarkerPopup from "./MapMarkerPopup";
 import AuthProvider from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContext";
+import { ChatroomContext } from "../contexts/ChatroomContext";
 
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
@@ -66,96 +66,98 @@ const Map = () => {
 
     //var marker = new mapboxgl.Marker().setLngLat([-80.8431, 35.2271]).addTo(map);
 
-    map.on("load", function () {
-      map.loadImage(profileIcon, function (error, image) {
-        if (error) throw error;
-        map.addImage("cat", image);
-      });
+    if (globalChatrooms) {
+      map.on("load", function () {
+        map.loadImage(profileIcon, function (error, image) {
+          if (error) throw error;
+          map.addImage("cat", image);
+        });
 
-      var feature = {};
-      var features = [];
-      feature.features = features;
+        var feature = {};
+        var features = [];
+        feature.features = features;
 
-      globalChatrooms.forEach((chatroom) => {
-        var coord = [lng, lat];
-        if (chatroom.location.length === 2) coord = [chatroom.location[0], chatroom.location[1]];
-        let featuree = {
-          type: "Feature",
-          properties: {
-            chatroom_id: chatroom._id,
-            name: chatroom.name,
-            tags: chatroom.tags,
-            verifyUsers: chatroom.verifyUsers,
-            isPrivate: chatroom.isPrivate,
-            timestamp: chatroom.timestamp,
-            current_user: user._id,
-            icon: "cat",
+        globalChatrooms.forEach((chatroom) => {
+          var coord = [lng, lat];
+          if (chatroom.location.length === 2) coord = [chatroom.location[0], chatroom.location[1]];
+          let featuree = {
+            type: "Feature",
+            properties: {
+              chatroom_id: chatroom._id,
+              name: chatroom.name,
+              tags: chatroom.tags,
+              verifyUsers: chatroom.verifyUsers,
+              isPrivate: chatroom.isPrivate,
+              timestamp: chatroom.timestamp,
+              current_user: user._id,
+              icon: "cat",
+            },
+            geometry: {
+              type: "Point",
+              coordinates: coord,
+            },
+          };
+          feature.features.push(featuree);
+        });
+
+        map.addSource("places", {
+          // This GeoJSON contains features that include an "icon"
+          // property. The value of the "icon" property corresponds
+          // to an image in the Mapbox Streets style's sprite.
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: feature.features,
           },
-          geometry: {
-            type: "Point",
-            coordinates: coord,
+        });
+        // Add a layer showing the places.
+        map.addLayer({
+          id: "places",
+          type: "symbol",
+          source: "places",
+          layout: {
+            "icon-image": "{icon}",
+            "icon-size": 0.3,
+            "icon-allow-overlap": true,
           },
-        };
-        feature.features.push(featuree);
+        });
+
+        // When a click event occurs on a feature in the places layer, open a popup at the
+        // location of the feature, with description HTML from its properties.
+        map.on("click", "places", function (e) {
+          var coordinates = e.features[0].geometry.coordinates.slice();
+          var description = e.features[0].properties.description;
+
+          // Ensure that if the map is zoomed out such that multiple
+          // copies of the feature are visible, the popup appears
+          // over the copy being pointed to.
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          const popupNode = document.createElement("div");
+          popupNode.style.cssText = "min-width:150px;min-height:120px;";
+          ReactDOM.render(
+            <AuthProvider>
+              <MapMarkerPopup feature={e.features[0].properties} />
+            </AuthProvider>,
+            popupNode
+          );
+
+          new mapboxgl.Popup().setLngLat(coordinates).setDOMContent(popupNode).addTo(map);
+        });
+
+        // Change the cursor to a pointer when the mouse is over the places layer.
+        map.on("mouseenter", "places", function () {
+          map.getCanvas().style.cursor = "pointer";
+        });
+
+        // Change it back to a pointer when it leaves.
+        map.on("mouseleave", "places", function () {
+          map.getCanvas().style.cursor = "";
+        });
       });
-
-      map.addSource("places", {
-        // This GeoJSON contains features that include an "icon"
-        // property. The value of the "icon" property corresponds
-        // to an image in the Mapbox Streets style's sprite.
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: feature.features,
-        },
-      });
-      // Add a layer showing the places.
-      map.addLayer({
-        id: "places",
-        type: "symbol",
-        source: "places",
-        layout: {
-          "icon-image": "{icon}",
-          "icon-size": 0.3,
-          "icon-allow-overlap": true,
-        },
-      });
-
-      // When a click event occurs on a feature in the places layer, open a popup at the
-      // location of the feature, with description HTML from its properties.
-      map.on("click", "places", function (e) {
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.description;
-
-        // Ensure that if the map is zoomed out such that multiple
-        // copies of the feature are visible, the popup appears
-        // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        const popupNode = document.createElement("div");
-        popupNode.style.cssText = "min-width:150px;min-height:120px;";
-        ReactDOM.render(
-          <AuthProvider>
-            <MapMarkerPopup feature={e.features[0].properties} />
-          </AuthProvider>,
-          popupNode
-        );
-
-        new mapboxgl.Popup().setLngLat(coordinates).setDOMContent(popupNode).addTo(map);
-      });
-
-      // Change the cursor to a pointer when the mouse is over the places layer.
-      map.on("mouseenter", "places", function () {
-        map.getCanvas().style.cursor = "pointer";
-      });
-
-      // Change it back to a pointer when it leaves.
-      map.on("mouseleave", "places", function () {
-        map.getCanvas().style.cursor = "";
-      });
-    });
+    }
 
     setMarkersGenerated(true);
 

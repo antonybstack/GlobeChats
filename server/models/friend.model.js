@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let Friend = new Schema({
   user: {
-    type: User,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
   friendStatus: {

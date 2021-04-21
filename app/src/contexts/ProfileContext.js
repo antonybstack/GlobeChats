@@ -37,5 +37,5 @@ export default ({ children }) => {
     load();
   }, []);
 
-  return <>{!profilesLoaded ? null : <ProfileContext.Provider value={{ profiles }}>{children}</ProfileContext.Provider>}</>;
+  return <ProfileContext.Provider value={{ profiles }}>{children}</ProfileContext.Provider>;
 };

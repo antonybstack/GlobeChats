@@ -4,6 +4,7 @@ import FriendsList from "./FriendsList";
 import ProfileButton from "./ProfileButton";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
+import UnauthenticatedMap from "./UnauthenticatedMap";
 import { AuthContext } from "../contexts/AuthContext";
 import ProfileProvider from "../contexts/ProfileContext";
 import ChatroomProvider from "../contexts/ChatroomContext";
@@ -39,7 +40,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="home">
-          <Map />
+          <UnauthenticatedMap />
         </div>
       )}
     </>
