@@ -54,7 +54,7 @@ function Profile(props) {
                     <div class="profile-pic"><img src={image} alt={"Profile"} /></div>
                     <div class="profile-title">User:</div>
                     <div class="profile-text">{first} {last}</div>
-                    { !props.loggedInProfile ? <>
+                    { props.loggedInProfile ? <>
                         <div class="profile-title">Email:</div>
                         <div class="profile-text">{email}</div> </> : 
                         <button class="add-friend" onClick={addNewFriend}>Add friend</button>
