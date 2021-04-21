@@ -1,28 +1,61 @@
 import React from "react";
-
-const isOnline = () => {
-  return;
-};
+import { useState, useEffect } from "react";
+import "./Friend.css";
+import Profile from "./Profile.js";
+import axios from "axios";
 
 const Friend = (props) => {
+  const [friendList, setFriendList] = useState("");
+  const [friendClicked, setFriendClicked] = useState({
+    friendClicked: false,
+  });
+
+  const friendOnClick = () => {
+    console.log("Clicked");
+    setFriendClicked({
+      friendClicked: !friendClicked.friendClicked,
+    });
+  };
+
+  useEffect(() => {
+    axios
+      .post("/api/friends/add", { googleId: props.googleId })
+      .then((res) => {
+        console.log(res.data);
+        setFriendList(res.data.friendList);
+        console.log(friendList);
+        console.log("Added Friends!");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
   return (
-    <div className="friend-item">
-      <div class="friend-list-group">
-        {" "}
-        <span class="friend-list-group-item">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="10"
-            height="10"
-            fill="currentColor"
-            class="bi bi-circle-fill"
-            viewBox="0 0 16 16"
-          >
-            <circle cx="8" cy="8" r="8" />
-          </svg>
-          &nbsp;
-          {props.name}
-        </span>
+    <div>
+      <div>
+        {friendClicked.friendClicked ? (
+          <Profile googleId={props.googleId} handleClose={friendOnClick} />
+        ) : null}
+      </div>
+      <div className="friend-item">
+        <div class="friend-list-group">
+          {" "}
+          <span class="friend-list-group-item" onClick={friendOnClick}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              fill="currentColor"
+              class="bi bi-circle-fill"
+              viewBox="0 0 16 16"
+            >
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+            &nbsp;
+            {friendList}
+          </span>
+        </div>
       </div>
     </div>
   );

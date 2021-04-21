@@ -5,15 +5,7 @@ let Friend = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-  },
-  friendStatus: {
-    type: Number,
-    enums: [
-      0, //Add a friend,
-      1, //Requested as a friend
-      2, //Pending friend request
-      3, //Friend
-    ],
+    default: null,
   },
   friendedDate: {
     type: Date,
