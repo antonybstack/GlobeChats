@@ -26,7 +26,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// if production, it will use heroku variable that provides mongo uri  
+// if production, it will use heroku variable that provides mongo uri
 var db = "";
 if (process.env.DATABASE_URL) {
   db = process.env.DATABASE_URL;
@@ -54,7 +54,7 @@ app.use("/api/events", require("./routes/api/events"));
 app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/chatrooms", require("./routes/api/chatrooms"));
 app.use("/api/chats", require("./routes/api/chats"));
-app.use("/api/friend", require("./routes/api/friend"));
+app.use("/api/friends", require("./routes/api/friend"));
 
 //serve static assets if in heroku production
 if (process.env.NODE_ENV === "production") {

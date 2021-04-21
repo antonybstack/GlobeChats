@@ -25,12 +25,20 @@
   background-color: rgb(52, 81, 109);
 }
 
-.bi.bi-circle-fill {
+.bi.bi-circle-fill.active {
   fill: rgb(44, 248, 44);
+}
+
+.bi-bi-circle-fill.inactive {
+  fill: grey;
 }
 
 .bi.bi-person-plus-fill {
   position: relative;
   top: 8px;
   left: 100px;
+}
+
+.friend-list-group-item {
+  cursor: pointer;
 }
