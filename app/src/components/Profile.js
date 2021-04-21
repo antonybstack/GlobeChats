@@ -1,11 +1,13 @@
 import React, { useEffect, useContext, useRef, useState } from 'react';
 import axios from 'axios';
+import moment from "moment-timezone";
 
 function Profile(props) {
     const [ email, setEmail ] = useState("");
     const [ first, setFirst ] = useState("");
     const [ last, setLast ] = useState("");
     const [ image, setImage ] = useState("");
+    const [ userId, setUserId ] = useState("");
 
     axios.post('/api/profile/spec', {googleId: props.googleId})
     .then((res) => {
@@ -14,6 +16,7 @@ function Profile(props) {
         setFirst(res.data.firstName);
         setLast(res.data.lastName);
         setImage(res.data.googleImg);
+        setUserId(res.data._id);
         console.log(email + " " + first + " " + last);
         console.log("success!")
     })
@@ -23,6 +26,15 @@ function Profile(props) {
 
     const addNewFriend = (event) => {
         event.preventDefault();
+        let date = moment().tz("America/New_York");
+        axios.post("/api/friend/new", {
+            user: userId,
+            friendedDate: date,
+            onlineStatus: true
+        })
+        .then((res) => {
+            console.log(res);
+        });
     }
 
     return (
