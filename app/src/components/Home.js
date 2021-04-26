@@ -1,10 +1,12 @@
-import React, { useState, createContext, useContext, useEffect } from "react";
+import React, { useState, createContext, useContext, useEffect, Suspense } from "react";
 import Chatroom from "./Chatroom";
 import FriendsList from "./FriendsList";
 import ProfileButton from "./ProfileButton";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import UnauthenticatedMap from "./UnauthenticatedMap";
+import ProfileContextTest from "./ProfileContextTest";
+import ProfileAtomTest from "./ProfileAtomTest";
 import { AuthContext } from "../contexts/AuthContext";
 import ProfileProvider from "../contexts/ProfileContext";
 import ChatroomProvider from "../contexts/ChatroomContext";
@@ -24,26 +26,14 @@ const Home = () => {
 
   return (
     <>
-      {isAuthenticated ? (
-        <div className="home">
-          <ProfileProvider>
-            <ChatroomProvider>
-              <ChatProvider>
-                <ProfileButton />
-                <Chatroom />
-                <CreateButtons />
-                <FriendsList friend={friend} />
-                <Map />
-              </ChatProvider>
-            </ChatroomProvider>
-          </ProfileProvider>
-        </div>
-      ) : (
-        <div className="home">
-          <UnauthenticatedMap />
-        </div>
-      )}
-    </>
+      <div id="homeTest">
+          {/* <UnauthenticatedMap /> */}
+          {/* <ProfileProvider>
+            <ProfileContextTest />
+          </ProfileProvider> */}
+          <ProfileAtomTest />
+       </div>
+     </>
   );
 };
 

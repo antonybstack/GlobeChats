@@ -2,6 +2,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+#homeTest{
+  display: flex;
+}
+
 .map-container {
   position: absolute;
   top: 60px;
@@ -694,4 +698,12 @@ input:checked + .slider:before {
   background-color: rgb(133, 133, 133);
   transition-duration: 0.15s;
   outline: none;
+}
+
+#ProfileContextTest{
+  width: 50%;
+}
+
+#ProfileAtomTest{
+  width: 50%;
 }
