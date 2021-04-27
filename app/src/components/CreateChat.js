@@ -72,60 +72,60 @@ function CreateChat(props) {
     <div>
       <div>{displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : null}</div>
       <div id="create-chat">
-        <div class="event-create-container">
-          <div class="event-header">
-            <div class="event-header-middle">Create New Chatroom</div>
-            <div class="event-close-outside" onClick={props.handleClose}>
-              <div class="event-close-x-left">
-                <div class="event-close-x-right"></div>
+        <div className="event-create-container">
+          <div className="event-header">
+            <div className="event-header-middle">Create New Chatroom</div>
+            <div className="event-close-outside" onClick={props.handleClose}>
+              <div className="event-close-x-left">
+                <div className="event-close-x-right"></div>
               </div>
             </div>
           </div>
-          <form class="event-form" onSubmit={submitNewChatroom}>
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Chat Name</label>
+          <form className="event-form" onSubmit={submitNewChatroom}>
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Chat Name</label>
               </div>
-              <div class="event-col-75">
-                <input class="event-input-text" type="text" name="{name}" onChange={settingName} />
-              </div>
-            </div>
-
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Chat Topics</label>
-              </div>
-              <div class="event-col-75">
-                <input class="event-input-text" type="text" name="{topics}" onChange={settingTopics} />
+              <div className="event-col-75">
+                <input className="event-input-text" type="text" name="{name}" onChange={settingName} />
               </div>
             </div>
 
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Public/Private</label>
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Chat Topics</label>
               </div>
-              <label class="event-col-75 switch">
+              <div className="event-col-75">
+                <input className="event-input-text" type="text" name="{topics}" onChange={settingTopics} />
+              </div>
+            </div>
+
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Public/Private</label>
+              </div>
+              <label className="event-col-75 switch">
                 <input type="checkbox" onChange={settingPublic} />
-                <span class="slider round"></span>
+                <span className="slider round"></span>
               </label>
             </div>
 
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Anonymous/Verified</label>
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Anonymous/Verified</label>
               </div>
-              <label class="event-col-75 switch">
+              <label className="event-col-75 switch">
                 <input type="checkbox" onChange={settingAnon} />
-                <span class="slider round"></span>
+                <span className="slider round"></span>
               </label>
             </div>
 
-            <div class="event-row">
-              <div class="event-col-50-left">
-                <input class="event-submit-buttons" type="submit" value="Create Chatroom" />
+            <div className="event-row">
+              <div className="event-col-50-left">
+                <input className="event-submit-buttons" type="submit" value="Create Chatroom" />
               </div>
-              <div class="event-col-50-right">
-                <input class="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
+              <div className="event-col-50-right">
+                <input className="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
               </div>
             </div>
           </form>

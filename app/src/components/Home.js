@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
 import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
-import { chatroomsAtom, fetchChatroomsAtom } from "../atoms/ChatroomAtom";
+import { chatroomsAtom, fetchChatroomsAtom, chatroomsLoadedAtom } from "../atoms/ChatroomAtom";
 import { globalChatroomsAtom, fetchGlobalChatroomsAtom } from "../atoms/ChatroomAtom";
 import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chatroom from "./Chatroom";
@@ -33,11 +33,12 @@ const Home = () => {
   const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const [, fetchUser] = useAtom(fetchUserAtom);
-  const [profiles] = useAtom(profilesAtom);
+  const [profiles, setProfiles] = useAtom(profilesAtom);
   const [, fetchProfiles] = useAtom(fetchProfilesAtom);
-  const [chatrooms] = useAtom(chatroomsAtom);
+  const [chatrooms, setChatrooms] = useAtom(chatroomsAtom);
+  const [chatroomsLoaded] = useAtom(chatroomsLoadedAtom);
   const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
-  const [globalChatrooms] = useAtom(globalChatroomsAtom);
+  const [globalChatrooms, setGlobalChatrooms] = useAtom(globalChatroomsAtom);
   const [, fetchGlobalChatrooms] = useAtom(fetchGlobalChatroomsAtom);
   const [chats, setChats] = useAtom(chatsAtom);
   const [, fetchChats] = useAtom(fetchChatsAtom);
@@ -47,33 +48,30 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchProfiles();
-    }
-  }, [isAuthenticated]);
+    setProfiles([]);
+    fetchProfiles();
+  }, [user]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchGlobalChatrooms();
-    }
-  }, [profiles]);
+    setGlobalChatrooms([]);
+    fetchGlobalChatrooms();
+  }, [user]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchChatrooms();
-    }
-  }, [globalChatrooms]);
+    setChatrooms([]);
+    fetchChatrooms();
+  }, [fetchChatrooms, setChatrooms, user]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchChats();
-    }
-  }, [chatrooms]);
+    setChats([]);
+    fetchChats();
+  }, [chatrooms, fetchChats, setChats]);
 
   console.log(user);
   console.log(profiles);
-  console.log(chatrooms);
   console.log(globalChatrooms);
+  console.log(chatrooms);
+  console.log(chatroomsLoaded);
   console.log(chats);
 
   return (

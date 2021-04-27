@@ -8,7 +8,7 @@ import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom"
 import { ProfileContext } from "../contexts/ProfileContext";
 import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
 import { ChatroomContext } from "../contexts/ChatroomContext";
-import { chatroomsAtom, fetchChatroomsAtom } from "../atoms/ChatroomAtom";
+import { chatroomsAtom, fetchChatroomsAtom, chatroomsLoadedAtom } from "../atoms/ChatroomAtom";
 import { ChatContext } from "../contexts/ChatContext";
 import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
@@ -22,8 +22,9 @@ function Chatroom(props) {
   const [, fetchUser] = useAtom(fetchUserAtom);
   //const { profiles } = useContext(ProfileContext);
   const [profiles] = useAtom(profilesAtom);
-  const [chatrooms] = useAtom(chatroomsAtom);
+  const [chatrooms, setChatrooms] = useAtom(chatroomsAtom);
   const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
+  const [chatroomsLoaded] = useAtom(chatroomsLoadedAtom);
   //const { chats, setChats } = useContext(ChatContext);
   const [chats, setChats] = useAtom(chatsAtom);
   const [, fetchChats] = useAtom(fetchChatsAtom);
@@ -31,6 +32,8 @@ function Chatroom(props) {
   const [tabSelect, setTabSelect] = useState(0);
   const [title, setTitle] = useState();
   const [text, setText] = useState();
+
+  console.log(chatrooms);
 
   var imgStyle = {
     borderRadius: "20px",
@@ -42,56 +45,6 @@ function Chatroom(props) {
       elem.scrollTop = elem.scrollHeight;
     }
   }, [tabSelect, chatrooms, message, user]);
-
-  const DATE_OPTIONS = { weekday: "short", month: "short", day: "numeric" };
-  const displayChats = (chatroom_id) => {
-    const filteredChats = chats.filter((chat) => {
-      return chat.chatroomId == chatroom_id;
-    });
-
-    return filteredChats.map((chat, i) => {
-      const { userId, message, timestamp } = chat;
-      let profile = findProfile(userId);
-
-      return (
-        <div className="chatBlock">
-          <div className="chatMessage">
-            <div className="chatProfile">
-              <span>
-                <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
-                &nbsp;
-              </span>
-              <span className="profileName">
-                {profile.firstName} {profile.lastName[0]}.
-              </span>
-            </div>
-            <div className="msgContainer">{message}</div>
-          </div>
-          <div className="chatTime">
-            {new Date(timestamp).toLocaleTimeString("en-US")}&nbsp;&nbsp;
-            {new Date(timestamp).toLocaleDateString("en-US", DATE_OPTIONS)}
-          </div>
-        </div>
-      );
-    });
-  };
-
-  const findProfile = (id) => {
-    var tempProfile = {
-      user: "",
-      message: "",
-    };
-    profiles.forEach((profile) => {
-      if (profile._id === id) {
-        tempProfile = {
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          googleImg: profile.googleImg,
-        };
-      }
-    });
-    return tempProfile;
-  };
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -141,23 +94,15 @@ function Chatroom(props) {
       });
   };
 
-  useEffect(() => {
-    setTitle([]);
-    if (chatrooms[0]) {
-      setTitle(
-        chatrooms.map((chatroom) => {
-          return (
-            <Tab key={chatroom._id}>
-              {chatroom.name}&nbsp;
-              <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
-                x
-              </div>
-            </Tab>
-          );
-        })
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   setTitle(
+  //     chatrooms.map((chatroom) => {
+  //       return (
+
+  //       );
+  //     })
+  //   );
+  // }, [chatrooms]);
 
   return (
     <div className="chatroom-window-container">
@@ -170,39 +115,49 @@ function Chatroom(props) {
           setTabSelect(tabSelect);
         }}
       >
-        <TabList>{title}</TabList>
-        {chatrooms[0]
+        {chatrooms
           ? chatrooms.map((chatroom) => (
-              <TabPanel key={chatroom._id}>
-                <div className="chat">
-                  <div className="chatroom">
-                    <div className="chatContainer">
-                      <div id="chatMessages" className="chatMessages">
-                        {chats[0] ? <Chats chatroom_id={chatroom._id} /> : null}
-                      </div>
-                      <div className="chatbar">
-                        <textarea
-                          id="textarea"
-                          className="chatinput"
-                          type="textarea"
-                          name="message"
-                          placeholder="Your Message Here"
-                          wrap="hard"
-                          value={message}
-                          onChange={handleChange}
-                          onKeyPress={handleKeyPress}
-                        />
-                        <button className="chatSend" onClick={send}>
-                          Send
-                        </button>
+              <>
+                <TabList>
+                  <Tab key={chatroom._id}>
+                    {chatroom.name}&nbsp;
+                    <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
+                      x
+                    </div>
+                  </Tab>
+                </TabList>
+                <TabPanel key={chatroom._id}>
+                  <div className="chat">
+                    <div className="chatroom">
+                      <div className="chatContainer">
+                        <div id="chatMessages" className="chatMessages">
+                          <Chats chatroom_id={chatroom._id} />
+                        </div>
+                        <div className="chatbar">
+                          <textarea
+                            id="textarea"
+                            className="chatinput"
+                            type="textarea"
+                            name="message"
+                            placeholder="Your Message Here"
+                            wrap="hard"
+                            value={message}
+                            onChange={handleChange}
+                            onKeyPress={handleKeyPress}
+                          />
+                          <button className="chatSend" onClick={send}>
+                            Send
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </TabPanel>
+                </TabPanel>
+              </>
             ))
           : null}
       </Tabs>
+
       {/* <div class="chatroom-container">{displayChats()}</div> */}
     </div>
   );

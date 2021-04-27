@@ -33,30 +33,30 @@ function Profile(props) {
   };
 
   return (
-    <div class="event-create-container">
-      <div class="event-header">
-        <div class="event-header-middle">Profile</div>
-        <div class="event-close-outside" onClick={props.handleClose}>
-          <div class="event-close-x-left">
-            <div class="event-close-x-right"></div>
+    <div className="event-create-container">
+      <div className="event-header">
+        <div className="event-header-middle">Profile</div>
+        <div className="event-close-outside" onClick={props.handleClose}>
+          <div className="event-close-x-left">
+            <div className="event-close-x-right"></div>
           </div>
         </div>
       </div>
-      <div class="event-form">
-        <div class="profile-pic">
+      <div className="event-form">
+        <div className="profile-pic">
           <img src={image} alt={"Profile"} />
         </div>
-        <div class="profile-title">User:</div>
-        <div class="profile-text">
+        <div className="profile-title">User:</div>
+        <div className="profile-text">
           {first} {last}
         </div>
         {props.loggedInProfile ? (
           <>
-            <div class="profile-title">Email:</div>
-            <div class="profile-text">{email}</div>{" "}
+            <div className="profile-title">Email:</div>
+            <div className="profile-text">{email}</div>{" "}
           </>
         ) : (
-          <button class="add-friend" onClick={addNewFriend}>
+          <button className="add-friend" onClick={addNewFriend}>
             Add friend
           </button>
         )}

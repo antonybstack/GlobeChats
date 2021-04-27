@@ -12,26 +12,26 @@ export const chatsAtom = atom(
 );
 
 export const fetchChatsAtom = atom(null, async (get, set) => {
-  set(chats, []);
   let mychatrooms = get(chatrooms);
-  if (mychatrooms[0]) {
-    mychatrooms.forEach(async (mychatroom) => {
-      if (mychatroom._id) {
-        await axios
-          .get("/api/chats/chatroom/" + mychatroom._id)
-          .then((res) => {
-            res.data.chats.forEach((chat) => {
-              let tempChats = get(chats);
-              if (tempChats[0] == null) set(chats, [chat]);
-              else set(chats, tempChats.concat(chat));
-            });
-          })
-          .catch((err) => {
-            console.log(err);
+  console.log(mychatrooms);
+  let tempResult = [];
+  mychatrooms.forEach(async (mychatroom) => {
+    console.log(mychatroom);
+    if (mychatroom._id) {
+      await axios
+        .get("/api/chats/chatroom/" + mychatroom._id)
+        .then((res) => {
+          res.data.chats.forEach((chat) => {
+            //tempResult.push(chat);
+            let tempChats = get(chats);
+            console.log(tempResult);
+            console.log(chat);
+            set(chats, tempChats.concat(chat));
           });
-      }
-    });
-  } else {
-    set(chats, [null]);
-  }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  });
 });

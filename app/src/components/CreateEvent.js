@@ -36,58 +36,58 @@ function CreateEvent(props) {
   };
 
   return (
-    <div class="event-create-container">
-      <div class="event-header">
-        <div class="event-header-middle">Create New Event</div>
-        <div class="event-close-outside" onClick={props.handleClose}>
-          <div class="event-close-x-left">
-            <div class="event-close-x-right"></div>
+    <div className="event-create-container">
+      <div className="event-header">
+        <div className="event-header-middle">Create New Event</div>
+        <div className="event-close-outside" onClick={props.handleClose}>
+          <div className="event-close-x-left">
+            <div className="event-close-x-right"></div>
           </div>
         </div>
       </div>
-      <form class="event-form" onSubmit={submitNewEvent}>
-        <div class="event-row">
-          <div class="event-col-25">
-            <label class="event-form-label">Event Title</label>
+      <form className="event-form" onSubmit={submitNewEvent}>
+        <div className="event-row">
+          <div className="event-col-25">
+            <label className="event-form-label">Event Title</label>
           </div>
-          <div class="event-col-75">
-            <input class="event-input-text" type="text" name="{title}" onChange={settingTitle} />
-          </div>
-        </div>
-
-        <div class="event-row">
-          <div class="event-col-25">
-            <label class="event-form-label">Event Date</label>
-          </div>
-          <div class="event-col-75">
-            <input class="event-input-date" type="date" name="{date}" onChange={settingDate} />
+          <div className="event-col-75">
+            <input className="event-input-text" type="text" name="{title}" onChange={settingTitle} />
           </div>
         </div>
 
-        <div class="event-row">
-          <div class="event-col-25">
-            <label class="event-form-label">Description</label>
+        <div className="event-row">
+          <div className="event-col-25">
+            <label className="event-form-label">Event Date</label>
           </div>
-          <div class="event-col-75">
-            <textarea class="event-textarea" name="{desc}" onChange={settingDesc}></textarea>
-          </div>
-        </div>
-
-        <div class="event-row">
-          <div class="event-col-25">
-            <label class="event-form-label">Location</label>
-          </div>
-          <div class="event-col-75">
-            <input class="event-input-text" type="text" name="{loc}" onChange={settingLoc} />
+          <div className="event-col-75">
+            <input className="event-input-date" type="date" name="{date}" onChange={settingDate} />
           </div>
         </div>
 
-        <div class="event-row">
-          <div class="event-col-50-left">
-            <input class="event-submit-buttons" type="submit" value="Create Event" />
+        <div className="event-row">
+          <div className="event-col-25">
+            <label className="event-form-label">Description</label>
           </div>
-          <div class="event-col-50-right">
-            <input class="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
+          <div className="event-col-75">
+            <textarea className="event-textarea" name="{desc}" onChange={settingDesc}></textarea>
+          </div>
+        </div>
+
+        <div className="event-row">
+          <div className="event-col-25">
+            <label className="event-form-label">Location</label>
+          </div>
+          <div className="event-col-75">
+            <input className="event-input-text" type="text" name="{loc}" onChange={settingLoc} />
+          </div>
+        </div>
+
+        <div className="event-row">
+          <div className="event-col-50-left">
+            <input className="event-submit-buttons" type="submit" value="Create Event" />
+          </div>
+          <div className="event-col-50-right">
+            <input className="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
           </div>
         </div>
       </form>

@@ -3,6 +3,7 @@ import { atom } from "jotai";
 import { user } from "../atoms/AuthAtom";
 
 export const chatrooms = atom([]);
+export const chatroomsLoadedAtom = atom(false);
 
 export const chatroomsAtom = atom(
   async (get) => get(chatrooms),
@@ -14,24 +15,25 @@ export const chatroomsAtom = atom(
 export const fetchChatroomsAtom = atom(null, async (get, set) => {
   set(chatrooms, []);
   let loggedInUser = get(user);
+  var tempResult = [];
   if (loggedInUser.joinedChatroomIds) {
     loggedInUser.joinedChatroomIds.forEach(async (chatroomId) => {
       if (chatroomId) {
         await axios
           .get("/api/chatrooms/" + chatroomId)
           .then((res) => {
-            let tempArr = get(chatrooms);
             let tempChatroom = res.data.chatroom;
-            if (tempArr[0] == null) set(chatrooms, [tempChatroom]);
-            else set(chatrooms, tempArr.concat(tempChatroom));
+            tempResult.push(tempChatroom);
           })
           .catch((err) => {
             console.log(err);
           });
+        set(chatrooms, tempResult);
       }
     });
+    set(chatroomsLoadedAtom, true);
   } else {
-    set(chatrooms, [null]);
+    set(chatrooms, []);
   }
 });
 
