@@ -4,6 +4,8 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { ProfileContext } from "../contexts/ProfileContext";
+import { useAtom } from "jotai";
+import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
 import { ChatroomContext } from "../contexts/ChatroomContext";
 import { ChatContext } from "../contexts/ChatContext";
 import moment from "moment-timezone";
@@ -11,7 +13,8 @@ import profileIcon from "../assets/5.png";
 
 function Chatroom(props) {
   const { user, isAuthenticated } = useContext(AuthContext);
-  const { profiles } = useContext(ProfileContext);
+  //const { profiles } = useContext(ProfileContext);
+  const [profiles] = useAtom(profilesAtom);
   const { chatrooms, setChatrooms, chatroomsLoaded } = useContext(ChatroomContext);
   const { chats, setChats } = useContext(ChatContext);
   const [message, setMessage] = useState("");

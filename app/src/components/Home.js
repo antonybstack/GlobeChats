@@ -1,4 +1,6 @@
-import React, { useState, createContext, useContext, useEffect, Suspense } from "react";
+import React, { useContext, useEffect } from "react";
+import { useAtom } from "jotai";
+import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
 import Chatroom from "./Chatroom";
 import FriendsList from "./FriendsList";
 import ProfileButton from "./ProfileButton";
@@ -24,16 +26,44 @@ const Home = () => {
     { id: 6, name: "Anna" },
   ];
 
+  const [profiles] = useAtom(profilesAtom);
+  const [, fetchProfiles] = useAtom(fetchProfilesAtom);
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
+
+  console.log(profiles);
+
   return (
     <>
-      <div id="homeTest">
-          {/* <UnauthenticatedMap /> */}
-          {/* <ProfileProvider>
-            <ProfileContextTest />
-          </ProfileProvider> */}
-          <ProfileAtomTest />
-       </div>
-     </>
+      {isAuthenticated ? (
+        <div className="home">
+          <ChatroomProvider>
+            <ChatProvider>
+              <ProfileButton />
+              <Chatroom />
+              <CreateButtons />
+              <FriendsList friend={friend} />
+              <Map />
+            </ChatProvider>
+          </ChatroomProvider>
+        </div>
+      ) : (
+        <div className="home">
+          <UnauthenticatedMap />
+        </div>
+      )}
+    </>
+    // <>
+    //   <div id="homeTest">
+    //     {/* <UnauthenticatedMap /> */}
+    //     {/* <ProfileProvider>
+    //         <ProfileContextTest />
+    //       </ProfileProvider> */}
+    //     <ProfileAtomTest />
+    //   </div>
+    // </>
   );
 };
 
