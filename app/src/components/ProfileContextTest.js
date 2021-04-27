@@ -6,7 +6,6 @@ import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
 const ProfileContextTest = () => {
   //const { profiles } = useContext(ProfileContext);
   const [profiles] = useAtom(profilesAtom);
-  // console.log(profiles);
   var imgStyle = {
     borderRadius: "20px",
   };

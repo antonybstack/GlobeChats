@@ -46,11 +46,6 @@ function CreateChat(props) {
     let longitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
     let latitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
 
-    console.log(longitude_buffer_for_privacy);
-    console.log(latitude_buffer_for_privacy);
-    console.log(lng + longitude_buffer_for_privacy);
-    console.log(lat + latitude_buffer_for_privacy);
-
     axios
       .post("/api/chatrooms/add", {
         adminId: user._id,
@@ -61,16 +56,11 @@ function CreateChat(props) {
         location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
       })
       .then((res) => {
-        console.log(globalChatrooms);
-        console.log(res);
-
         const newChatroom = res.data.chatroom;
-
         setGlobalChatrooms((currentGlobalChatrooms) => [...currentGlobalChatrooms, newChatroom]);
-        console.log(globalChatrooms);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -80,7 +70,7 @@ function CreateChat(props) {
 
   return (
     <div>
-      <div>{displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : console.log("test")}</div>
+      <div>{displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : null}</div>
       <div id="create-chat">
         <div class="event-create-container">
           <div class="event-header">

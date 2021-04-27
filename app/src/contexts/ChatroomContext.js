@@ -39,8 +39,6 @@ export default ({ children }) => {
         await axios
           .get("/api/chatrooms/")
           .then((res) => {
-            console.log(res);
-            console.log(res.data.chatrooms);
             if (res.data.chatrooms) setGlobalChatrooms(res.data.chatrooms);
           })
           .catch((err) => {

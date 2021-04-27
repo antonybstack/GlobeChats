@@ -12,31 +12,24 @@ function Profile(props) {
   axios
     .post("/api/profile/spec", { googleId: props.googleId })
     .then((res) => {
-      console.log(res.data);
       setEmail(res.data.email);
       setFirst(res.data.firstName);
       setLast(res.data.lastName);
       setImage(res.data.googleImg);
       setUserId(res.data._id);
-      console.log(email + " " + first + " " + last);
-      console.log("success!");
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((err) => {
+      console.log(err);
     });
 
   const addNewFriend = (event) => {
     event.preventDefault();
     let date = moment().tz("America/New_York");
-    axios
-      .post("/api/friend/new", {
-        user: userId,
-        friendedDate: date,
-        onlineStatus: true,
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    axios.post("/api/friend/new", {
+      user: userId,
+      friendedDate: date,
+      onlineStatus: true,
+    });
   };
 
   return (

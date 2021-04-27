@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useContext, useState, useRef, Suspense } from "react";
 import ReactDOM from "react-dom";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
 
@@ -8,7 +8,10 @@ import profileIcon from "../assets/users1.png";
 import MapMarkerPopup from "./MapMarkerPopup";
 import AuthProvider from "../contexts/AuthContext";
 import { AuthContext } from "../contexts/AuthContext";
-import { ChatroomContext } from "../contexts/ChatroomContext";
+// import { ChatroomContext } from "../contexts/ChatroomContext";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/AuthAtom";
+import { globalChatroomsAtom } from "../atoms/ChatroomAtom";
 
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
@@ -19,11 +22,12 @@ const Map = () => {
   const [lat, setLat] = useState(35.21);
   const [zoom, setZoom] = useState(10.66);
   const [markersGenerated, setMarkersGenerated] = useState(false);
-  const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
-  const { globalChatrooms, setGlobalChatrooms, globalChatroomsLoaded } = useContext(ChatroomContext);
-
+  //const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
+  //const { globalChatrooms, setGlobalChatrooms, globalChatroomsLoaded } = useContext(ChatroomContext);
+  const [user] = useAtom(userAtom);
+  const [globalChatrooms] = useAtom(globalChatroomsAtom);
   useEffect(() => {
-    if (globalChatroomsLoaded) {
+    if (globalChatrooms[0] != null) {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v11",
@@ -67,7 +71,7 @@ const Map = () => {
 
       //var marker = new mapboxgl.Marker().setLngLat([-80.8431, 35.2271]).addTo(map);
 
-      if (globalChatrooms.length > 0) {
+      if (globalChatrooms[0] != null) {
         map.on("load", function () {
           map.loadImage(profileIcon, function (error, image) {
             if (error) throw error;
@@ -139,9 +143,9 @@ const Map = () => {
             const popupNode = document.createElement("div");
             popupNode.style.cssText = "min-width:150px;min-height:120px;";
             ReactDOM.render(
-              <AuthProvider>
+              <Suspense fallback={<div>Loading...</div>}>
                 <MapMarkerPopup feature={e.features[0].properties} />
-              </AuthProvider>,
+              </Suspense>,
               popupNode
             );
 
@@ -164,7 +168,7 @@ const Map = () => {
 
       return () => map.remove();
     }
-  }, [globalChatroomsLoaded]);
+  }, [globalChatrooms]);
 
   return (
     <div>

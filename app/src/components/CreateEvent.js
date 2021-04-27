@@ -28,11 +28,10 @@ function CreateEvent(props) {
     axios
       .post("/api/events/new", { title: title, description: desc, location: locSplitNumberArr, eventDate: date, creator: user._id })
       .then((res) => {
-        console.log(res);
         alert("Event added successfully.");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 

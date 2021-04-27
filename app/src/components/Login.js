@@ -1,13 +1,19 @@
 import React, { useState, useContext, useRef } from "react";
 import { GoogleLogin } from "react-google-login";
 import { AuthContext } from "../contexts/AuthContext";
+import { useAtom } from "jotai";
+import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
 import axios from "axios";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const Login = () => {
-  const authContext = useContext(AuthContext);
+  //const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
+  //const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
+
+  const [user, setUser] = useAtom(userAtom);
+  const [isAuthenticated, setIsAuthenticated] = useAtom(isUserAuthenticated);
+  const [, fetchUser] = useAtom(fetchUserAtom);
 
   const handleGoogleLogin = (response) => {
     axios
@@ -18,11 +24,11 @@ const Login = () => {
       })
       .then((res) => {
         const { isAuthenticated, user } = res.data;
-        authContext.setUser(user);
-        authContext.setIsAuthenticated(isAuthenticated);
+        setUser(user);
+        setIsAuthenticated(isAuthenticated);
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function (err) {
+        console.log(err);
       });
   };
 

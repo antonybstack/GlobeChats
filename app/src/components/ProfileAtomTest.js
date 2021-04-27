@@ -6,13 +6,8 @@ import axios from "axios";
 
 const ProfileAtomTest = () => {
   const [profiles, setProfiles] = useAtom(profilesAtom);
-  console.log(profiles);
-  // useEffect(() => {
-  //   setProfiles((profiles) => [...profiles, {profile1:"test"}]);
-  // },[])
 
   const Dooo = () => {
-    console.log(profiles);
     setProfiles((profiles) => [...profiles, { profile1: "test" }]);
   };
 
