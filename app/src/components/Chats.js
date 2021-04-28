@@ -13,23 +13,41 @@ import { ChatContext } from "../contexts/ChatContext";
 import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import moment from "moment-timezone";
 import profileIcon from "../assets/5.png";
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 
 function Chats(props) {
-  //const { user, isAuthenticated } = useContext(AuthContext);
-  const [user, setUser] = useAtom(userAtom);
-  const [isAuthenticated, setIsAuthenticated] = useAtom(isUserAuthenticated);
-  const [, fetchUser] = useAtom(fetchUserAtom);
-  //const { profiles } = useContext(ProfileContext);
-  const [profiles] = useAtom(profilesAtom);
-  const [chatrooms] = useAtom(chatroomsAtom);
-  const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
-  //const { chats, setChats } = useContext(ChatContext);
-  const [chats, setChats] = useAtom(chatsAtom);
-  const [, fetchChats] = useAtom(fetchChatsAtom);
-  const [message, setMessage] = useState("");
-  const [tabSelect, setTabSelect] = useState(0);
-  const [title, setTitle] = useState();
-  const [text, setText] = useState();
+  const [newChatCounter, setNewChatCounter] = useState(0);
+  //const [chats] = useAtom(chatsAtom);
+  //console.log(chats);
+
+  const chatsQuery = useQuery("chats", () =>
+    axios
+      .get("/api/chats/")
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      })
+  );
+
+  console.log(chatsQuery);
+
+  const profilesQuery = useQuery("profiles", () =>
+    axios
+      .get("/api/users/")
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      })
+  );
+
+  if (chatsQuery.status === "loading" || profilesQuery.status === "loading") return <span>Loading...</span>;
+  if (chatsQuery.status === "error" || profilesQuery.status === "error") return <span>Error</span>;
+
+  console.log(chatsQuery);
+  const chats = chatsQuery.data.chats;
+  const profiles = profilesQuery.data.users;
+  console.log(chats);
+  console.log(profiles);
 
   var imgStyle = {
     borderRadius: "20px",
@@ -57,6 +75,7 @@ function Chats(props) {
   const filteredChats = chats.filter((chat) => {
     return chat.chatroomId == props.chatroom_id;
   });
+
   return (
     <>
       {filteredChats.map((chat, i) => {

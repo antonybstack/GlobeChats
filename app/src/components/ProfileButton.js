@@ -19,7 +19,7 @@ function ProfileButton(props) {
 
   const ProfileClick = (event) => {
     setDisplayProfile({
-      displayProfile: !displayProfile.displayProfile
+      displayProfile: !displayProfile.displayProfile,
     });
   };
 

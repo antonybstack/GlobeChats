@@ -2,7 +2,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-#homeTest{
+#homeTest {
   display: flex;
 }
 
@@ -13,6 +13,51 @@ code {
   left: 0;
   bottom: 0;
   z-index: -1;
+}
+
+.map-marker-container {
+  padding: 0.5em;
+  height: 50px;
+  width: 50px;
+  float: right;
+  margin-top: 12px;
+  background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
+  margin-right: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.mapPopup {
+  display: none;
+}
+
+.mapboxgl-popup-content {
+  background-color: rgb(255, 255, 255, 90%) !important;
+  border-radius: 5px;
+}
+
+.popupTitle {
+  font-size: 14pt;
+  display: inline;
+}
+
+.popupCancelButton {
+  font-size: 12pt;
+  display: inline;
+  float: right;
+  line-height: 5px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popupCancelButton:active {
+  font-size: 15pt;
+  line-height: 3px;
 }
 
 .sidebar {
@@ -29,6 +74,7 @@ code {
 }
 
 #account-wrapper {
+  display: flex;
   float: right;
 }
 
@@ -108,6 +154,7 @@ html {
   left: 70%;
   position: fixed;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .event-header {
@@ -423,6 +470,7 @@ input:checked + .slider:before {
   height: 50%;
   position: fixed;
   transform: translate(-50%, -50%);
+  z-index: 10;
 }
 
 .chatroom-window-header {
@@ -700,10 +748,10 @@ input:checked + .slider:before {
   outline: none;
 }
 
-#ProfileContextTest{
+#ProfileContextTest {
   width: 50%;
 }
 
-#ProfileAtomTest{
+#ProfileAtomTest {
   width: 50%;
 }

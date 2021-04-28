@@ -4,19 +4,27 @@ import AuthProvider from "./contexts/AuthContext";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./components/Home";
 import { Suspense } from "react";
-import { Provider } from "jotai";
+
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <div className="App">
-      <Suspense fallback={<div>Loading...</div>}>
-        <Router>
-          <AuthProvider>
-            <Nav />
-            <Route path="/" exact component={Home} />
-          </AuthProvider>
-        </Router>
-      </Suspense>
+      <QueryClientProvider client={queryClient}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Router>
+            <AuthProvider>
+              <Nav />
+              <Route path="/" exact component={Home} />
+            </AuthProvider>
+          </Router>
+        </Suspense>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </div>
   );
 }

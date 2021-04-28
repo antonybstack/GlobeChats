@@ -4,6 +4,7 @@ import Logout from "./Logout";
 import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { isUserAuthenticated } from "../atoms/AuthAtom";
+import ProfileButton from "./ProfileButton";
 
 const NavigationBar = () => {
   //const { isAuthenticated } = useContext(AuthContext);
@@ -11,21 +12,18 @@ const NavigationBar = () => {
 
   const unauthenticatedNavBar = () => {
     return (
-      <>
-        <div id="account-wrapper">
-          <Login />
-        </div>
-      </>
+      <div id="account-wrapper">
+        <Login />
+      </div>
     );
   };
 
   const authenticatedNavBar = () => {
     return (
-      <>
-        <div id="account-wrapper">
-          <Logout />
-        </div>
-      </>
+      <div id="account-wrapper">
+        <ProfileButton />
+        <Logout />
+      </div>
     );
   };
 

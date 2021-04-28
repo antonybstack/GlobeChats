@@ -11,16 +11,41 @@ import ProfileButton from "./ProfileButton";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import UnauthenticatedMap from "./UnauthenticatedMap";
-import ProfileContextTest from "./ProfileContextTest";
-import ProfileAtomTest from "./ProfileAtomTest";
-import { AuthContext } from "../contexts/AuthContext";
-import ProfileProvider from "../contexts/ProfileContext";
+// import ProfileContextTest from "./ProfileContextTest";
+// import ProfileAtomTest from "./ProfileAtomTest";
+// import { AuthContext } from "../contexts/AuthContext";
+// import ProfileProvider from "../contexts/ProfileContext";
 import ChatroomProvider from "../contexts/ChatroomContext";
 import ChatProvider from "../contexts/ChatContext";
 import Profile from "./Profile";
+import axios from "axios";
+
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 
 const Home = () => {
-  // const { user, isAuthenticated, authLoaded } = useContext(AuthContext);
+  const [, fetchUser] = useAtom(fetchUserAtom);
+  const [profiles, setProfiles] = useAtom(profilesAtom);
+  const [, fetchProfiles] = useAtom(fetchProfilesAtom);
+  const [chatrooms, setChatrooms] = useAtom(chatroomsAtom);
+  const [chatroomsLoaded] = useAtom(chatroomsLoadedAtom);
+  const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
+  const [globalChatrooms, setGlobalChatrooms] = useAtom(globalChatroomsAtom);
+  const [, fetchGlobalChatrooms] = useAtom(fetchGlobalChatroomsAtom);
+  const [chats, setChats] = useAtom(chatsAtom);
+  const [, fetchChats] = useAtom(fetchChatsAtom);
+  // Access the client
+
+  // Queries
+  // const query = useQuery('todos', getProfiles);
+
+  // Mutations
+  // const mutation = useMutation(postTodo, {
+  //   onSuccess: () => {
+  //     // Invalidate and refetch
+  //     queryClient.invalidateQueries("todos");
+  //   },
+  // });
+
   const friend = [
     { id: 1, name: "Roderick" },
     { id: 2, name: "Matt" },
@@ -32,47 +57,10 @@ const Home = () => {
 
   const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
-  const [, fetchUser] = useAtom(fetchUserAtom);
-  const [profiles, setProfiles] = useAtom(profilesAtom);
-  const [, fetchProfiles] = useAtom(fetchProfilesAtom);
-  const [chatrooms, setChatrooms] = useAtom(chatroomsAtom);
-  const [chatroomsLoaded] = useAtom(chatroomsLoadedAtom);
-  const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
-  const [globalChatrooms, setGlobalChatrooms] = useAtom(globalChatroomsAtom);
-  const [, fetchGlobalChatrooms] = useAtom(fetchGlobalChatroomsAtom);
-  const [chats, setChats] = useAtom(chatsAtom);
-  const [, fetchChats] = useAtom(fetchChatsAtom);
 
   useEffect(() => {
     fetchUser();
   }, []);
-
-  useEffect(() => {
-    setProfiles([]);
-    fetchProfiles();
-  }, [user]);
-
-  useEffect(() => {
-    setGlobalChatrooms([]);
-    fetchGlobalChatrooms();
-  }, [user]);
-
-  useEffect(() => {
-    setChatrooms([]);
-    fetchChatrooms();
-  }, [fetchChatrooms, setChatrooms, user]);
-
-  useEffect(() => {
-    setChats([]);
-    fetchChats();
-  }, [chatrooms, fetchChats, setChats]);
-
-  console.log(user);
-  console.log(profiles);
-  console.log(globalChatrooms);
-  console.log(chatrooms);
-  console.log(chatroomsLoaded);
-  console.log(chats);
 
   return (
     <>
@@ -80,11 +68,10 @@ const Home = () => {
         <div className="home">
           <ChatroomProvider>
             <ChatProvider>
-              <ProfileButton />
-              <Chatroom />
+              <Map />
               <CreateButtons />
               <FriendsList friend={friend} />
-              <Map />
+              <Chatroom />
             </ChatProvider>
           </ChatroomProvider>
         </div>
@@ -94,15 +81,6 @@ const Home = () => {
         </div>
       )}
     </>
-    // <>
-    //   <div id="homeTest">
-    //     {/* <UnauthenticatedMap /> */}
-    //     {/* <ProfileProvider>
-    //         <ProfileContextTest />
-    //       </ProfileProvider> */}
-    //     <ProfileAtomTest />
-    //   </div>
-    // </>
   );
 };
 

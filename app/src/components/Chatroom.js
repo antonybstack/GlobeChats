@@ -14,37 +14,49 @@ import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
 import profileIcon from "../assets/5.png";
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 
 function Chatroom(props) {
   //const { user, isAuthenticated } = useContext(AuthContext);
-  const [user, setUser] = useAtom(userAtom);
-  const [isAuthenticated, setIsAuthenticated] = useAtom(isUserAuthenticated);
-  const [, fetchUser] = useAtom(fetchUserAtom);
+  const [user] = useAtom(userAtom);
   //const { profiles } = useContext(ProfileContext);
-  const [profiles] = useAtom(profilesAtom);
-  const [chatrooms, setChatrooms] = useAtom(chatroomsAtom);
-  const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
-  const [chatroomsLoaded] = useAtom(chatroomsLoadedAtom);
+  //const [chatrooms] = useAtom(chatroomsAtom);
+  const [setChats] = useAtom(chatsAtom);
   //const { chats, setChats } = useContext(ChatContext);
-  const [chats, setChats] = useAtom(chatsAtom);
-  const [, fetchChats] = useAtom(fetchChatsAtom);
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
-  const [title, setTitle] = useState();
-  const [text, setText] = useState();
 
-  console.log(chatrooms);
+  const { status, data, error, isFetching } = useQuery("chatrooms", () =>
+    axios
+      .get("/api/chatrooms/joined/" + user.joinedChatroomIds)
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      })
+  );
 
-  var imgStyle = {
-    borderRadius: "20px",
-  };
+  console.log(status);
+  console.log(data);
+  console.log(error);
+  console.log(isFetching);
+
+  var chatrooms;
 
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
       var elem = document.getElementById("chatMessages");
       elem.scrollTop = elem.scrollHeight;
     }
-  }, [tabSelect, chatrooms, message, user]);
+  }, [chatrooms, tabSelect, message, user]);
+
+  if (status === "loading") return <span>Loading...</span>;
+  if (status === "error") return <span>Error: {error.message}</span>;
+
+  chatrooms = data.chatrooms;
+
+  var imgStyle = {
+    borderRadius: "20px",
+  };
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -103,6 +115,7 @@ function Chatroom(props) {
   //     })
   //   );
   // }, [chatrooms]);
+  console.log(chatrooms);
 
   return (
     <div className="chatroom-window-container">
@@ -115,47 +128,51 @@ function Chatroom(props) {
           setTabSelect(tabSelect);
         }}
       >
-        {chatrooms
-          ? chatrooms.map((chatroom) => (
-              <>
-                <TabList>
-                  <Tab key={chatroom._id}>
-                    {chatroom.name}&nbsp;
-                    <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
-                      x
+        <TabList>
+          {chatrooms.map((chatroom) => {
+            console.log(chatroom);
+            return (
+              <Tab key={chatroom._id}>
+                {chatroom.name}&nbsp;
+                <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
+                  x
+                </div>
+              </Tab>
+            );
+          })}
+        </TabList>
+        {chatrooms.map((chatroom) => {
+          console.log(chatroom);
+          return (
+            <TabPanel>
+              <div className="chat">
+                <div className="chatroom">
+                  <div className="chatContainer">
+                    <div id="chatMessages" className="chatMessages">
+                      <Chats chatroom_id={chatroom._id} />
                     </div>
-                  </Tab>
-                </TabList>
-                <TabPanel key={chatroom._id}>
-                  <div className="chat">
-                    <div className="chatroom">
-                      <div className="chatContainer">
-                        <div id="chatMessages" className="chatMessages">
-                          <Chats chatroom_id={chatroom._id} />
-                        </div>
-                        <div className="chatbar">
-                          <textarea
-                            id="textarea"
-                            className="chatinput"
-                            type="textarea"
-                            name="message"
-                            placeholder="Your Message Here"
-                            wrap="hard"
-                            value={message}
-                            onChange={handleChange}
-                            onKeyPress={handleKeyPress}
-                          />
-                          <button className="chatSend" onClick={send}>
-                            Send
-                          </button>
-                        </div>
-                      </div>
+                    <div className="chatbar">
+                      <textarea
+                        id="textarea"
+                        className="chatinput"
+                        type="textarea"
+                        name="message"
+                        placeholder="Your Message Here"
+                        wrap="hard"
+                        value={message}
+                        onChange={handleChange}
+                        onKeyPress={handleKeyPress}
+                      />
+                      <button className="chatSend" onClick={send}>
+                        Send
+                      </button>
                     </div>
                   </div>
-                </TabPanel>
-              </>
-            ))
-          : null}
+                </div>
+              </div>
+            </TabPanel>
+          );
+        })}
       </Tabs>
 
       {/* <div class="chatroom-container">{displayChats()}</div> */}
