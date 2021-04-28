@@ -1,68 +1,38 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
+
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
+import ReactMapboxGl from "react-mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
 
-const UnauthenticatedMap = () => {
-  const mapContainer = useRef();
-  const [lng, setLng] = useState(-80.83);
-  const [lat, setLat] = useState(35.22);
-  const [zoom, setZoom] = useState(10.66);
+const MapGL = ReactMapboxGl({
+  accessToken: "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA",
+});
 
-  useEffect(() => {
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [lng, lat],
-      zoom: zoom,
-    });
+const Map = () => {
+  const [lng, setLng] = useState(-80.8315);
+  const [lat, setLat] = useState(35.21);
 
-    navigator.geolocation.getCurrentPosition(function (position) {
-      map.setCenter([position.coords.longitude, position.coords.latitude]);
-    });
-
-    navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
-      permissionStatus.onchange = function () {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          map.setCenter([position.coords.longitude, position.coords.latitude]);
-        });
-      };
-    });
-
-    map.on("move", () => {
-      setLng(map.getCenter().lng.toFixed(4));
-      setLat(map.getCenter().lat.toFixed(4));
-      setZoom(map.getZoom().toFixed(2));
-    });
-
-    map.addControl(
-      new mapboxgl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
-        fitBoundsOptions: {
-          maxZoom: 10.66,
-        },
-        showAccuracyCircle: false,
-        showUserLocation: false,
-        trackUserLocation: true,
-      })
-    );
-
-    return () => map.remove();
-  }, []);
+  const styleRef = "mapbox://styles/mapbox/streets-v11";
 
   return (
     <div>
-      <div className="sidebar">
-        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-      </div>
-      <div className="map-container" ref={mapContainer} />
+      <MapGL
+        style={styleRef}
+        containerStyle={{
+          height: "93vh",
+          width: "100vw",
+        }}
+        center={[lng, lat]}
+        zoom={[10]}
+      ></MapGL>
     </div>
   );
 };
 
-export default UnauthenticatedMap;
+export default Map;

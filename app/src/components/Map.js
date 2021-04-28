@@ -33,18 +33,10 @@ const Map = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
   //const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
   //const { globalChatrooms, setGlobalChatrooms, globalChatroomsLoaded } = useContext(ChatroomContext);
-  const [user] = useAtom(userAtom);
+  // const [user] = useAtom(userAtom);
   //const [globalChatrooms] = useAtom(globalChatroomsAtom);
 
-  useEffect(() => {
-    let arr = document.getElementsByClassName("mapPopup");
-    for (var i = 0; i < arr.length; i++) {
-      arr.item(i).style.display = "none";
-    }
-    if (selectedMarker != null) document.getElementsByClassName("mapPopup")[selectedMarker].style.display = "block";
-  }, [selectedMarker]);
-
-  const { status, data, error, isFetching } = useQuery("globalChatrooms", () =>
+  const globalChatroomsQuery = useQuery("globalChatrooms", () =>
     axios
       .get("/api/chatrooms")
       .then((res) => res.data)
@@ -53,19 +45,13 @@ const Map = () => {
       })
   );
 
-  console.log(status);
-  console.log(data);
-  console.log(error);
-  console.log(isFetching);
-
-  var globalChatrooms;
-
-  if (status === "loading") return <span>Loading...</span>;
-  if (status === "error") return <span>Error: {error.message}</span>;
-
-  globalChatrooms = data.chatrooms;
-
-  console.log(globalChatrooms);
+  useEffect(() => {
+    let arr = document.getElementsByClassName("mapPopup");
+    for (var i = 0; i < arr.length; i++) {
+      arr.item(i).style.display = "none";
+    }
+    if (selectedMarker != null) document.getElementsByClassName("mapPopup")[selectedMarker].style.display = "block";
+  }, [selectedMarker]);
 
   // const map = new mapboxgl.Map({
   //   container: mapContainer.current,
@@ -210,8 +196,6 @@ const Map = () => {
   const styleRef = "mapbox://styles/mapbox/streets-v11";
 
   const openPopup = (e, index) => {
-    console.log(e);
-    console.log(index);
     setSelectedMarker(index);
   };
 
@@ -245,56 +229,56 @@ const Map = () => {
   };
 
   return (
-    <div>
-      {/* <div className="sidebar">
-        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-      </div>
-      <div className="map-container" ref={mapContainer} /> */}
-      <MapGL
-        style={styleRef}
-        containerStyle={{
-          height: "93.4vh",
-          width: "100vw",
-        }}
-        center={[lng, lat]}
-        zoom={[10]}
-      >
-        {globalChatrooms.map((chatroom, i) => {
-          let props = {
-            chatroom: chatroom,
-            index: i,
-          };
-          return (
-            <>
-              <Popup
-                key={i}
-                tipSize={5}
-                anchor="bottom-right"
-                coordinates={[chatroom.location[0], chatroom.location[1]]}
-                offset={{
-                  "bottom-left": [10, -20],
-                  "bottom-right": [-10, -20],
-                }}
-                // onClick={closePopup}
-                tabIndex={i}
-                className="mapPopup"
-                style={{ display: "none", zIndex: "4" }}
-              >
-                <MapMarkerPopup feature={props} setSelectedMarker={setSelectedMarker} />
-              </Popup>
-              <Marker coordinates={[chatroom.location[0], chatroom.location[1]]}>
-                <div className="marker" onClick={(e) => openPopup(e, i)}>
-                  <span>
-                    <div className="map-marker-container" style={style3}></div>
-                  </span>
-                </div>
-              </Marker>
-            </>
-          );
-        })}
-        {/* <CustomMarker key={`marker-${1}`} index={1} marker={1} openPopup={openPopup} /> */}
-      </MapGL>
-    </div>
+    <>
+      {globalChatroomsQuery.status === "loading" ? (
+        <div>Loading global chatrooms... </div>
+      ) : (
+        <MapGL
+          style={styleRef}
+          containerStyle={{
+            height: "93vh",
+            width: "100vw",
+          }}
+          center={[lng, lat]}
+          zoom={[10]}
+        >
+          {globalChatroomsQuery.data.chatrooms.map((chatroom, i) => {
+            let props = {
+              chatroom: chatroom,
+              index: i,
+            };
+            return (
+              <>
+                <Popup
+                  key={i}
+                  tipSize={5}
+                  anchor="bottom-right"
+                  coordinates={[chatroom.location[0], chatroom.location[1]]}
+                  offset={{
+                    "bottom-left": [10, -20],
+                    "bottom-right": [-10, -20],
+                  }}
+                  // onClick={closePopup}
+                  tabIndex={i}
+                  className="mapPopup"
+                  style={{ display: "none", zIndex: "4" }}
+                >
+                  <MapMarkerPopup feature={props} setSelectedMarker={setSelectedMarker} />
+                </Popup>
+                <Marker coordinates={[chatroom.location[0], chatroom.location[1]]}>
+                  <div className="marker" onClick={(e) => openPopup(e, i)}>
+                    <span>
+                      <div className="map-marker-container" style={style3}></div>
+                    </span>
+                  </div>
+                </Marker>
+              </>
+            );
+          })}
+          {/* <CustomMarker key={`marker-${1}`} index={1} marker={1} openPopup={openPopup} /> */}
+        </MapGL>
+      )}
+    </>
   );
 };
 

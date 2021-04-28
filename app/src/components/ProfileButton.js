@@ -2,9 +2,11 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import Profile from "./Profile";
 import { AuthContext } from "../contexts/AuthContext";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/AuthAtom";
 
 function ProfileButton(props) {
-  const { user, isAuthenticated } = useContext(AuthContext);
+  const [user] = useAtom(userAtom);
 
   var style = {
     backgroundImage: "url(" + user.googleImg + ")",

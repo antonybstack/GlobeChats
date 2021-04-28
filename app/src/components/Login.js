@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
 import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
@@ -7,13 +7,8 @@ import axios from "axios";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const Login = () => {
-  //const authContext = useContext(AuthContext);
-
-  //const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
-
-  const [user, setUser] = useAtom(userAtom);
-  const [isAuthenticated, setIsAuthenticated] = useAtom(isUserAuthenticated);
-  const [, fetchUser] = useAtom(fetchUserAtom);
+  const [, setUser] = useAtom(userAtom);
+  const [, setIsAuthenticated] = useAtom(isUserAuthenticated);
 
   const handleGoogleLogin = (response) => {
     axios
@@ -25,7 +20,8 @@ const Login = () => {
       .then((res) => {
         const { isAuthenticated, user } = res.data;
         setUser(user);
-        setIsAuthenticated(isAuthenticated);
+        setIsAuthenticated(true);
+        window.location.reload();
       })
       .catch(function (err) {
         console.log(err);
@@ -45,7 +41,6 @@ const Login = () => {
         onSuccess={handleGoogleLogin}
         onFailure={handleGoogleFailure}
         //cookiePolicy={"single_host_origin"}
-        //isSignedIn
       />
     </div>
   );

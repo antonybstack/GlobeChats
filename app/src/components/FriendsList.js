@@ -12,14 +12,16 @@ const FriendsList = (props) => {
   const [friendList, setFriendList] = useState([""]);
 
   useEffect(() => {
-    axios
-      .post("/api/friends/friends-list", { googleId: user.googleId })
-      .then((res) => {
-        setFriendList(res.data[0]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isAuthenticated) {
+      axios
+        .post("/api/friends/friends-list", { googleId: user.googleId })
+        .then((res) => {
+          setFriendList(res.data[0]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   return (

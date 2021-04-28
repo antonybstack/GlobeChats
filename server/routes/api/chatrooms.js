@@ -21,6 +21,7 @@ chatroomRoutes.route("/joined/:arrayOfIds").get(function (req, res) {
     if (err) {
       return res.status(500).json({ message: { msgBody: "Error retrieving joined chatrooms", msgError: true }, chatroom });
     }
+    console.log({ chatrooms });
     return res.status(200).json({ chatrooms });
   });
 });

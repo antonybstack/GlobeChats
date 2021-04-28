@@ -20,19 +20,11 @@ import ChatProvider from "../contexts/ChatContext";
 import Profile from "./Profile";
 import axios from "axios";
 
-import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from "react-query";
+import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider, queryCache } from "react-query";
 
 const Home = () => {
+  const queryClient = useQueryClient();
   const [, fetchUser] = useAtom(fetchUserAtom);
-  const [profiles, setProfiles] = useAtom(profilesAtom);
-  const [, fetchProfiles] = useAtom(fetchProfilesAtom);
-  const [chatrooms, setChatrooms] = useAtom(chatroomsAtom);
-  const [chatroomsLoaded] = useAtom(chatroomsLoadedAtom);
-  const [, fetchChatrooms] = useAtom(fetchChatroomsAtom);
-  const [globalChatrooms, setGlobalChatrooms] = useAtom(globalChatroomsAtom);
-  const [, fetchGlobalChatrooms] = useAtom(fetchGlobalChatroomsAtom);
-  const [chats, setChats] = useAtom(chatsAtom);
-  const [, fetchChats] = useAtom(fetchChatsAtom);
   // Access the client
 
   // Queries
@@ -54,10 +46,10 @@ const Home = () => {
     { id: 5, name: "Tony" },
     { id: 6, name: "Anna" },
   ];
-
-  const [user] = useAtom(userAtom);
+  const [user] = useAtom(userAtom); //keep this or it will bug Login component
   const [isAuthenticated] = useAtom(isUserAuthenticated);
 
+  // check if logged in
   useEffect(() => {
     fetchUser();
   }, []);
