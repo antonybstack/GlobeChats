@@ -14,7 +14,6 @@ const NavigationBar = () => {
     return (
       <nav id="navBar">
         <div id="logo">
-          <img id="globeChatsLogo" src={logo} alt={"GlobeChats logo"} />
           <span id="logoName">GlobeChats</span>
         </div>
         <div id="account-wrapper">

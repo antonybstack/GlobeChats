@@ -30,11 +30,10 @@ const Login = () => {
   };
 
   return (
-    <div className="nav-item">
+    <div id="GoogleLogin" className="nav-item">
       <GoogleLogin
-        style={{ color: "red" }}
         clientId={REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Login with Google"
+        buttonText="Sign in with Google"
         onSuccess={handleGoogleLogin}
         onFailure={handleGoogleFailure}
         //cookiePolicy={"single_host_origin"}

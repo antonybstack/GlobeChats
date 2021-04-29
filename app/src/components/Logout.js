@@ -23,7 +23,7 @@ const Logout = () => {
       });
   };
   return (
-    <div className="nav-item">
+    <div id="GoogleLogin" className="nav-item">
       <GoogleLogout clientId={REACT_APP_GOOGLE_CLIENT_ID} buttonText="Logout" onLogoutSuccess={handleGoogleLogout}></GoogleLogout>
     </div>
   );

@@ -16,15 +16,19 @@ code {
 }
 
 .map-marker-container {
-  padding: 0.5em;
-  height: 50px;
-  width: 50px;
+  height: 75px;
+  width: 75px;
   float: right;
   margin-top: 12px;
   background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
   margin-right: 8px;
   margin-bottom: 12px;
   cursor: pointer;
+  transition: transform 250ms;
+}
+
+.map-marker-container:hover {
+  transform: translateY(-3px);
 }
 
 .mapPopup {
@@ -222,21 +226,25 @@ html {
 
 .create-buttons-left {
   float: left;
+  transition: transform 250ms;
 }
 
 .create-buttons-left:hover {
   cursor: pointer;
-  background: rgb(67 104 140);
+  background: rgb(0 72 140 / 85%);
+  transform: translateY(-3px);
 }
 
 .create-buttons-right {
   margin-left: 25px;
   float: right;
+  transition: transform 250ms;
 }
 
 .create-buttons-right:hover {
   cursor: pointer;
-  background: rgb(67 104 140);
+  background: rgb(0 72 140 / 85%);
+  transform: translateY(-3px);
 }
 
 .circleBase {
@@ -246,7 +254,7 @@ html {
 .type1 {
   width: 100px;
   height: 100px;
-  background: rgba(52, 81, 109);
+  background: rgb(0 72 140 / 75%);
 }
 
 .outer-icon {
@@ -260,8 +268,8 @@ html {
   margin-right: auto;
   width: 75px;
   height: 75px;
-  filter: invert(100%);
-  background: url("https://api.iconify.design/fluent:calendar-add-20-filled.svg") no-repeat center center / contain;
+  /* filter: invert(100%); */
+  background: url("https://api.iconify.design/fluent:calendar-add-20-filled.svg?color=white") no-repeat center center / contain;
 }
 
 .inner-group-icon {
@@ -269,8 +277,8 @@ html {
   margin-right: auto;
   width: 75px;
   height: 75px;
-  filter: invert(100%);
-  background: url("https://api.iconify.design/fluent:people-team-add-20-filled.svg") no-repeat center center / contain;
+  /* filter: invert(100%); */
+  background: url("https://api.iconify.design/fluent:people-team-add-20-filled.svg?color=white") no-repeat center center / contain;
 }
 
 .switch {
@@ -735,11 +743,10 @@ input:checked + .slider:before {
 
 .nav-profile {
   padding: 0.5em;
-  height: 20px;
-  width: 20px;
-
-  margin-top: 12px;
-  background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
+  height: 25px;
+  width: 25px;
+  margin-top: 8px;
+  background: url(https://api.iconify.design/gg-profile.svg?color=white) no-repeat center center / contain;
   margin-right: 8px;
   margin-bottom: 12px;
   cursor: pointer;
@@ -748,6 +755,20 @@ input:checked + .slider:before {
 }
 .nav-profile:hover {
   border: 1px solid #5482af;
+}
+
+#GoogleLogin > button > span {
+  padding: 10px 10px 10px 0px !important;
+  font-weight: 400 !important;
+  font-family: system-ui !important;
+  color: #777777 !important;
+  margin-bottom: 3px !important;
+  line-height: 18px !important;
+  font-size: 1.2em !important;
+}
+#GoogleLogin > button > div {
+  padding: 1px !important;
+  margin-left: 10px !important;
 }
 
 .nav-item {
@@ -759,15 +780,20 @@ input:checked + .slider:before {
   display: flex;
   justify-content: space-between;
 }
+
 #logo {
   display: flex;
   justify-content: center;
   margin: auto;
-  margin-left: 1em;
+  margin-left: 5px;
+  background-color: #37628c;
+  border-radius: 3px;
+  padding: 5px 15px 5px 15px;
 }
 #logoName {
   color: white;
-  font-size: 1.5em;
+  font-size: 2em;
+  font-weight: 500;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif, Geneva, Tahoma, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   text-decoration: none;
   -webkit-touch-callout: none;
@@ -776,6 +802,7 @@ input:checked + .slider:before {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-family: system-ui;
 }
 #globeChatsLogo {
   width: 35px;

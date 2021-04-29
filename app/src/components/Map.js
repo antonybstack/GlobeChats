@@ -6,7 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
-import chatGroupImage from "../assets/chat-group.png";
+import chatGroupImage from "../assets/chat-group-filled-75px.png";
 import MapMarkerPopup from "./MapMarkerPopup";
 import { useAtom } from "jotai";
 import { loading } from "../atoms/AuthAtom";
