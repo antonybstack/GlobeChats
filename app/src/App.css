@@ -78,7 +78,7 @@ code {
 }
 
 html {
-  background-color: rgb(52, 81, 109);
+  background-color: rgba(163, 163, 163, 0.6);
 }
 
 .event-form {
@@ -231,7 +231,7 @@ html {
 
 .create-buttons-left:hover {
   cursor: pointer;
-  background: rgb(0 72 140 / 85%);
+  background: rgb(23 66 109 / 90%);
   transform: translateY(-3px);
 }
 
@@ -243,7 +243,7 @@ html {
 
 .create-buttons-right:hover {
   cursor: pointer;
-  background: rgb(0 72 140 / 85%);
+  background: rgb(23 66 109 / 90%);
   transform: translateY(-3px);
 }
 
@@ -254,7 +254,7 @@ html {
 .type1 {
   width: 100px;
   height: 100px;
-  background: rgb(0 72 140 / 75%);
+  background: rgb(23 66 109 / 80%);
 }
 
 .outer-icon {
@@ -751,10 +751,11 @@ input:checked + .slider:before {
   margin-bottom: 12px;
   cursor: pointer;
   border-radius: 2px;
-  border: 1px solid #233f5a;
+  transition: all 50ms;
+  border: 2px solid rgb(0 0 0 / 0%);
 }
 .nav-profile:hover {
-  border: 1px solid #5482af;
+  border: 2px solid rgb(99 99 99 / 40%);
 }
 
 #GoogleLogin > button > span {
@@ -777,8 +778,12 @@ input:checked + .slider:before {
 }
 
 #navBar {
+  position: absolute;
   display: flex;
   justify-content: space-between;
+  z-index: 100;
+  background-color: rgb(74 74 74 / 17%);
+  width: 100%;
 }
 
 #logo {
@@ -786,14 +791,15 @@ input:checked + .slider:before {
   justify-content: center;
   margin: auto;
   margin-left: 5px;
-  background-color: #37628c;
+  /* background-color: #37628c; */
   border-radius: 3px;
   padding: 5px 15px 5px 15px;
 }
 #logoName {
-  color: white;
+  color: #ffffff;
+  -webkit-text-stroke: 1px #000000;
   font-size: 2em;
-  font-weight: 500;
+  font-weight: 800;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif, Geneva, Tahoma, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   text-decoration: none;
   -webkit-touch-callout: none;

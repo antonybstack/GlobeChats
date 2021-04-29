@@ -63,7 +63,7 @@ function Chats(props) {
       if (profile._id === id) {
         tempProfile = {
           firstName: profile.firstName,
-          lastName: profile.lastName,
+          lastNameInitial: profile.lastName[0].concat("."),
           googleImg: profile.googleImg,
         };
       }
@@ -72,7 +72,7 @@ function Chats(props) {
     if (!tempProfile.firstName) {
       tempProfile = {
         firstName: "unknown",
-        lastName: "",
+        lastNameInitial: "",
         googleImg: unknownUserImage,
       };
     }
@@ -122,7 +122,7 @@ function Chats(props) {
                       &nbsp;
                     </span>
                     <span className="profileName">
-                      {profile.firstName} {profile.lastName ? profile.lastName[0] : ""}.
+                      {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
                     </span>
                   </div>
                   <div className="msgContainer">{message}</div>

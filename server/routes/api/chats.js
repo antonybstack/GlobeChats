@@ -11,7 +11,12 @@ chatRoutes.route("/").get(function (req, res) {
     if (err) {
     } else {
       Object.keys(chats).forEach(function (i) {
-        const decryptedString = cryptr.decrypt(chats[i].message);
+        var decryptedString;
+        try {
+          decryptedString = cryptr.decrypt(chats[i].message);
+        } catch (err) {
+          decryptedString = "Error decrypting message: Invalid secret key";
+        }
         chats[i].message = decryptedString;
       });
       res.status(200).json({ chats });
@@ -52,7 +57,12 @@ chatRoutes.post("/add", (req, res) => {
         if (err) {
         } else {
           Object.keys(chats).forEach(function (i) {
-            const decryptedString = cryptr.decrypt(chats[i].message);
+            var decryptedString;
+            try {
+              decryptedString = cryptr.decrypt(chats[i].message);
+            } catch (err) {
+              decryptedString = "Error: Invalid encryption key - unable to decrypt chat message ";
+            }
             chats[i].message = decryptedString;
           });
           res.status(200).json({ chats });

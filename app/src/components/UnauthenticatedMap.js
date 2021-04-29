@@ -25,11 +25,12 @@ const Map = () => {
       <MapGL
         style={styleRef}
         containerStyle={{
-          height: "93vh",
+          height: "100vh",
           width: "100vw",
         }}
         center={[lng, lat]}
         zoom={[10]}
+        pitch={[50]}
       ></MapGL>
     </div>
   );
