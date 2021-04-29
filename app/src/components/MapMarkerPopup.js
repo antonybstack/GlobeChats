@@ -1,42 +1,87 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
+import { useAtom } from "jotai";
+import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { useQuery, useMutation } from "react-query";
 
-const MapMarkerPopup = ({ feature }) => {
-  const { user, setUser } = useContext(AuthContext);
-  const { chatroom_id, name, tags, verifyUsers, isPrivate, timestamp, current_user } = feature;
+const MapMarkerPopup = (props) => {
+  const [user, setUser] = useAtom(userAtom);
+
+  //const [globalChatrooms] = useAtom(globalChatroomsAtom);
+  const { _id, name, tags, verifyUsers, isPrivate, timestamp } = props.feature.chatroom;
+
+  const joinChatroomMutation = useMutation((newChatroom) => axios.put("/api/users/joinchatroom/" + user._id, newChatroom), {
+    onSuccess: async (data) => {
+      setUser(data.data.user);
+    },
+  });
+
+  const globalChatroomsQuery = useQuery("globalChatrooms", () =>
+    axios
+      .get("/api/chatrooms")
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      })
+  );
 
   function joinChatroom() {
-    if (chatroom_id) {
-      axios
-        .put("/api/users/joinchatroom/" + current_user, { chatroom_id: chatroom_id })
-        .then((res) => {
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (_id) {
+      joinChatroomMutation.mutate({ chatroom_id: _id });
     }
   }
 
-  var style1 = { fontSize: "14pt" };
-  var style2 = { fontSize: "10pt" };
+  // function joinChatroom() {
+  //   if (_id) {
+  //     axios
+  //       .put("/api/users/joinchatroom/" + user._id, { chatroom_id: _id })
+  //       .then((res) => {
+  //         const newChatroomArr = globalChatroomsQuery.data.chatrooms.filter((chatroom) => chatroom._id === _id);
+  //         setChatrooms((currentChatrooms) => [...currentChatrooms, newChatroomArr[0]]);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }
+
+  const closePopup = () => {
+    let arr = document.getElementsByClassName("mapPopup");
+    for (var i = 0; i < arr.length; i++) {
+      arr.item(i).style.display = "none";
+    }
+    props.setSelectedMarker(null);
+  };
+
+  var style1 = { fontSize: "14pt", display: "inline" };
+  var style2 = { fontSize: "12pt", display: "inline", float: "right" };
+  var style3 = { fontSize: "10pt" };
 
   let pri = isPrivate.toString();
   let ver = verifyUsers.toString();
 
   return (
-    <div className="mapMarkerPopup">
-      <div style={style1}>{name}</div>
-      <br />
-      <button onClick={joinChatroom}>Click to join</button>
-      <div>
-        <div style={style2}>Private: {pri}</div>
-        <div style={style2}>Verified Users: {ver}</div>
-        <div style={style2}>Tags: {tags}</div>
-        <div style={style2}>Created: {timestamp}</div>
-      </div>
-    </div>
+    <>
+      {globalChatroomsQuery.status === "loading chatroom info" ? (
+        <img className="loading" src="loading.gif" alt="loading..." />
+      ) : (
+        <div className="mapMarkerPopup">
+          <div className="popupTitle">{name}</div>
+          <div onClick={closePopup} className="popupCancelButton">
+            x
+          </div>
+          <br />
+          <button onClick={joinChatroom}>Click to join</button>
+          <div>
+            <div style={style3}>Private: {pri}</div>
+            <div style={style3}>Verified Users: {ver}</div>
+            <div style={style3}>Tags: {tags}</div>
+            <div style={style3}>Created: {timestamp}</div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

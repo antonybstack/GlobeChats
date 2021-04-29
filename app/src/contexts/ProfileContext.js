@@ -16,7 +16,6 @@ export default ({ children }) => {
       await axios
         .get("/api/users/")
         .then((res) => {
-          console.log(res.data.users);
           res.data.users.forEach((user) => {
             const { _id, googleId, email, firstName, lastName, googleImg } = user;
             if (user) setProfiles((currentProfiles) => [...currentProfiles, { _id, googleId, email, firstName, lastName, googleImg }]);

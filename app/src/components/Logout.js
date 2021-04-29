@@ -1,22 +1,25 @@
 import React, { useState, useContext, useRef } from "react";
 import { GoogleLogout } from "react-google-login";
-import { AuthContext } from "../contexts/AuthContext";
+import { useAtom } from "jotai";
+import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
 import axios from "axios";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const Logout = () => {
-  const authContext = useContext(AuthContext);
+  const [, setUser] = useAtom(userAtom);
+  const [, setIsAuthenticated] = useAtom(isUserAuthenticated);
 
   const handleGoogleLogout = (response) => {
     axios
       .post("/api/users/logout", null, {})
       .then((res) => {
-        const { isAuthenticated, user } = res.data;
-        authContext.setUser(user);
-        authContext.setIsAuthenticated(false);
+        const { user } = res.data;
+        setUser(user);
+        setIsAuthenticated(false);
+        window.location.reload();
       })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function (err) {
+        console.log(err);
       });
   };
   return (

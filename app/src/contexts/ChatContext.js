@@ -17,7 +17,7 @@ export default ({ children }) => {
     if (isAuthenticated && user.joinedChatroomIds) {
       setChats([]);
       const getChats = async () => {
-        setChatrooms([]);
+        // setChatrooms([]);
         user.joinedChatroomIds.forEach(async (chatroomId) => {
           if (chatroomId) {
             await axios

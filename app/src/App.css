@@ -2,6 +2,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+#homeTest {
+  display: flex;
+}
+
 .map-container {
   position: absolute;
   top: 60px;
@@ -9,6 +13,51 @@ code {
   left: 0;
   bottom: 0;
   z-index: -1;
+}
+
+.map-marker-container {
+  padding: 0.5em;
+  height: 50px;
+  width: 50px;
+  float: right;
+  margin-top: 12px;
+  background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
+  margin-right: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.mapPopup {
+  display: none;
+}
+
+.mapboxgl-popup-content {
+  background-color: rgb(255, 255, 255, 90%) !important;
+  border-radius: 5px;
+}
+
+.popupTitle {
+  font-size: 14pt;
+  display: inline;
+}
+
+.popupCancelButton {
+  font-size: 12pt;
+  display: inline;
+  float: right;
+  line-height: 5px;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popupCancelButton:active {
+  font-size: 15pt;
+  line-height: 3px;
 }
 
 .sidebar {
@@ -22,32 +71,6 @@ code {
   left: 0;
   margin: 12px;
   border-radius: 4px;
-}
-
-#account-wrapper {
-  float: right;
-}
-
-.nav-item {
-  display: inline-block;
-  padding: 0.5em;
-}
-
-.nav-profile {
-  padding: 0.5em;
-  height: 20px;
-  width: 20px;
-  float: right;
-  margin-top: 12px;
-  background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
-  margin-right: 8px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  border-radius: 2px;
-  border: 1px solid #233f5a;
-}
-.nav-profile:hover {
-  border: 1px solid #5482af;
 }
 
 html {
@@ -104,6 +127,7 @@ html {
   left: 70%;
   position: fixed;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 .event-header {
@@ -419,6 +443,7 @@ input:checked + .slider:before {
   height: 50%;
   position: fixed;
   transform: translate(-50%, -50%);
+  z-index: 10;
 }
 
 .chatroom-window-header {
@@ -694,4 +719,82 @@ input:checked + .slider:before {
   background-color: rgb(133, 133, 133);
   transition-duration: 0.15s;
   outline: none;
+}
+
+#ProfileContextTest {
+  width: 50%;
+}
+
+#ProfileAtomTest {
+  width: 50%;
+}
+
+#account-wrapper {
+  display: flex;
+}
+
+.nav-profile {
+  padding: 0.5em;
+  height: 20px;
+  width: 20px;
+
+  margin-top: 12px;
+  background: url("https://api.iconify.design/gg-profile.svg?color=white") no-repeat center center / contain;
+  margin-right: 8px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  border-radius: 2px;
+  border: 1px solid #233f5a;
+}
+.nav-profile:hover {
+  border: 1px solid #5482af;
+}
+
+.nav-item {
+  display: inline-block;
+  padding: 0.5em;
+}
+
+#navBar {
+  display: flex;
+  justify-content: space-between;
+}
+#logo {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-left: 1em;
+}
+#logoName {
+  color: white;
+  font-size: 1.5em;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif, Geneva, Tahoma, "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#globeChatsLogo {
+  width: 35px;
+  margin: auto;
+  padding-right: 0.5em;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+.loading {
+  position: absolute;
+  width: 60px;
 }

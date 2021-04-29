@@ -1,3 +1,4 @@
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const chatroomRoutes = express.Router();
 
@@ -9,6 +10,19 @@ chatroomRoutes.route("/").get(function (req, res) {
     } else {
       res.status(200).json({ chatrooms });
     }
+  });
+});
+
+chatroomRoutes.route("/joined/:arrayOfIds").get(function (req, res) {
+  var arrayOfIds = req.params.arrayOfIds.split(",");
+  arrayOfIds = arrayOfIds.filter(Boolean);
+
+  ChatroomModel.find({ _id: { $in: arrayOfIds } }, function (err, chatrooms) {
+    if (err) {
+      return res.status(500).json({ message: { msgBody: "Error retrieving joined chatrooms", msgError: true }, chatroom });
+    }
+    console.log({ chatrooms });
+    return res.status(200).json({ chatrooms });
   });
 });
 
@@ -28,7 +42,12 @@ chatroomRoutes.post("/add", (req, res) => {
   Chatroom.save()
     .then((chatroom) => {
       console.log(chatroom);
-      res.status(200).json({ chatroom });
+      ChatroomModel.find(function (err, chatrooms) {
+        if (err) {
+        } else {
+          res.status(200).json({ chatrooms });
+        }
+      });
     })
     .catch((err) => {
       console.log(err);

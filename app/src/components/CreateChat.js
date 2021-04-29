@@ -1,17 +1,24 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 
-import { AuthContext } from "../contexts/AuthContext";
-import { ChatroomContext } from "../contexts/ChatroomContext";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/AuthAtom";
 import Chatroom from "./Chatroom";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 function CreateChat(props) {
+  const queryClient = useQueryClient();
+  const addChatroomMutation = useMutation((newChatroom) => axios.post("/api/chatrooms/add", newChatroom), {
+    onSuccess: async (data) => {
+      queryClient.setQueryData("globalChatrooms", data.data);
+    },
+  });
+
   const [name, setName] = useState("");
   const [topics, setTopics] = useState("");
   const [pub, setPub] = useState("");
   const [anon, setAnon] = useState("");
-  const { user } = useContext(AuthContext);
-  const { globalChatrooms, setGlobalChatrooms } = useContext(ChatroomContext);
+  const [user] = useAtom(userAtom);
 
   const settingName = (chatroom) => setName(chatroom.target.value);
   const settingTopics = (chatroom) => setTopics(chatroom.target.value);
@@ -46,32 +53,14 @@ function CreateChat(props) {
     let longitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
     let latitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
 
-    console.log(longitude_buffer_for_privacy);
-    console.log(latitude_buffer_for_privacy);
-    console.log(lng + longitude_buffer_for_privacy);
-    console.log(lat + latitude_buffer_for_privacy);
-
-    axios
-      .post("/api/chatrooms/add", {
-        adminId: user._id,
-        name: name,
-        tags: topics,
-        isPrivate: isPrivate,
-        verifyUsers: verifyUsers,
-        location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
-      })
-      .then((res) => {
-        console.log(globalChatrooms);
-        console.log(res);
-
-        const newChatroom = res.data.chatroom;
-
-        setGlobalChatrooms((currentGlobalChatrooms) => [...currentGlobalChatrooms, newChatroom]);
-        console.log(globalChatrooms);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    addChatroomMutation.mutate({
+      adminId: user._id,
+      name: name,
+      tags: topics,
+      isPrivate: isPrivate,
+      verifyUsers: verifyUsers,
+      location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
+    });
   };
 
   const handleCloseChatroom = (event) => {
@@ -80,62 +69,62 @@ function CreateChat(props) {
 
   return (
     <div>
-      <div>{displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : console.log("test")}</div>
+      <div>{displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : null}</div>
       <div id="create-chat">
-        <div class="event-create-container">
-          <div class="event-header">
-            <div class="event-header-middle">Create New Chatroom</div>
-            <div class="event-close-outside" onClick={props.handleClose}>
-              <div class="event-close-x-left">
-                <div class="event-close-x-right"></div>
+        <div className="event-create-container">
+          <div className="event-header">
+            <div className="event-header-middle">Create New Chatroom</div>
+            <div className="event-close-outside" onClick={props.handleClose}>
+              <div className="event-close-x-left">
+                <div className="event-close-x-right"></div>
               </div>
             </div>
           </div>
-          <form class="event-form" onSubmit={submitNewChatroom}>
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Chat Name</label>
+          <form className="event-form" onSubmit={submitNewChatroom}>
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Chat Name</label>
               </div>
-              <div class="event-col-75">
-                <input class="event-input-text" type="text" name="{name}" onChange={settingName} />
-              </div>
-            </div>
-
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Chat Topics</label>
-              </div>
-              <div class="event-col-75">
-                <input class="event-input-text" type="text" name="{topics}" onChange={settingTopics} />
+              <div className="event-col-75">
+                <input className="event-input-text" type="text" name="{name}" onChange={settingName} />
               </div>
             </div>
 
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Public/Private</label>
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Chat Topics</label>
               </div>
-              <label class="event-col-75 switch">
+              <div className="event-col-75">
+                <input className="event-input-text" type="text" name="{topics}" onChange={settingTopics} />
+              </div>
+            </div>
+
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Public/Private</label>
+              </div>
+              <label className="event-col-75 switch">
                 <input type="checkbox" onChange={settingPublic} />
-                <span class="slider round"></span>
+                <span className="slider round"></span>
               </label>
             </div>
 
-            <div class="event-row">
-              <div class="event-col-25">
-                <label class="event-form-label">Anonymous/Verified</label>
+            <div className="event-row">
+              <div className="event-col-25">
+                <label className="event-form-label">Anonymous/Verified</label>
               </div>
-              <label class="event-col-75 switch">
+              <label className="event-col-75 switch">
                 <input type="checkbox" onChange={settingAnon} />
-                <span class="slider round"></span>
+                <span className="slider round"></span>
               </label>
             </div>
 
-            <div class="event-row">
-              <div class="event-col-50-left">
-                <input class="event-submit-buttons" type="submit" value="Create Chatroom" />
+            <div className="event-row">
+              <div className="event-col-50-left">
+                <input className="event-submit-buttons" type="submit" value="Create Chatroom" />
               </div>
-              <div class="event-col-50-right">
-                <input class="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
+              <div className="event-col-50-right">
+                <input className="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
               </div>
             </div>
           </form>
