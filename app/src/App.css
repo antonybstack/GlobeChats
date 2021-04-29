@@ -793,3 +793,8 @@ input:checked + .slider:before {
   -moz-user-drag: none;
   -o-user-drag: none;
 }
+
+.loading {
+  position: absolute;
+  width: 60px;
+}

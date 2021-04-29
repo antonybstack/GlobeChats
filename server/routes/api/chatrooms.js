@@ -42,7 +42,12 @@ chatroomRoutes.post("/add", (req, res) => {
   Chatroom.save()
     .then((chatroom) => {
       console.log(chatroom);
-      res.status(200).json({ chatroom });
+      ChatroomModel.find(function (err, chatrooms) {
+        if (err) {
+        } else {
+          res.status(200).json({ chatrooms });
+        }
+      });
     })
     .catch((err) => {
       console.log(err);

@@ -1,17 +1,24 @@
 import React, { useEffect, useContext, useState } from "react";
 import axios from "axios";
 
-import { AuthContext } from "../contexts/AuthContext";
-import { ChatroomContext } from "../contexts/ChatroomContext";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/AuthAtom";
 import Chatroom from "./Chatroom";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 function CreateChat(props) {
+  const queryClient = useQueryClient();
+  const addChatroomMutation = useMutation((newChatroom) => axios.post("/api/chatrooms/add", newChatroom), {
+    onSuccess: async (data) => {
+      queryClient.setQueryData("globalChatrooms", data.data);
+    },
+  });
+
   const [name, setName] = useState("");
   const [topics, setTopics] = useState("");
   const [pub, setPub] = useState("");
   const [anon, setAnon] = useState("");
-  const { user } = useContext(AuthContext);
-  const { globalChatrooms, setGlobalChatrooms } = useContext(ChatroomContext);
+  const [user] = useAtom(userAtom);
 
   const settingName = (chatroom) => setName(chatroom.target.value);
   const settingTopics = (chatroom) => setTopics(chatroom.target.value);
@@ -46,22 +53,14 @@ function CreateChat(props) {
     let longitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
     let latitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
 
-    axios
-      .post("/api/chatrooms/add", {
-        adminId: user._id,
-        name: name,
-        tags: topics,
-        isPrivate: isPrivate,
-        verifyUsers: verifyUsers,
-        location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
-      })
-      .then((res) => {
-        const newChatroom = res.data.chatroom;
-        setGlobalChatrooms((currentGlobalChatrooms) => [...currentGlobalChatrooms, newChatroom]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    addChatroomMutation.mutate({
+      adminId: user._id,
+      name: name,
+      tags: topics,
+      isPrivate: isPrivate,
+      verifyUsers: verifyUsers,
+      location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
+    });
   };
 
   const handleCloseChatroom = (event) => {

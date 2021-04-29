@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
-import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom, loading } from "../atoms/AuthAtom";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
@@ -15,6 +15,7 @@ function Chatroom(props) {
   // const [setChats] = useAtom(chatsAtom);
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
+  const [, setIsLoading] = useAtom(loading);
 
   const queryClient = useQueryClient();
 
@@ -82,11 +83,14 @@ function Chatroom(props) {
     leaveChatroomMutation.mutate({ chatroom_id: e.target.id });
   };
 
+  useEffect(() => {
+    if (chatroomsQuery.status === "loading") setIsLoading(true);
+    else setIsLoading(false);
+  }, [chatroomsQuery.status]);
+
   return (
     <>
-      {chatroomsQuery.status === "loading" ? (
-        <div>Loading chatrooms... </div>
-      ) : (
+      {chatroomsQuery.status === "loading" ? null : (
         <div className="chatroom-window-container">
           <div className="chatroom-window-header">
             <div className="chatroom-window-header-middle">Chatroom</div>
@@ -114,7 +118,7 @@ function Chatroom(props) {
             {chatroomsQuery.data
               ? chatroomsQuery.data.chatrooms.map((chatroom) => {
                   return (
-                    <TabPanel>
+                    <TabPanel key={chatroom._id}>
                       <div className="chat">
                         <div className="chatroom">
                           <div className="chatContainer">

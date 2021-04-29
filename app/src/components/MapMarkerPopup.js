@@ -64,7 +64,7 @@ const MapMarkerPopup = (props) => {
   return (
     <>
       {globalChatroomsQuery.status === "loading chatroom info" ? (
-        <div>Loading global chatrooms... </div>
+        <img className="loading" src="loading.gif" alt="loading..." />
       ) : (
         <div className="mapMarkerPopup">
           <div className="popupTitle">{name}</div>

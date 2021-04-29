@@ -25,3 +25,5 @@ export const fetchUserAtom = atom(null, async (get, set) => {
       console.log(err);
     });
 });
+
+export const loading = atom(false);
