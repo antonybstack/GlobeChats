@@ -1,10 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
-import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
-import { chatroomsAtom, fetchChatroomsAtom, chatroomsLoadedAtom } from "../atoms/ChatroomAtom";
-import { globalChatroomsAtom, fetchGlobalChatroomsAtom } from "../atoms/ChatroomAtom";
-import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chatroom from "./Chatroom";
 import FriendsList from "./FriendsList";
 import ProfileButton from "./ProfileButton";

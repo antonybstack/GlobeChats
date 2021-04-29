@@ -5,6 +5,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { isUserAuthenticated } from "../atoms/AuthAtom";
 import ProfileButton from "./ProfileButton";
+import logo from "../assets/logo512.png";
 
 const NavigationBar = () => {
   //const { isAuthenticated } = useContext(AuthContext);
@@ -12,18 +13,30 @@ const NavigationBar = () => {
 
   const unauthenticatedNavBar = () => {
     return (
-      <div id="account-wrapper">
-        <Login />
-      </div>
+      <nav id="navBar">
+        <div id="logo">
+          <img id="globeChatsLogo" src={logo} alt={"GlobeChats logo"} />
+          <span id="logoName">GlobeChats</span>
+        </div>
+        <div id="account-wrapper">
+          <Login />
+        </div>
+      </nav>
     );
   };
 
   const authenticatedNavBar = () => {
     return (
-      <div id="account-wrapper">
-        <ProfileButton />
-        <Logout />
-      </div>
+      <nav id="navBar">
+        <div id="logo">
+          <img id="globeChatsLogo" src={logo} alt={"GlobeChats logo"} />
+          <span id="logoName">GlobeChats</span>
+        </div>
+        <div id="account-wrapper">
+          <ProfileButton />
+          <Logout />
+        </div>
+      </nav>
     );
   };
 

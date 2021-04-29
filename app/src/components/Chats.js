@@ -1,27 +1,18 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import { AuthContext } from "../contexts/AuthContext";
-import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
-import { ProfileContext } from "../contexts/ProfileContext";
-import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
-import { ChatroomContext } from "../contexts/ChatroomContext";
-import { chatroomsAtom, fetchChatroomsAtom } from "../atoms/ChatroomAtom";
-import { ChatContext } from "../contexts/ChatContext";
-import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
-import moment from "moment-timezone";
-import profileIcon from "../assets/5.png";
+import { isUserAuthenticated } from "../atoms/AuthAtom";
 import { useAtom } from "jotai";
-import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from "react-query";
+import { useQuery } from "react-query";
 
 function Chats(props) {
-  // const [newChatCounter, setNewChatCounter] = useState(0);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
+  const [filteredChats, setFilteredChats] = useState([]);
 
   const chatsQuery = useQuery(
     "chats",
     () => {
+      console.log("chatsQuery");
       return axios
         .get("/api/chats/")
         .then((res) => res.data)
@@ -30,7 +21,7 @@ function Chats(props) {
         });
     },
     {
-      // The query will not execute until the userId exists
+      // The query will not execute until exists
       enabled: !!isAuthenticated,
     }
   );
@@ -46,7 +37,7 @@ function Chats(props) {
         });
     },
     {
-      // The query will not execute until the userId exists
+      // The query will not execute until exists
       enabled: !!isAuthenticated,
     }
   );
@@ -74,12 +65,27 @@ function Chats(props) {
     return tempProfile;
   };
 
-  var filteredChats;
-  if (chatsQuery.data) {
-    filteredChats = chatsQuery.data.chats.filter((chat) => {
-      return chat.chatroomId == props.chatroom_id;
-    });
-  }
+  useEffect(() => {
+    console.log("effect");
+
+    if (chatsQuery) {
+      if (chatsQuery.data) {
+        if (chatsQuery.data.chats) {
+          const temp = chatsQuery.data.chats.filter((chat) => {
+            return chat.chatroomId == props.chatroom_id;
+          });
+          setFilteredChats(temp);
+        }
+      }
+    }
+  }, [chatsQuery.data]);
+
+  useEffect(() => {
+    if (document.getElementById("chatMessages")) {
+      var elem = document.getElementById("chatMessages");
+      elem.scrollTop = elem.scrollHeight;
+    }
+  }, [filteredChats]);
 
   return (
     <>

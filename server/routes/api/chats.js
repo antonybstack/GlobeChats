@@ -39,7 +39,12 @@ chatRoutes.post("/add", (req, res) => {
   Chat.save()
     .then((chat) => {
       console.log(chat);
-      res.status(200).json({ chat });
+      ChatModel.find(function (err, chats) {
+        if (err) {
+        } else {
+          res.status(200).json({ chats });
+        }
+      });
     })
     .catch((err) => {
       console.log(err);

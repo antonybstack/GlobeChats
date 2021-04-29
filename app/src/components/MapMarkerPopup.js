@@ -3,14 +3,10 @@ import axios from "axios";
 import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
-import { chatroomsAtom, fetchChatroomsAtom } from "../atoms/ChatroomAtom";
-import { globalChatroomsAtom } from "../atoms/ChatroomAtom";
-import { IdTokenClient } from "google-auth-library";
 import { useQuery, useMutation } from "react-query";
 
 const MapMarkerPopup = (props) => {
   const [user, setUser] = useAtom(userAtom);
-  const [, setChatrooms] = useAtom(chatroomsAtom);
 
   //const [globalChatrooms] = useAtom(globalChatroomsAtom);
   const { _id, name, tags, verifyUsers, isPrivate, timestamp } = props.feature.chatroom;

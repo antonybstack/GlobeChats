@@ -5,32 +5,18 @@ import "react-tabs/style/react-tabs.css";
 import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
-import { ProfileContext } from "../contexts/ProfileContext";
-import { profilesAtom, fetchProfilesAtom } from "../atoms/ProfileAtom";
-import { ChatroomContext } from "../contexts/ChatroomContext";
-import { chatroomsAtom, fetchChatroomsAtom, chatroomsLoadedAtom } from "../atoms/ChatroomAtom";
-import { ChatContext } from "../contexts/ChatContext";
-import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
+// import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
-import profileIcon from "../assets/5.png";
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 function Chatroom(props) {
-  //const { user, isAuthenticated } = useContext(AuthContext);
   const [user, setUser] = useAtom(userAtom);
-  //const { profiles } = useContext(ProfileContext);
-  //const [chatrooms] = useAtom(chatroomsAtom);
-  const [setChats] = useAtom(chatsAtom);
-  //const { chats, setChats } = useContext(ChatContext);
+  // const [setChats] = useAtom(chatsAtom);
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
 
-  const leaveChatroomMutation = useMutation((leavingChatroom) => axios.put("/api/users/leavechatroom/" + user._id, leavingChatroom), {
-    onSuccess: async (data) => {
-      setUser(data.data.user);
-    },
-  });
+  const queryClient = useQueryClient();
 
   const chatroomsQuery = useQuery(
     ["chatrooms", user],
@@ -48,30 +34,28 @@ function Chatroom(props) {
     }
   );
 
+  const leaveChatroomMutation = useMutation((leavingChatroom) => axios.put("/api/users/leavechatroom/" + user._id, leavingChatroom), {
+    onSuccess: async (data) => {
+      setUser(data.data.user);
+    },
+  });
+
+  const addChatMutation = useMutation((newChat) => axios.post("/api/chats/add", newChat), {
+    onSuccess: async (data) => {
+      queryClient.setQueryData("chats", data.data);
+    },
+  });
+
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
       var elem = document.getElementById("chatMessages");
       elem.scrollTop = elem.scrollHeight;
     }
-  }, [tabSelect, message, user]);
-
-  // var chatrooms = [];
-  // if (data) {
-  //   chatrooms = data.chatrooms;
-  // }
-
-  var imgStyle = {
-    borderRadius: "20px",
-  };
+  }, [tabSelect, user]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
-
-  // const hideChatroom = (e) => {
-  //   var elem = document.getElementsByClassName("chatroom-window-container")[0];
-  //   if (elem) elem.style.top = "119.6%";
-  // };
 
   // if user clicks enter, it sends chat. If shift+enter, does not send (next line)
   const handleKeyPress = (event) => {
@@ -85,37 +69,18 @@ function Chatroom(props) {
     let date = moment().tz("America/New_York");
     let chatPacket = {
       userId: user._id,
-      chatroomId: chatrooms[tabSelect]._id,
+      chatroomId: chatroomsQuery.data.chatrooms[tabSelect]._id,
       message: message,
       timestamp: date,
     };
+    addChatMutation.mutate(chatPacket);
 
-    axios
-      .post("/api/chats/add", chatPacket)
-      .then((res) => {
-        setChats((currentChats) => [...currentChats, chatPacket]);
-        setMessage("");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setMessage("");
   };
 
   const closeTab = (e) => {
     leaveChatroomMutation.mutate({ chatroom_id: e.target.id });
   };
-
-  // useEffect(() => {
-  //   setTitle(
-  //     chatrooms.map((chatroom) => {
-  //       return (
-
-  //       );
-  //     })
-  //   );
-  // }, [chatrooms]);
-  var chatrooms = [];
-  if (chatroomsQuery.data) chatrooms = chatroomsQuery.data.chatrooms;
 
   return (
     <>
@@ -147,7 +112,7 @@ function Chatroom(props) {
                 : null}
             </TabList>
             {chatroomsQuery.data
-              ? chatrooms.map((chatroom) => {
+              ? chatroomsQuery.data.chatrooms.map((chatroom) => {
                   return (
                     <TabPanel>
                       <div className="chat">
