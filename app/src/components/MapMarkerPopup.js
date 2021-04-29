@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React from "react";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom } from "../atoms/AuthAtom";
 import { useQuery, useMutation } from "react-query";
 
 const MapMarkerPopup = (props) => {
@@ -32,20 +31,6 @@ const MapMarkerPopup = (props) => {
     }
   }
 
-  // function joinChatroom() {
-  //   if (_id) {
-  //     axios
-  //       .put("/api/users/joinchatroom/" + user._id, { chatroom_id: _id })
-  //       .then((res) => {
-  //         const newChatroomArr = globalChatroomsQuery.data.chatrooms.filter((chatroom) => chatroom._id === _id);
-  //         setChatrooms((currentChatrooms) => [...currentChatrooms, newChatroomArr[0]]);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }
-
   const closePopup = () => {
     let arr = document.getElementsByClassName("mapPopup");
     for (var i = 0; i < arr.length; i++) {
@@ -54,8 +39,6 @@ const MapMarkerPopup = (props) => {
     props.setSelectedMarker(null);
   };
 
-  var style1 = { fontSize: "14pt", display: "inline" };
-  var style2 = { fontSize: "12pt", display: "inline", float: "right" };
   var style3 = { fontSize: "10pt" };
 
   let pri = isPrivate.toString();

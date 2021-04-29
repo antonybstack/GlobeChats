@@ -1,13 +1,14 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useState } from "react";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/AuthAtom";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext";
 
 function CreateEvent(props) {
+  const [user] = useAtom(userAtom);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [loc, setLoc] = useState("");
   const [date, setDate] = useState("");
-  const { user, isAuthenticated } = useContext(AuthContext);
 
   const settingTitle = (event) => setTitle(event.target.value);
   const settingDesc = (event) => setDesc(event.target.value);

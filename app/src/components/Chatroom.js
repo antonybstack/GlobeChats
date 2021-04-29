@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { userAtom, loading } from "../atoms/AuthAtom";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";

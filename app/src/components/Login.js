@@ -1,8 +1,7 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React from "react";
 import { GoogleLogin } from "react-google-login";
-import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
-import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
 import axios from "axios";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
@@ -20,12 +19,10 @@ const Login = () => {
       .then((res) => {
         const { isAuthenticated, user } = res.data;
         setUser(user);
-        setIsAuthenticated(true);
+        setIsAuthenticated(isAuthenticated);
         window.location.reload();
       })
-      .catch(function (err) {
-        console.log(err);
-      });
+      .catch(function () {});
   };
 
   const handleGoogleFailure = (response) => {
@@ -41,6 +38,7 @@ const Login = () => {
         onSuccess={handleGoogleLogin}
         onFailure={handleGoogleFailure}
         //cookiePolicy={"single_host_origin"}
+        isSignedIn
       />
     </div>
   );

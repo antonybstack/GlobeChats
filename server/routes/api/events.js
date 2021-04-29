@@ -10,7 +10,6 @@ eventRoutes.post("/new", (req, res) => {
   event
     .save()
     .then((event) => {
-      console.log(event);
       res.status(200).json({ event });
     })
     .catch((err) => {
@@ -20,11 +19,15 @@ eventRoutes.post("/new", (req, res) => {
 });
 
 eventRoutes.get("/list", (req, res) => {
-  Event.db.collections.events.find({}).toArray((error, doc) => {res.status(200).json(doc)});
+  Event.db.collections.events.find({}).toArray((error, doc) => {
+    res.status(200).json(doc);
+  });
 });
 
 eventRoutes.get("/spec", (req, res) => {
-  Event.db.collections.events.find({id: req.params.id}).toArray((error, doc) => {res.status(200).json(doc)});
+  Event.db.collections.events.find({ id: req.params.id }).toArray((error, doc) => {
+    res.status(200).json(doc);
+  });
 });
 
 module.exports = eventRoutes;

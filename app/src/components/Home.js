@@ -1,38 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
 import Chatroom from "./Chatroom";
 import FriendsList from "./FriendsList";
-import ProfileButton from "./ProfileButton";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import UnauthenticatedMap from "./UnauthenticatedMap";
-// import ProfileContextTest from "./ProfileContextTest";
-// import ProfileAtomTest from "./ProfileAtomTest";
-// import { AuthContext } from "../contexts/AuthContext";
-// import ProfileProvider from "../contexts/ProfileContext";
-import ChatroomProvider from "../contexts/ChatroomContext";
-import ChatProvider from "../contexts/ChatContext";
-import Profile from "./Profile";
-import axios from "axios";
-
-import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider, queryCache } from "react-query";
 
 const Home = () => {
-  const queryClient = useQueryClient();
   const [, fetchUser] = useAtom(fetchUserAtom);
-  // Access the client
-
-  // Queries
-  // const query = useQuery('todos', getProfiles);
-
-  // Mutations
-  // const mutation = useMutation(postTodo, {
-  //   onSuccess: () => {
-  //     // Invalidate and refetch
-  //     queryClient.invalidateQueries("todos");
-  //   },
-  // });
 
   const friend = [
     { id: 1, name: "Roderick" },
@@ -42,6 +18,7 @@ const Home = () => {
     { id: 5, name: "Tony" },
     { id: 6, name: "Anna" },
   ];
+  // eslint-disable-next-line no-unused-vars
   const [user] = useAtom(userAtom); //keep this or it will bug Login component
   const [isAuthenticated] = useAtom(isUserAuthenticated);
 
@@ -54,14 +31,10 @@ const Home = () => {
     <>
       {isAuthenticated ? (
         <div className="home">
-          <ChatroomProvider>
-            <ChatProvider>
-              <Map />
-              <CreateButtons />
-              <FriendsList friend={friend} />
-              <Chatroom />
-            </ChatProvider>
-          </ChatroomProvider>
+          <Map />
+          <CreateButtons />
+          <FriendsList friend={friend} />
+          <Chatroom />
         </div>
       ) : (
         <div className="home">

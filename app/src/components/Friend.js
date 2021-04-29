@@ -1,11 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./Friend.css";
 import Profile from "./Profile.js";
-import axios from "axios";
 
 const Friend = (props) => {
-  const [friendList, setFriendList] = useState("");
+  // const [friendList, setFriendList] = useState("");
   const [friendClicked, setFriendClicked] = useState({
     friendClicked: false,
   });

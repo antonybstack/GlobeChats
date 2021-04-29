@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Friend from "./Friend";
-import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
-import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
 import axios from "axios";
 
-const FriendsList = (props) => {
+const FriendsList = () => {
   // const { user, isAuthenticated } = useContext(AuthContext);
   const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
@@ -22,7 +21,7 @@ const FriendsList = (props) => {
           console.log(err);
         });
     }
-  }, []);
+  }, [isAuthenticated, user]);
 
   return (
     <div className="friends-list-container">

@@ -47,19 +47,17 @@ passport.use(
             return done(null, user);
           }
         } catch (err) {
-          console.error(err);
+          // console.error(err);
         }
       });
   })
 );
 
 passport.serializeUser((user, done) => {
-  console.log("serialize user: " + user);
   done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-  console.log("serialize id: " + id);
   done(null, user);
 });
 

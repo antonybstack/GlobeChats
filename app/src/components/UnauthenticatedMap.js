@@ -15,8 +15,8 @@ const MapGL = ReactMapboxGl({
 });
 
 const Map = () => {
-  const [lng, setLng] = useState(-80.8315);
-  const [lat, setLat] = useState(35.21);
+  const [lng] = useState(-80.8315);
+  const [lat] = useState(35.21);
 
   const styleRef = "mapbox://styles/mapbox/streets-v11";
 

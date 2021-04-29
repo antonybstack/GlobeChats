@@ -9,7 +9,7 @@ import unknownUserImage from "../assets/5.png";
 function Chats(props) {
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const [filteredChats, setFilteredChats] = useState([]);
-  const [intervalMs] = useState(1000);
+  // const [intervalMs] = useState(1000);
   const [, setIsLoading] = useAtom(loading);
 
   const chatsQuery = useQuery(
@@ -60,8 +60,6 @@ function Chats(props) {
       message: "",
     };
     profilesQuery.data.users.forEach((profile) => {
-      console.log(profile._id);
-      console.log(id);
       if (profile._id === id) {
         tempProfile = {
           firstName: profile.firstName,
@@ -79,27 +77,21 @@ function Chats(props) {
       };
     }
 
-    console.log(tempProfile);
     return tempProfile;
   };
 
   useEffect(() => {
-    console.log(chatsQuery.data);
     if (chatsQuery) {
       if (chatsQuery.data) {
         if (chatsQuery.data.chats) {
           const temp = chatsQuery.data.chats.filter((chat) => {
-            return chat.chatroomId == props.chatroom_id;
+            return chat.chatroomId === props.chatroom_id;
           });
           setFilteredChats(temp);
         }
       }
     }
   }, [chatsQuery.data]);
-
-  useEffect(() => {
-    console.log(profilesQuery.data);
-  }, [profilesQuery.data]);
 
   useEffect(() => {
     if (document.getElementById("chatMessages")) {

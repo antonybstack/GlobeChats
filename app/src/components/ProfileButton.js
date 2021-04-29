@@ -1,11 +1,9 @@
-import React, { useContext, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import Profile from "./Profile";
-import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AuthAtom";
 
-function ProfileButton(props) {
+function ProfileButton() {
   const [user] = useAtom(userAtom);
 
   var style = {

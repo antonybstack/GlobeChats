@@ -1,13 +1,15 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AuthAtom";
 import Chatroom from "./Chatroom";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 function CreateChat(props) {
+  const [user] = useAtom(userAtom);
   const queryClient = useQueryClient();
+
   const addChatroomMutation = useMutation((newChatroom) => axios.post("/api/chatrooms/add", newChatroom), {
     onSuccess: async (data) => {
       queryClient.setQueryData("globalChatrooms", data.data);
@@ -18,7 +20,6 @@ function CreateChat(props) {
   const [topics, setTopics] = useState("");
   const [pub, setPub] = useState("");
   const [anon, setAnon] = useState("");
-  const [user] = useAtom(userAtom);
 
   const settingName = (chatroom) => setName(chatroom.target.value);
   const settingTopics = (chatroom) => setTopics(chatroom.target.value);
@@ -47,8 +48,8 @@ function CreateChat(props) {
     setDisplayChatroom(true);
     document.getElementById("create-chat").innerHTML = "";
 
-    var isPrivate = pub == "true";
-    var verifyUsers = anon == "true";
+    var isPrivate = pub === "true";
+    var verifyUsers = anon === "true";
 
     let longitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
     let latitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);

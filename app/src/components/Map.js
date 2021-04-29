@@ -1,8 +1,7 @@
-import React, { useEffect, useContext, useState, useRef, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ReactDOM from "react-dom";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
-import ReactMapboxGl, { Layer, Marker, Popup, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Marker, Popup } from "react-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
@@ -10,8 +9,7 @@ import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import chatGroupImage from "../assets/chat-group.png";
 import MapMarkerPopup from "./MapMarkerPopup";
 import { useAtom } from "jotai";
-import { isUserAuthenticated, loading } from "../atoms/AuthAtom";
-// import { ChatroomContext } from "../contexts/ChatroomContext";
+import { loading } from "../atoms/AuthAtom";
 import { useQuery } from "react-query";
 
 mapboxgl.workerClass = MapboxWorker;
@@ -22,17 +20,12 @@ const MapGL = ReactMapboxGl({
 });
 
 const Map = () => {
-  const mapContainer = useRef();
   const [lng, setLng] = useState(-80.8315);
   const [lat, setLat] = useState(35.21);
-  const [zoom, setZoom] = useState(10.66);
-  const [markersGenerated, setMarkersGenerated] = useState(false);
+  // const [zoom, setZoom] = useState(10.66);
+  // const [markersGenerated, setMarkersGenerated] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [, setIsLoading] = useAtom(loading);
-  //const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(AuthContext);
-  //const { globalChatrooms, setGlobalChatrooms, globalChatroomsLoaded } = useContext(ChatroomContext);
-  // const [user] = useAtom(userAtom);
-  //const [globalChatrooms] = useAtom(globalChatroomsAtom);
 
   const globalChatroomsQuery = useQuery("globalChatrooms", () =>
     axios

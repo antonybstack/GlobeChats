@@ -6,9 +6,9 @@ const Friend = require("../../models/friend.model");
 
 // Returns array of Friend Object IDs
 friendRoutes.post("/friends-list", (req, res) => {
-  User.find({googleId: req.body.googleId}, (error, docs) => {
-    console.log(docs);
-    console.log(docs[0].friendlist);
+  User.find({ googleId: req.body.googleId }, (error, docs) => {
+    // console.log(docs);
+    // console.log(docs[0].friendlist);
     res.status(200).json(docs[0].friendlist);
   });
 });
@@ -28,7 +28,7 @@ friendRoutes.post("/friend-info", (req, res) => {
 friendRoutes.post("/new", (req, res) => {
   let newFriend = new Friend(req.body);
   newFriend.save().then((addedFriend) => {
-    console.log(addedFriend);
+    // console.log(addedFriend);
     res.status(200).json({ addedFriend });
   });
 });

@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import Login from "./Login";
 import Logout from "./Logout";
-import { AuthContext } from "../contexts/AuthContext";
 import { useAtom } from "jotai";
 import { isUserAuthenticated } from "../atoms/AuthAtom";
 import ProfileButton from "./ProfileButton";
