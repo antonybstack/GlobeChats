@@ -4,11 +4,12 @@ import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
 import { useQuery } from "react-query";
 import { isUserAuthenticated, loading } from "../atoms/AuthAtom";
+import unknownUserImage from "../assets/5.png";
 
 function Chats(props) {
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const [filteredChats, setFilteredChats] = useState([]);
-  const [intervalMs, setIntervalMs] = React.useState(1000);
+  const [intervalMs] = useState(1000);
   const [, setIsLoading] = useAtom(loading);
 
   const chatsQuery = useQuery(
@@ -59,6 +60,8 @@ function Chats(props) {
       message: "",
     };
     profilesQuery.data.users.forEach((profile) => {
+      console.log(profile._id);
+      console.log(id);
       if (profile._id === id) {
         tempProfile = {
           firstName: profile.firstName,
@@ -67,10 +70,21 @@ function Chats(props) {
         };
       }
     });
+
+    if (!tempProfile.firstName) {
+      tempProfile = {
+        firstName: "unknown",
+        lastName: "",
+        googleImg: unknownUserImage,
+      };
+    }
+
+    console.log(tempProfile);
     return tempProfile;
   };
 
   useEffect(() => {
+    console.log(chatsQuery.data);
     if (chatsQuery) {
       if (chatsQuery.data) {
         if (chatsQuery.data.chats) {
@@ -82,6 +96,10 @@ function Chats(props) {
       }
     }
   }, [chatsQuery.data]);
+
+  useEffect(() => {
+    console.log(profilesQuery.data);
+  }, [profilesQuery.data]);
 
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
@@ -112,7 +130,7 @@ function Chats(props) {
                       &nbsp;
                     </span>
                     <span className="profileName">
-                      {profile.firstName} {profile.lastName[0]}.
+                      {profile.firstName} {profile.lastName ? profile.lastName[0] : ""}.
                     </span>
                   </div>
                   <div className="msgContainer">{message}</div>

@@ -7,7 +7,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
-import profileIcon from "../assets/chat-group.png";
+import chatGroupImage from "../assets/chat-group.png";
 import MapMarkerPopup from "./MapMarkerPopup";
 import { useAtom } from "jotai";
 import { isUserAuthenticated, loading } from "../atoms/AuthAtom";
@@ -72,7 +72,7 @@ const Map = () => {
   };
 
   var style3 = {
-    backgroundImage: "url(" + profileIcon + ")",
+    backgroundImage: "url(" + chatGroupImage + ")",
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
