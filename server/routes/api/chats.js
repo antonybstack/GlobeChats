@@ -1,4 +1,7 @@
 const express = require("express");
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr(process.env.CHAT_ENCRYPT_SECRET);
+
 const chatRoutes = express.Router();
 
 const ChatModel = require("../../models/chat.model");
@@ -7,6 +10,11 @@ chatRoutes.route("/").get(function (req, res) {
   ChatModel.find(function (err, chats) {
     if (err) {
     } else {
+      Object.keys(chats).forEach(function (i) {
+        const decryptedString = cryptr.decrypt(chats[i].message);
+        chats[i].message = decryptedString;
+      });
+      console.log({ chats });
       res.status(200).json({ chats });
     }
   });
@@ -35,6 +43,9 @@ chatRoutes.route("/chatroom/:id").get(function (req, res) {
 });
 
 chatRoutes.post("/add", (req, res) => {
+  const encryptedString = cryptr.encrypt(req.body.message);
+  req.body.message = encryptedString;
+
   let Chat = new ChatModel(req.body);
   Chat.save()
     .then((chat) => {
