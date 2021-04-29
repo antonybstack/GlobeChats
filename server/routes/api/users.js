@@ -80,22 +80,13 @@ userRoutes.put("/joinchatroom/:id", (req, res) => {
         res.status(404).send("data is not found");
       } else {
         if (req.body.chatroom_id) {
-          console.log(user.joinedChatroomIds);
-          console.log(req.body);
-          console.log(req.body.chatroom_id);
-          console.log("~~~~~~~~~~~");
-          console.log("~~~~~~~~~~~");
           var chatroomIdExists = false;
           user.joinedChatroomIds.forEach((chatroomId) => {
-            console.log(chatroomId);
-            console.log(req.body.chatroom_id);
-            console.log("~~~~~~~~~~~");
             if (chatroomId == req.body.chatroom_id) chatroomIdExists = true;
           });
 
           if (!chatroomIdExists) {
             user.joinedChatroomIds.push(req.body.chatroom_id);
-            console.log(user.joinedChatroomIds);
             user
               .save()
               .then((user) => {
@@ -118,17 +109,8 @@ userRoutes.put("/leavechatroom/:id", (req, res) => {
         res.status(404).send("data is not found");
       } else {
         if (req.body.chatroom_id) {
-          console.log(user.joinedChatroomIds);
-          console.log(req.body);
-          console.log(req.body.chatroom_id);
-          console.log("~~~~~~~~~~~");
-          console.log("~~~~~~~~~~~");
           var indexOfElementToDelete = -1;
           user.joinedChatroomIds.forEach((chatroomId, index) => {
-            console.log("index" + index);
-            console.log(chatroomId);
-            console.log(req.body.chatroom_id);
-            console.log("~~~~~~~~~~~");
             if (chatroomId == req.body.chatroom_id) {
               indexOfElementToDelete = index;
             }
@@ -136,7 +118,6 @@ userRoutes.put("/leavechatroom/:id", (req, res) => {
 
           if (indexOfElementToDelete != -1) {
             user.joinedChatroomIds.splice(indexOfElementToDelete, 1);
-            console.log(user.joinedChatroomIds);
             user
               .save()
               .then((user) => {

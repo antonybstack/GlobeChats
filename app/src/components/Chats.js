@@ -22,10 +22,10 @@ function Chats(props) {
           console.log(err);
         });
     },
-    {
-      // Refetch the data every second
-      refetchInterval: intervalMs,
-    },
+    // {
+    //   // Refetch the data every second
+    //   refetchInterval: intervalMs,
+    // },
     {
       // The query will not execute until exists
       enabled: !!isAuthenticated,

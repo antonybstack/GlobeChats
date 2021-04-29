@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "express-session": "^1.17.1",
+    "filereader": "^0.10.3",
     "google-auth-library": "^7.0.4",
     "jotai": "^0.16.3",
     "jsonwebtoken": "^8.5.1",
@@ -31,10 +32,12 @@
     "moment-timezone": "^0.5.33",
     "mongoose": "^5.12.3",
     "mongoose-float": "^1.0.4",
+    "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-http-bearer": "^1.0.1",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "request": "^2.88.2"
   },
   "engines": {
     "node": "14.16.x"

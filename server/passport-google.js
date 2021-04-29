@@ -4,6 +4,7 @@ const { OAuth2Client } = require("google-auth-library");
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const User = require("./models/user.model");
 const JwtStrategy = require("passport-jwt").Strategy;
+const request = require("request");
 
 // Bearer Token ---------------
 passport.use(
@@ -16,6 +17,16 @@ passport.use(
       .then(async (ticket) => {
         const payload = ticket.getPayload();
         const { sub, given_name, family_name, email, picture } = payload;
+
+        var base64Image = "";
+        var request = require("request").defaults({ encoding: null });
+        let temp = await request.get(picture, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+            data = "data:" + response.headers["content-type"] + ";base64," + Buffer.from(body).toString("base64");
+            base64Image = data;
+            return data;
+          }
+        });
 
         //check if this google account is in our database, if it isnt, we add it
         try {
@@ -30,7 +41,7 @@ passport.use(
               email: email,
               firstName: given_name,
               lastName: family_name,
-              googleImg: picture,
+              googleImg: base64Image,
             };
             let user = await User.create(newUser);
             return done(null, user);

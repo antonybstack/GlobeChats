@@ -14,7 +14,6 @@ chatRoutes.route("/").get(function (req, res) {
         const decryptedString = cryptr.decrypt(chats[i].message);
         chats[i].message = decryptedString;
       });
-      console.log({ chats });
       res.status(200).json({ chats });
     }
   });
@@ -49,10 +48,13 @@ chatRoutes.post("/add", (req, res) => {
   let Chat = new ChatModel(req.body);
   Chat.save()
     .then((chat) => {
-      console.log(chat);
       ChatModel.find(function (err, chats) {
         if (err) {
         } else {
+          Object.keys(chats).forEach(function (i) {
+            const decryptedString = cryptr.decrypt(chats[i].message);
+            chats[i].message = decryptedString;
+          });
           res.status(200).json({ chats });
         }
       });

@@ -21,7 +21,6 @@ chatroomRoutes.route("/joined/:arrayOfIds").get(function (req, res) {
     if (err) {
       return res.status(500).json({ message: { msgBody: "Error retrieving joined chatrooms", msgError: true }, chatroom });
     }
-    console.log({ chatrooms });
     return res.status(200).json({ chatrooms });
   });
 });
@@ -41,7 +40,6 @@ chatroomRoutes.post("/add", (req, res) => {
   let Chatroom = new ChatroomModel(req.body);
   Chatroom.save()
     .then((chatroom) => {
-      console.log(chatroom);
       ChatroomModel.find(function (err, chatrooms) {
         if (err) {
         } else {
@@ -72,7 +70,6 @@ chatroomRoutes.put("/update/:id", (req, res) => {
       if (!chatroom) {
         res.status(404).send("data is not found");
       } else {
-        console.log(req.body);
         if (req.body.adminId) chatroom.adminId = req.body.adminId;
         if (req.body.name) chatroom.name = req.body.name;
         if (req.body.tags) chatroom.tags = req.body.tags;
