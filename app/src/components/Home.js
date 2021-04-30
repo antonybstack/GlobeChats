@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useAtom } from "jotai";
 import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
-import Chatroom from "./Chatroom";
+import DraggableChatroom from "./DraggableChatroom";
 import FriendsList from "./FriendsList";
 import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import UnauthenticatedMap from "./UnauthenticatedMap";
+import { DraggableModalProvider } from "ant-design-draggable-modal";
 
 const Home = () => {
   const [, fetchUser] = useAtom(fetchUserAtom);
@@ -34,7 +35,9 @@ const Home = () => {
           <Map />
           <CreateButtons />
           <FriendsList friend={friend} />
-          <Chatroom />
+          <DraggableModalProvider>
+            <DraggableChatroom />
+          </DraggableModalProvider>
         </div>
       ) : (
         <div className="home">

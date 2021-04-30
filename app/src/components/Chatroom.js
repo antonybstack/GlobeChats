@@ -91,9 +91,9 @@ function Chatroom(props) {
     <>
       {chatroomsQuery.status === "loading" ? null : (
         <div className="chatroom-window-container">
-          <div className="chatroom-window-header">
+          {/* <div className="chatroom-window-header">
             <div className="chatroom-window-header-middle">Chatroom</div>
-          </div>
+          </div> */}
           <Tabs
             defaultIndex={tabSelect}
             onSelect={(tabSelect) => {
