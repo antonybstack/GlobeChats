@@ -24,7 +24,7 @@ function App() {
             <Route path="/" exact component={Home} />
           </Router>
         </Suspense>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </div>
   );

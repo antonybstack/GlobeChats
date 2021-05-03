@@ -613,7 +613,34 @@ input:checked + .slider:before {
   width: auto;
   display: flex;
   padding: 0.5em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.memberProfile:hover {
+  background-color: rgb(232, 232, 232);
   cursor: pointer;
+}
+
+.friendProfile {
+  white-space: nowrap;
+  color: cornflowerblue;
+  height: 100%;
+  padding-right: 0.5em;
+  width: auto;
+  display: flex;
+  padding: 0.5em;
+  cursor: default;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .memberProfile:hover {
@@ -893,6 +920,53 @@ input:checked + .slider:before {
 
 #friendsListContainer {
   position: absolute;
+  left: -175px;
+  width: 175px;
+  top: 63px;
+  background-color: rgb(250, 250, 250);
+  height: 87vh;
+  border-right: 1px solid rgb(240, 240, 240);
+  overflow: auto;
+  direction: ltr;
+  transition: left 100ms;
+  z-index: 1;
+}
+
+#membersMenuFoldOutlined {
+  content: url("https://api.iconify.design/ant-design:menu-fold-outlined.svg?color=grey&height=16");
+  width: 25px;
+  margin: auto;
+}
+
+#friendsMenuFoldOutlined {
+  content: url("https://api.iconify.design/ant-design:menu-unfold-outlined.svg?color=white&height=16");
+  width: 25px;
+}
+
+#friendlistToggleBtn {
+  position: absolute;
+  left: 10px;
+  top: 70px;
+  padding: 5px 5px 0px 10px;
+  width: 100px;
+  display: inline-flex;
+  direction: ltr;
+  transition: left 50ms;
+}
+
+#friendlistToggleBtnLabel {
+  padding-left: 10px;
+  color: white;
+  /* margin: auto; */
+  font-size: 12pt;
+}
+
+#friendsList {
+  padding: 10px;
+}
+
+#membersListContainer {
+  position: absolute;
   left: 0px;
   width: 175px;
   top: 0px;
@@ -905,19 +979,14 @@ input:checked + .slider:before {
   z-index: -1;
 }
 
-#menuFoldOutlined {
-  content: url("https://api.iconify.design/ant-design:menu-fold-outlined.svg?color=grey&height=16");
-  width: 25px;
-}
-
-#friendlistToggleBtn {
+#memberslistToggleBtn {
   position: absolute;
   left: 10px;
   top: 7.5px;
   padding: 0px 5px;
 }
 
-#friendsList {
+#membersList {
   padding: 10px;
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { userAtom, currentTab, isUserAuthenticated } from "../atoms/AtomHelpers";
+import { isUserAuthenticated } from "../atoms/AtomHelpers";
 import { Button } from "antd";
 import { useQuery, useQueryClient } from "react-query";
 import { Popover } from "antd";
@@ -11,7 +11,6 @@ function MembersList(props) {
   //   const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const refElem = useRef();
-  const queryClient = useQueryClient();
   const [, setFilteredMembers] = useState([]);
 
   const membersQuery = useQuery(
@@ -49,12 +48,12 @@ function MembersList(props) {
 
   const toggleMenu = () => {
     console.log(refElem);
-    if (refElem.current.offsetLeft === 0) document.getElementById("friendsListContainer").style.left = "-175px";
-    else document.getElementById("friendsListContainer").style.left = "0px";
+    if (refElem.current.offsetLeft === 0) document.getElementById("membersListContainer").style.left = "-175px";
+    else document.getElementById("membersListContainer").style.left = "0px";
   };
 
   const addFriend = () => {
-    console.log("Add friend function not implemented");
+    console.log("Add friend function");
   };
 
   var imgStyle = {
@@ -71,11 +70,11 @@ function MembersList(props) {
 
   return (
     <>
-      <Button id="friendlistToggleBtn" type="secondary" size="medium" onClick={toggleMenu}>
-        <div id="menuFoldOutlined"></div>
+      <Button id="memberslistToggleBtn" type="secondary" size="medium" onClick={toggleMenu}>
+        <div id="membersMenuFoldOutlined"></div>
       </Button>
-      <div id="friendsListContainer" ref={refElem}>
-        <div id="friendsList">
+      <div id="membersListContainer" ref={refElem}>
+        <div id="membersList">
           <h3>Members in Chat:</h3>
           <>
             {membersQuery.status === "loading"
@@ -85,7 +84,7 @@ function MembersList(props) {
 
                   return (
                     <Popover placement="topLeft" content={content} trigger="click">
-                      <div onClick="" className="memberProfile">
+                      <div onClick={addFriend} className="memberProfile">
                         <span>
                           <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
                           &nbsp;

@@ -28,8 +28,6 @@ const Map = () => {
       })
   );
 
-  console.log(globalChatroomsQuery);
-
   useEffect(() => {
     let arr = document.getElementsByClassName("mapPopup");
     for (var i = 0; i < arr.length; i++) {

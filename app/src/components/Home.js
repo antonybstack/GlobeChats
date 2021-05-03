@@ -34,7 +34,7 @@ const Home = () => {
         <div className="home">
           <Map />
           <CreateButtons />
-          {/* <FriendsList friend={friend} /> */}
+          <FriendsList />
           <DraggableModalProvider>
             <DraggableChatroom />
           </DraggableModalProvider>

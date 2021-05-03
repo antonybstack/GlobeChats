@@ -1,37 +1,92 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Friend from "./Friend";
 import { useAtom } from "jotai";
 import { userAtom, isUserAuthenticated } from "../atoms/AtomHelpers";
+import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
+import { Button } from "antd";
 
 const FriendsList = () => {
   // const { user, isAuthenticated } = useContext(AuthContext);
-  const [user] = useAtom(userAtom);
+  // const [user] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
-  const [friendList, setFriendList] = useState([""]);
+  // const [friendList, setFriendList] = useState([""]);
+  const refElem = useRef();
+  // const queryClient = useQueryClient();
+  // const [, setFilteredMembers] = useState([]);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      axios
-        .post("/api/friends/friends-list", { googleId: user.googleId })
-        .then((res) => {
-          setFriendList(res.data[0]);
-        })
+  const membersQuery = useQuery(
+    "profiles",
+    () => {
+      return axios
+        .get("/api/users/")
+        .then((res) => res.data)
         .catch((err) => {
           console.log(err);
         });
+    },
+    {
+      // The query will not execute until exists
+      enabled: !!isAuthenticated,
     }
-  }, [isAuthenticated, user]);
+  );
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     axios
+  //       .post("/api/friends/friends-list", { googleId: user.googleId })
+  //       .then((res) => {
+  //         setFriendList(res.data[0]);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [isAuthenticated, user]);
+
+  const toggleMenu = () => {
+    if (refElem.current.offsetLeft === 0) {
+      document.getElementById("friendsListContainer").style.left = "-175px";
+      document.getElementById("friendlistToggleBtn").style.left = "10px";
+    } else {
+      document.getElementById("friendsListContainer").style.left = "0px";
+      document.getElementById("friendlistToggleBtn").style.left = "185px";
+    }
+  };
+
+  var imgStyle = {
+    borderRadius: "20px",
+  };
 
   return (
-    <div className="friends-list-container">
-      <div className="friends-list-header">Friends</div>
-      {friendList ? (
-        <>
-          <Friend googleId={friendList[0].googleId} />
-        </>
-      ) : null}
-    </div>
+    <>
+      <Button id="friendlistToggleBtn" type="primary" size="medium" onClick={toggleMenu}>
+        <div id="friendsMenuFoldOutlined"></div>
+        <span id="friendlistToggleBtnLabel">Friends</span>
+      </Button>
+      <div id="friendsListContainer" ref={refElem}>
+        <div id="friendsList">
+          <h3>Friends:</h3>
+          {membersQuery.status === "loading"
+            ? null
+            : membersQuery.data.users.map((user, i) => {
+                const { firstName, lastName, googleImg } = user;
+
+                return (
+                  <div key={user._id} className="friendProfile">
+                    <span>
+                      <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                      &nbsp;
+                    </span>
+                    <span className="profileName">
+                      {firstName} {lastName ? lastName[0] + "." : ""}
+                    </span>
+                  </div>
+                );
+              })}
+        </div>
+      </div>
+    </>
   );
 };
 
