@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleLogout } from "react-google-login";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom, isUserAuthenticated } from "../atoms/AtomHelpers";
 import axios from "axios";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 

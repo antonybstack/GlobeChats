@@ -4,6 +4,7 @@ import { DraggableModal, DraggableModalProvider, DraggableModalProps } from "ant
 import "antd/dist/antd.css";
 import "ant-design-draggable-modal/dist/index.css";
 import Chatroom from "./Chatroom";
+import MembersList from "./MembersList";
 
 const DraggableChatroom = (props) => {
   const [visible, setVisible] = useState(false);
@@ -15,9 +16,11 @@ const DraggableChatroom = (props) => {
       <Button id="openChatroomBtn" onClick={onToggle} type={visible ? "secondary" : "primary"}>
         {visible ? "Close Chat Window" : "Open Chat Window"}
       </Button>
-      <DraggableModal title="Chatrooms" visible={visible} onOk={onOk} onCancel={onCancel} {...props} initialWidth={800} initialHeight={500}>
+      <DraggableModal class="draggableChatroom" title="Chatrooms" visible={visible} onOk={onOk} onCancel={onCancel} {...props} initialWidth={800} initialHeight={500}>
+        <MembersList />
         <Chatroom />
       </DraggableModal>
+     
     </>
   );
 };

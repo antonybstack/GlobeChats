@@ -3,7 +3,7 @@ import axios from "axios";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
 import { useQuery } from "react-query";
-import { isUserAuthenticated, loading } from "../atoms/AuthAtom";
+import { isUserAuthenticated, loading } from "../atoms/AtomHelpers";
 import unknownUserImage from "../assets/5.png";
 
 function Chats(props) {

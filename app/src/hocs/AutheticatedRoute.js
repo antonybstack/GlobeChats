@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useAtom } from "jotai";
-import { isUserAuthenticated } from "../atoms/AuthAtom";
+import { isUserAuthenticated } from "../atoms/AtomHelpers";
 
 //we dont want a logged in user to be able to log in or register
 

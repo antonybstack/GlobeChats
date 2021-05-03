@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useAtom } from "jotai";
-import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom, fetchUserAtom, isUserAuthenticated } from "../atoms/AtomHelpers";
 import DraggableChatroom from "./DraggableChatroom";
 import FriendsList from "./FriendsList";
 import CreateButtons from "./CreateButtons";
@@ -34,7 +34,7 @@ const Home = () => {
         <div className="home">
           <Map />
           <CreateButtons />
-          <FriendsList friend={friend} />
+          {/* <FriendsList friend={friend} /> */}
           <DraggableModalProvider>
             <DraggableChatroom />
           </DraggableModalProvider>

@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./components/Home";
 import { Suspense } from "react";
 import { useAtom } from "jotai";
-import { loading } from "./atoms/AuthAtom";
+import { loading } from "./atoms/AtomHelpers";
 
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -24,7 +24,7 @@ function App() {
             <Route path="/" exact component={Home} />
           </Router>
         </Suspense>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </div>
   );

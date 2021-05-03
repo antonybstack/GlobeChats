@@ -3,7 +3,7 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { userAtom, loading } from "../atoms/AuthAtom";
+import { userAtom, loading, currentTab } from "../atoms/AtomHelpers";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
@@ -11,7 +11,7 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 
 function Chatroom(props) {
   const [user, setUser] = useAtom(userAtom);
-  // const [setChats] = useAtom(chatsAtom);
+  const [, setCurrentChatroomTab] = useAtom(currentTab);
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
   const [, setIsLoading] = useAtom(loading);
@@ -46,6 +46,10 @@ function Chatroom(props) {
     },
   });
 
+  const changeCurrentTab = (key) => {
+    setCurrentChatroomTab(key);
+  };
+
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
       var elem = document.getElementById("chatMessages");
@@ -67,13 +71,15 @@ function Chatroom(props) {
   const send = (e) => {
     e.preventDefault();
     let date = moment().tz("America/New_York");
-    let chatPacket = {
-      userId: user._id,
-      chatroomId: chatroomsQuery.data.chatrooms[tabSelect]._id,
-      message: message,
-      timestamp: date,
-    };
-    addChatMutation.mutate(chatPacket);
+    if (message.length > 0) {
+      let chatPacket = {
+        userId: user._id,
+        chatroomId: chatroomsQuery.data.chatrooms[tabSelect]._id,
+        message: message,
+        timestamp: date,
+      };
+      addChatMutation.mutate(chatPacket);
+    }
 
     setMessage("");
   };
@@ -104,7 +110,7 @@ function Chatroom(props) {
               {chatroomsQuery.data
                 ? chatroomsQuery.data.chatrooms.map((chatroom) => {
                     return (
-                      <Tab key={chatroom._id}>
+                      <Tab onClick={() => changeCurrentTab(chatroom._id)} key={chatroom._id}>
                         {chatroom.name}&nbsp;
                         <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
                           x
@@ -119,25 +125,25 @@ function Chatroom(props) {
                   return (
                     <TabPanel key={chatroom._id}>
                       <div className="chat">
-                            <div id="chatMessages" className="chatMessages">
-                              <Chats chatroom_id={chatroom._id} />
-                            </div>
-                            <div className="chatbar">
-                              <textarea
-                                id="textarea"
-                                className="chatinput"
-                                type="textarea"
-                                name="message"
-                                placeholder="Your Message Here"
-                                wrap="hard"
-                                value={message}
-                                onChange={handleChange}
-                                onKeyPress={handleKeyPress}
-                              />
-                              <button className="chatSend" onClick={send}>
-                                Send
-                              </button>
-                            </div>
+                        <div id="chatMessages" className="chatMessages">
+                          <Chats chatroom_id={chatroom._id} />
+                        </div>
+                        <div className="chatbar">
+                          <textarea
+                            id="textarea"
+                            className="chatinput"
+                            type="textarea"
+                            name="message"
+                            placeholder="Your Message Here"
+                            wrap="hard"
+                            value={message}
+                            onChange={handleChange}
+                            onKeyPress={handleKeyPress}
+                          />
+                          <button className="chatSend" onClick={send}>
+                            Send
+                          </button>
+                        </div>
                       </div>
                     </TabPanel>
                   );

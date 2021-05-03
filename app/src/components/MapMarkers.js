@@ -9,15 +9,13 @@ import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import chatGroupImage from "../assets/chat-group-filled-75px.png";
 import MapMarkerPopup from "./MapMarkerPopup";
 import { useAtom } from "jotai";
-import { loading } from "../atoms/AuthAtom";
+import { loading } from "../atoms/AtomHelpers";
 import { useQuery } from "react-query";
 
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
 
-
 const Map = () => {
-  
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [, setIsLoading] = useAtom(loading);
 
@@ -40,9 +38,6 @@ const Map = () => {
     if (selectedMarker != null) document.getElementsByClassName("mapPopup")[selectedMarker].style.display = "block";
   }, [selectedMarker]);
 
-
-
-
   const openPopup = (e, index) => {
     setSelectedMarker(index);
   };
@@ -61,7 +56,8 @@ const Map = () => {
 
   return (
     <>
-      {globalChatroomsQuery.status === "loading" ? null : (<>
+      {globalChatroomsQuery.status === "loading" ? null : (
+        <>
           {globalChatroomsQuery.data
             ? globalChatroomsQuery.data.chatrooms.map((chatroom, i) => {
                 let props = {
@@ -97,7 +93,7 @@ const Map = () => {
                 );
               })
             : null}
-          </>
+        </>
       )}
     </>
   );

@@ -27,3 +27,5 @@ export const fetchUserAtom = atom(null, async (get, set) => {
 });
 
 export const loading = atom(false);
+
+export const currentTab = atom("");

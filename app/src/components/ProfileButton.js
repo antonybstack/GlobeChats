@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Profile from "./Profile";
 import { useAtom } from "jotai";
-import { userAtom } from "../atoms/AuthAtom";
+import { userAtom } from "../atoms/AtomHelpers";
 
 function ProfileButton() {
   const [user] = useAtom(userAtom);

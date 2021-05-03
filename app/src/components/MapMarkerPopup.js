@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useAtom } from "jotai";
-import { userAtom } from "../atoms/AuthAtom";
+import { userAtom } from "../atoms/AtomHelpers";
 import { useQuery, useMutation } from "react-query";
 
 const MapMarkerPopup = (props) => {

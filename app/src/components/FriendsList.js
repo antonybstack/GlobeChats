@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Friend from "./Friend";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated } from "../atoms/AuthAtom";
+import { userAtom, isUserAuthenticated } from "../atoms/AtomHelpers";
 import axios from "axios";
 
 const FriendsList = () => {

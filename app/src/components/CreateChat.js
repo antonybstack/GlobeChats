@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useAtom } from "jotai";
-import { userAtom } from "../atoms/AuthAtom";
+import { userAtom } from "../atoms/AtomHelpers";
 import Chatroom from "./Chatroom";
 import { useMutation, useQueryClient } from "react-query";
 
@@ -35,12 +35,12 @@ function CreateChat(props) {
       setLng(position.coords.longitude);
       setLat(position.coords.latitude);
     });
-    
+
     navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
       permissionStatus.onchange = function () {
         navigator.geolocation.getCurrentPosition(function (position) {
           setLng(position.coords.longitude);
-      setLat(position.coords.latitude);
+          setLat(position.coords.latitude);
         });
       };
     });
@@ -72,8 +72,6 @@ function CreateChat(props) {
       location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
     });
   };
-
-
 
   return (
     <div>
