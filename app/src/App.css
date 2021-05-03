@@ -408,20 +408,20 @@ input:checked + .slider:before {
 }
 
 .profile-text {
-  text-align: center;
   margin-bottom: 10px;
+  display: inline;
+  padding-left: 10px;
+  font-size: 12pt;
 }
 
 .profile-title {
   font-weight: bold;
-  text-align: center;
+  display: inline;
+  font-size: 12pt;
 }
 
 .profile-pic {
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
   margin-bottom: 10px;
 }
 
