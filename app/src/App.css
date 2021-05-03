@@ -426,7 +426,7 @@ input:checked + .slider:before {
 }
 
 .chat {
-  display: flex;
+  
 }
 
 /* ultimate chatroom container */
@@ -535,16 +535,16 @@ input:checked + .slider:before {
 } */
 
 .chatMessages {
-  grid-area: msg;
-  grid-column: 1;
-  grid-row: 1;
   background-color: white;
-  padding: 0.1em;
-  /* width: 100%; */
-  color: black;
-  overflow: auto;
-  word-wrap: break-word;
-  padding-bottom: 1em;
+    padding: 0.1em;
+    width: 99%;
+    color: black;
+    overflow-y: auto;
+    padding-bottom: 1em;
+    position: inherit;
+    display: block;
+    margin-bottom: 50px;
+    padding-top: 50px;
 }
 
 .chatMessages::-webkit-scrollbar {
@@ -612,28 +612,30 @@ input:checked + .slider:before {
 }
 
 .chatbar {
-  grid-column: 1;
-  grid-row: 2;
-  display: inline-flex;
-  height: 50px;
+  display: flex;
+    height: 50px;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
 }
 
-.chatinput::-webkit-scrollbar {
+
+.chatinput::-webkit-scrollbar, .ant-modal-body::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-.chatinput::-webkit-scrollbar-track {
+.chatinput::-webkit-scrollbar-track, .ant-modal-body::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
 /* Handle */
-.chatinput::-webkit-scrollbar-thumb {
+.chatinput::-webkit-scrollbar-thumb, .ant-modal-body::-webkit-scrollbar-thumb {
   background: rgb(206, 206, 206);
 }
 
 /* Handle on hover */
-.chatinput::-webkit-scrollbar-thumb:hover {
+.chatinput::-webkit-scrollbar-thumb:hover, .ant-modal-body::-webkit-scrollbar-thumb:hover {
   background: rgb(190, 190, 190);
 }
 
@@ -687,6 +689,9 @@ input:checked + .slider:before {
 
 .react-tabs__tab-list {
   margin: 0px 0px 0px 5px;
+  position: absolute;
+  background-color: white;
+  width: 100%;
 }
 
 .react-tabs__tab {

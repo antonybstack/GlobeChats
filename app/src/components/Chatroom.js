@@ -119,8 +119,6 @@ function Chatroom(props) {
                   return (
                     <TabPanel key={chatroom._id}>
                       <div className="chat">
-                        <div className="chatroom">
-                          <div className="chatContainer">
                             <div id="chatMessages" className="chatMessages">
                               <Chats chatroom_id={chatroom._id} />
                             </div>
@@ -140,8 +138,6 @@ function Chatroom(props) {
                                 Send
                               </button>
                             </div>
-                          </div>
-                        </div>
                       </div>
                     </TabPanel>
                   );
