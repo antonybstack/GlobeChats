@@ -620,6 +620,14 @@ input:checked + .slider:before {
 }
 
 
+.ant-modal-body::-webkit-scrollbar-button:start{
+  height: 35px;
+}
+
+.ant-modal-body::-webkit-scrollbar-button:end{
+  height: 50px;
+}
+
 .chatinput::-webkit-scrollbar, .ant-modal-body::-webkit-scrollbar {
   width: 10px;
 }

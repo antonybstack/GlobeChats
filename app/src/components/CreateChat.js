@@ -35,6 +35,15 @@ function CreateChat(props) {
       setLng(position.coords.longitude);
       setLat(position.coords.latitude);
     });
+    
+    navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
+      permissionStatus.onchange = function () {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          setLng(position.coords.longitude);
+      setLat(position.coords.latitude);
+        });
+      };
+    });
   }, []);
 
   const submitNewChatroom = (chatroom) => {
@@ -64,13 +73,10 @@ function CreateChat(props) {
     });
   };
 
-  const handleCloseChatroom = (event) => {
-    setDisplayChatroom(!displayChatroom);
-  };
+
 
   return (
     <div>
-      <div>{displayChatroom ? <Chatroom handleClose={handleCloseChatroom} /> : null}</div>
       <div id="create-chat">
         <div className="event-create-container">
           <div className="event-header">
