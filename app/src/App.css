@@ -908,7 +908,7 @@ input:checked + .slider:before {
   display: flex;
 }
 
-.ant-design-draggable-modal .ant-modal-wrap.ant-design-draggable-modal {
+.ant-modal-wrap.ant-design-draggable-modal {
   z-index: 100 !important;
 }
 

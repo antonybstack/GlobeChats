@@ -1,12 +1,14 @@
 import React from "react";
 import { GoogleLogin } from "react-google-login";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated } from "../atoms/AtomHelpers";
+import { userAtom, isUserAuthenticated, fetchUserAtom } from "../atoms/AtomHelpers";
 import axios from "axios";
+import { Space, message } from "antd";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const Login = () => {
   const [, setUser] = useAtom(userAtom);
+  const [, fetchUser] = useAtom(fetchUserAtom);
   const [, setIsAuthenticated] = useAtom(isUserAuthenticated);
 
   const handleGoogleLogin = (response) => {
@@ -18,9 +20,12 @@ const Login = () => {
       })
       .then((res) => {
         const { isAuthenticated, user } = res.data;
-        setUser(user);
-        setIsAuthenticated(isAuthenticated);
-        window.location.reload();
+        fetchUser();
+        // setUser(user);
+        // setIsAuthenticated(isAuthenticated);
+        // window.location.reload();
+
+        message.success("Successfully logged in");
       })
       .catch(function () {});
   };
@@ -31,6 +36,7 @@ const Login = () => {
 
   return (
     <div id="GoogleLogin" className="nav-item">
+      <Space />
       <GoogleLogin
         clientId={REACT_APP_GOOGLE_CLIENT_ID}
         buttonText="Sign in with Google"
