@@ -1,9 +1,17 @@
 const express = require("express");
 const eventRoutes = express.Router();
-const passport = require("passport");
-const passportconfig = require("../../passport-google");
 
 const Event = require("../../models/event.model");
+
+eventRoutes.route("/").get(function(req, res) {
+  Event.find(function(err, events) {
+    if (err) {
+      res.status(500).json({ error: "Something went wrong." });
+    } else {
+      res.status(200).json({ events });
+    }
+  })
+});
 
 eventRoutes.post("/new", (req, res) => {
   let event = new Event(req.body);
