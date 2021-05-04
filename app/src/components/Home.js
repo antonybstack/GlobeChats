@@ -7,6 +7,8 @@ import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import UnauthenticatedMap from "./UnauthenticatedMap";
 import { DraggableModalProvider } from "ant-design-draggable-modal";
+import CreateChat from "./CreateChat";
+import CreateEvent from "./CreateEvent";
 
 const Home = () => {
   const [, fetchUser] = useAtom(fetchUserAtom);
@@ -33,7 +35,8 @@ const Home = () => {
       {isAuthenticated ? (
         <div className="home">
           <Map />
-          <CreateButtons />
+          <CreateChat />
+          <CreateEvent />
           <FriendsList />
           <DraggableModalProvider>
             <DraggableChatroom />

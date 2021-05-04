@@ -233,6 +233,11 @@ html {
 .create-buttons-left {
   float: left;
   transition: transform 250ms;
+  width: 100px;
+  height: 100px;
+  background: rgb(23 66 109 / 80%);
+  bottom: 30px;
+  right: 155px;
 }
 
 .create-buttons-left:hover {
@@ -245,6 +250,11 @@ html {
   margin-left: 25px;
   float: right;
   transition: transform 250ms;
+  width: 100px;
+  height: 100px;
+  background: rgb(23 66 109 / 80%);
+  bottom: 30px;
+  right: 30px;
 }
 
 .create-buttons-right:hover {
@@ -255,12 +265,10 @@ html {
 
 .circleBase {
   border-radius: 50%;
+  position: absolute;
 }
 
 .type1 {
-  width: 100px;
-  height: 100px;
-  background: rgb(23 66 109 / 80%);
 }
 
 .outer-icon {
@@ -896,24 +904,24 @@ input:checked + .slider:before {
   border: 1px solid #40a9ff;
 }
 
-.ant-modal-body {
+.ant-design-draggable-modal .ant-modal-body {
   display: flex;
 }
 
-.ant-modal-wrap.ant-design-draggable-modal {
+.ant-design-draggable-modal .ant-modal-wrap.ant-design-draggable-modal {
   z-index: 100 !important;
 }
 
-.ant-modal {
+.ant-design-draggable-modal .ant-modal {
   top: 577.5px;
   left: 7px;
 }
 
-.ant-modal-footer {
+.ant-design-draggable-modal .ant-modal-footer {
   display: none;
 }
 
-.ant-modal-body {
+.ant-design-draggable-modal .ant-modal-body {
   padding: 0 !important;
   margin: 0 !important;
 }

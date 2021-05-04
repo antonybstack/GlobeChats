@@ -28,7 +28,7 @@ function CreateButtons() {
         {displayEvent.displayEvent ? <CreateEvent handleClose={newEventClick} /> : null}
         {displayChat.displayChat ? <CreateChat handleClose={newGroupClick} /> : null}
       </div>
-      <div className="create-buttons">
+      {/* <div className="create-buttons">
         <div className="circleBase type1 create-buttons-left" onClick={newEventClick}>
           <div className="outer-icon">
             <div className="inner-calendar-icon"></div>
@@ -39,7 +39,7 @@ function CreateButtons() {
             <div className="inner-group-icon"></div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

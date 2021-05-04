@@ -3,12 +3,20 @@ import axios from "axios";
 
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AtomHelpers";
-import Chatroom from "./Chatroom";
 import { useMutation, useQueryClient } from "react-query";
+import { Modal, Form, Input, Button, Switch, message, Space } from "antd";
 
 function CreateChat(props) {
   const [user] = useAtom(userAtom);
   const queryClient = useQueryClient();
+  const [modalVisibilty, setModalVisibility] = useState(false);
+  const [, setDisplayChatroom] = useState(false);
+  const [lng, setLng] = useState(-80.8315);
+  const [lat, setLat] = useState(35.21);
+  const [name, setName] = useState("");
+  const [tags, setTags] = useState("");
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   const addChatroomMutation = useMutation((newChatroom) => axios.post("/api/chatrooms/add", newChatroom), {
     onSuccess: async (data) => {
@@ -16,19 +24,10 @@ function CreateChat(props) {
     },
   });
 
-  const [name, setName] = useState("");
-  const [topics, setTopics] = useState("");
-  const [pub, setPub] = useState("");
-  const [anon, setAnon] = useState("");
-
-  const settingName = (chatroom) => setName(chatroom.target.value);
-  const settingTopics = (chatroom) => setTopics(chatroom.target.value);
-  const settingPublic = (chatroom) => setPub(chatroom.target.value);
-  const settingAnon = (chatroom) => setAnon(chatroom.target.value);
-
-  const [displayChatroom, setDisplayChatroom] = useState(false);
-  const [lng, setLng] = useState(-80.8315);
-  const [lat, setLat] = useState(35.21);
+  const settingName = (e) => setName(e.target.value);
+  const settingTags = (e) => setTags(e.target.value);
+  const settingIsPrivate = (e) => setIsPrivate(e);
+  const settingIsVerified = (e) => setIsVerified(e);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -46,19 +45,13 @@ function CreateChat(props) {
     });
   }, []);
 
-  const submitNewChatroom = (chatroom) => {
-    chatroom.preventDefault();
-
+  const submitNewChatroom = () => {
     if (!name) {
-      alert("Please make sure to enter all the fields!");
+      message.error("Please make sure to fill out each field");
       return;
     }
 
     setDisplayChatroom(true);
-    document.getElementById("create-chat").innerHTML = "";
-
-    var isPrivate = pub === "true";
-    var verifyUsers = anon === "true";
 
     let longitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
     let latitude_buffer_for_privacy = Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1);
@@ -66,76 +59,67 @@ function CreateChat(props) {
     addChatroomMutation.mutate({
       adminId: user._id,
       name: name,
-      tags: topics,
+      tags: tags,
       isPrivate: isPrivate,
-      verifyUsers: verifyUsers,
+      verifyUsers: isVerified,
       location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
     });
+    setModalVisibility(!modalVisibilty);
+    setName("");
+    setTags("");
+    setIsPrivate(false);
+    setIsVerified(false);
+    message.success("Chatroom successfully created!");
+  };
+
+  const toggleModalVisibility = () => {
+    setModalVisibility(!modalVisibilty);
   };
 
   return (
-    <div>
-      <div id="create-chat">
-        <div className="event-create-container">
-          <div className="event-header">
-            <div className="event-header-middle">Create New Chatroom</div>
-            <div className="event-close-outside" onClick={props.handleClose}>
-              <div className="event-close-x-left">
-                <div className="event-close-x-right"></div>
-              </div>
-            </div>
-          </div>
-          <form className="event-form" onSubmit={submitNewChatroom}>
-            <div className="event-row">
-              <div className="event-col-25">
-                <label className="event-form-label">Chat Name</label>
-              </div>
-              <div className="event-col-75">
-                <input className="event-input-text" type="text" name="{name}" onChange={settingName} />
-              </div>
-            </div>
-
-            <div className="event-row">
-              <div className="event-col-25">
-                <label className="event-form-label">Chat Topics</label>
-              </div>
-              <div className="event-col-75">
-                <input className="event-input-text" type="text" name="{topics}" onChange={settingTopics} />
-              </div>
-            </div>
-
-            <div className="event-row">
-              <div className="event-col-25">
-                <label className="event-form-label">Public/Private</label>
-              </div>
-              <label className="event-col-75 switch">
-                <input type="checkbox" onChange={settingPublic} />
-                <span className="slider round"></span>
-              </label>
-            </div>
-
-            <div className="event-row">
-              <div className="event-col-25">
-                <label className="event-form-label">Anonymous/Verified</label>
-              </div>
-              <label className="event-col-75 switch">
-                <input type="checkbox" onChange={settingAnon} />
-                <span className="slider round"></span>
-              </label>
-            </div>
-
-            <div className="event-row">
-              <div className="event-col-50-left">
-                <input className="event-submit-buttons" type="submit" value="Create Chatroom" />
-              </div>
-              <div className="event-col-50-right">
-                <input className="event-submit-buttons" type="submit" value="Cancel" onClick={props.handleClose} />
-              </div>
-            </div>
-          </form>
+    <>
+      <Space />
+      <div className="circleBase create-buttons-right" onClick={toggleModalVisibility}>
+        <div className="outer-icon">
+          <div className="inner-group-icon"></div>
         </div>
       </div>
-    </div>
+      <Modal
+        title="Create new chatroom"
+        centered
+        visible={modalVisibilty}
+        onOk={() => setModalVisibility(false)}
+        onCancel={() => setModalVisibility(false)}
+        footer={[
+          <Button key="submit" type="primary" onClick={() => submitNewChatroom()}>
+            Submit
+          </Button>,
+        ]}
+      >
+        <Form
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 10,
+          }}
+          layout="horizontal"
+        >
+          <Form.Item label="Chatroom name">
+            <Input onChange={settingName} name="chatroomName" value={name} />
+          </Form.Item>
+          <Form.Item label="Tags">
+            <Input onChange={settingTags} name="tags" value={tags} />
+          </Form.Item>
+          <Form.Item label="Public/Private">
+            <Switch onChange={settingIsPrivate} name="isPrivate" label="isPrivate" value={isPrivate} />
+          </Form.Item>
+          <Form.Item label="Anonymous/Verified">
+            <Switch onChange={settingIsVerified} name="isVerified" label="isVerified" value={isVerified} />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 }
 
