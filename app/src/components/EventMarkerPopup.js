@@ -26,7 +26,7 @@ const EventMarkerPopup = (props) => {
   var style3 = { fontSize: "10pt" };
   
   let evdate = (new Date(eventDate).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })) + " at " + (new Date(eventDate).toLocaleTimeString("en-US"));
-  let loc = "Lat: " + location[1] + " Long: " + location[0];
+  let loc = "Long: " + location[0] + " Lat: " + location[1];
 
   return (
     <>

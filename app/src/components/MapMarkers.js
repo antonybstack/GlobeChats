@@ -76,6 +76,11 @@ const Map = () => {
     else setIsLoading(false);
   }, [globalChatroomsQuery.status]);
 
+  useEffect(() => {
+    if (globalEventsQuery.status === "loading") setIsLoading(true);
+    else setIsLoading(false);
+  }, [globalEventsQuery.status]);
+
   return (
     <>
       {globalChatroomsQuery.status === "loading" ? null : (
