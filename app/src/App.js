@@ -1,5 +1,5 @@
 import "./App.css";
-import Nav from "./components/Nav";
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./components/Home";
 import { Suspense } from "react";
@@ -20,7 +20,6 @@ function App() {
         <Suspense fallback={<img className="loading" src="loading.gif" alt="loading..." />}>
           <Router>
             {isLoading > 0 ? <img className="loading" src="loading.gif" alt="loading..." /> : null}
-            <Nav />
             <Route path="/" exact component={Home} />
           </Router>
         </Suspense>

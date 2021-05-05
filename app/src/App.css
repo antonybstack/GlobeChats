@@ -541,6 +541,14 @@ input:checked + .slider:before {
   text-overflow: ellipsis;
 } */
 
+.ant-input[disabled] {
+  color: rgb(0 0 0 / 70%) !important;
+}
+
+.ant-switch-disabled {
+  opacity: 0.75 !important;
+}
+
 .chatMessages {
   background-color: white;
   padding: 0.1em;
@@ -584,6 +592,22 @@ input:checked + .slider:before {
 
 .profileName {
   margin: auto;
+  color: grey;
+}
+
+.profileName.online {
+  margin: auto;
+  color: unset;
+}
+
+.profileImg {
+  border-radius: 20px;
+  border: 3px solid #bdbdbd;
+}
+
+.profileImg.online {
+  border-radius: 20px;
+  border: 3px solid #00da6b;
 }
 
 .chatTime {
@@ -957,8 +981,17 @@ input:checked + .slider:before {
   font-size: 12pt;
 }
 
-#friendsList {
-  padding: 10px;
+#onlineFriendsList {
+  padding: 0px 10px 10px 10px;
+}
+
+#offlineFriendsList {
+  padding: 20px 10px 10px 10px;
+}
+
+#friendsListContainer > #onlineFriendsList > .ant-divider-horizontal,
+#friendsListContainer > #offlineFriendsList > .ant-divider-horizontal {
+  margin: 12px 0 !important;
 }
 
 #membersListContainer {

@@ -17,7 +17,7 @@ import { useQuery } from "react-query";
 mapboxgl.workerClass = MapboxWorker;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
 
-const Map = () => {
+const MapMarkers = () => {
   const [selectedChatroomMarker, setSelectedChatroomMarker] = useState(null);
   const [selectedEventMarker, setSelectedEventMarker] = useState(null);
   const [, setIsLoading] = useAtom(loading);
@@ -164,4 +164,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MapMarkers;

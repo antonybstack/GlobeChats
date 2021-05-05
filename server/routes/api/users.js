@@ -21,10 +21,12 @@ const signToken = (userID) => {
 userRoutes.post("/login", passport.authenticate("bearer", { session: false }), (req, res, next) => {
   const token = signToken(req.user._id);
   res.cookie("access_token", token, { httpOnly: true, sameSite: true });
-  const { _id, googleId, email, firstName, lastName, googleImg, register_date } = req.user;
-  res
-    .status(200)
-    .json({ isAuthenticated: true, user: { _id, googleId, email, firstName, lastName, googleImg, register_date }, message: { msgBody: "Account successfully logged in", msgError: false } });
+  const { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } = req.user;
+  res.status(200).json({
+    isAuthenticated: true,
+    user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds },
+    message: { msgBody: "Account successfully logged in", msgError: false },
+  });
 });
 
 //LOGOUT

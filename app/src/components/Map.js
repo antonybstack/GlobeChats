@@ -19,7 +19,6 @@ var arrr = [-80.8315, 35.21];
 const zoom = [10];
 const pitch = [50];
 
-
 navigator.geolocation.getCurrentPosition(function (position) {
   arrr = [position.coords.longitude, position.coords.latitude];
 });
@@ -32,42 +31,22 @@ navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => 
   };
 });
 
-
-
-// const [lng, setLng] = useState(-80.8315);
-//   const [lat, setLat] = useState(35.21);
-
 const Map = () => {
-  
-  // const [coordinates] = [[lng,lat]];
-  
-  // const [zoom, setZoom] = useState(10.66);
-  // const [markersGenerated, setMarkersGenerated] = useState(false);
-
-
-
-  useEffect(() => {
-    
-  }, []);
-
-  
-
   const styleRef = "mapbox://styles/mapbox/streets-v11";
-
   return (
     <>
-        <MapGL
-          style={styleRef}
-          containerStyle={{
-            height: "100vh",
-            width: "100vw",
-          }}
-          center={arrr}
-          zoom={zoom}
-          pitch={pitch}
-        >
-          <MapMarkers />
-        </MapGL>
+      <MapGL
+        style={styleRef}
+        containerStyle={{
+          height: "100vh",
+          width: "100vw",
+        }}
+        center={arrr}
+        zoom={zoom}
+        pitch={pitch}
+      >
+        <MapMarkers />
+      </MapGL>
     </>
   );
 };

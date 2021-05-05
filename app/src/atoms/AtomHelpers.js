@@ -1,17 +1,20 @@
 import axios from "axios";
 import { atom } from "jotai";
+import * as io from "socket.io-client";
 
+// keeping track of what is loading globally for loading spinner
+export const loading = atom(false);
+
+// current user autheticated and logged in
 export const user = atom({});
 export const isUserAuthenticated = atom(false);
-
 export const userAtom = atom(
   async (get) => get(user),
   async (get, set, tempUser) => {
     set(user, tempUser);
   }
 );
-
-export const fetchUserAtom = atom(null, async (get, set) => {
+export const fetchUserAtom = atom(null, (get, set) => {
   set(user, {});
   set(isUserAuthenticated, false);
   axios
@@ -26,6 +29,36 @@ export const fetchUserAtom = atom(null, async (get, set) => {
     });
 });
 
-export const loading = atom(false);
-
+// keeps track of current tab in chatroom window
 export const currentTab = atom("");
+
+// socket.io object
+export const socket = atom([]);
+export const socketAtom = atom(
+  async (get) => get(socket),
+  async (get, set, tempSocket) => {
+    set(user, tempSocket);
+  }
+);
+export const fetchSocketAtom = atom(null, async (get, set) => {
+  var hostname = "http://localhost:5000";
+  if (window.location.hostname.toString() !== "localhost") {
+    hostname = window.location.hostname;
+  }
+  const tempSocket = await io.connect(hostname);
+  set(socket, tempSocket);
+});
+
+export const connectedUsers = atom([]);
+export const connectedUsersAtom = atom(
+  async (get) => get(connectedUsers),
+  async (get, set, tempConnectedUsers) => {
+    set(connectedUsers, tempConnectedUsers);
+  }
+);
+// export const fetchConnectedUsersAtom = atom(null, async (get, set) => {
+//   socket.on("get connections", (data) => {
+//     console.log(data);
+//     set(connectedUsers, data);
+//   });
+// });
