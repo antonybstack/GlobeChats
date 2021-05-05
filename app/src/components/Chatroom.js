@@ -8,10 +8,14 @@ import { userAtom, loading, currentTab } from "../atoms/AtomHelpers";
 import Chats from "./Chats";
 import moment from "moment-timezone";
 import { useQuery, useMutation, useQueryClient } from "react-query";
+import MembersList from "./MembersList";
+import { CloseCircleFilled } from "@ant-design/icons";
+import { Popconfirm, message } from "antd";
 
 function Chatroom(props) {
   const [user, setUser] = useAtom(userAtom);
-  const [, setCurrentChatroomTab] = useAtom(currentTab);
+  const [isAdminOfCurrentChatroom, setIsAdminOfCurrentChatroom] = useState(false);
+  const [currentTab, setCurrentChatroomTab] = useState("");
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
   const [, setIsLoading] = useAtom(loading);
@@ -57,6 +61,10 @@ function Chatroom(props) {
     }
   }, [tabSelect, user]);
 
+  useEffect(() => {
+    setCurrentChatroomTab(user.joinedChatroomIds[0]);
+  }, []);
+
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
@@ -84,8 +92,9 @@ function Chatroom(props) {
     setMessage("");
   };
 
-  const closeTab = (e) => {
-    leaveChatroomMutation.mutate({ chatroom_id: e.target.id });
+  const closeTab = (chatroom_id) => {
+    console.log(chatroom_id);
+    leaveChatroomMutation.mutate({ chatroom_id: chatroom_id });
   };
 
   useEffect(() => {
@@ -93,13 +102,45 @@ function Chatroom(props) {
     else setIsLoading(false);
   }, [chatroomsQuery.status]);
 
+  useEffect(() => {
+    user.joinedChatroomIds.forEach((chatroomId) => {
+      if (chatroomId === currentTab) setIsAdminOfCurrentChatroom(true);
+    });
+  }, [currentTab, user.joinedChatroomIds]);
+
+  // useEffect(() => {
+  //   console.log(isAdminOfCurrentChatroom);
+  // }, [isAdminOfCurrentChatroom]);
+
+  //sets as Admin if current user is an admin of the chatroom
+  useEffect(() => {
+    if (chatroomsQuery && chatroomsQuery.data && chatroomsQuery.data.chatrooms) {
+      let currentTabChatroom = chatroomsQuery.data.chatrooms.find((chatroom) => {
+        return chatroom._id === currentTab;
+      });
+      if (currentTabChatroom) {
+        if (currentTabChatroom.adminId === user._id) setIsAdminOfCurrentChatroom(true);
+        else setIsAdminOfCurrentChatroom(false);
+      }
+    }
+  }, [currentTab, chatroomsQuery.data]);
+
+  // useEffect(() => {
+  //   if (chatroomsQuery && chatroomsQuery.data && chatroomsQuery.data.chatrooms) {
+  //     let currentTabChatroom = chatroomsQuery.data.chatrooms.find((chatroom) => {
+  //       return chatroom._id === currentTab;
+  //     });
+  //     if (currentTabChatroom) {
+  //       if (currentTabChatroom.adminId === user._id) setIsAdminOfCurrentChatroom(true);
+  //       else setIsAdminOfCurrentChatroom(false);
+  //     }
+  //   }
+  // }, [currentTab]);
+
   return (
     <>
       {chatroomsQuery.status === "loading" ? null : (
         <div className="chatroom-window-container">
-          {/* <div className="chatroom-window-header">
-            <div className="chatroom-window-header-middle">Chatroom</div>
-          </div> */}
           <Tabs
             defaultIndex={tabSelect}
             onSelect={(tabSelect) => {
@@ -110,11 +151,11 @@ function Chatroom(props) {
               {chatroomsQuery.data
                 ? chatroomsQuery.data.chatrooms.map((chatroom) => {
                     return (
-                      <Tab onClick={() => changeCurrentTab(chatroom._id)} key={chatroom._id}>
+                      <Tab onClick={() => changeCurrentTab(chatroom._id)} key={chatroom._id} id={chatroom._id}>
                         {chatroom.name}&nbsp;
-                        <div key={chatroom._id} id={chatroom._id} onClick={closeTab} className="tabCloseButton">
-                          x
-                        </div>
+                        <Popconfirm title="Are you sure you want to leave this chatroom?" onConfirm={() => closeTab(chatroom._id)} okText="Yes" cancelText="No">
+                          <CloseCircleFilled style={{ fontSize: ".9em", padding: ".25em", paddingLeft: ".5em", color: "#a0a0a0" }} />
+                        </Popconfirm>
                       </Tab>
                     );
                   })
@@ -145,13 +186,12 @@ function Chatroom(props) {
                           </button>
                         </div>
                       </div>
+                      <MembersList props={{ isAdminOfCurrentChatroom, chatroom }} />
                     </TabPanel>
                   );
                 })
               : null}
           </Tabs>
-
-          {/* <div class="chatroom-container">{displayChats()}</div> */}
         </div>
       )}
     </>
