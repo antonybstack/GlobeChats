@@ -5,6 +5,7 @@ import { userAtom, isUserAuthenticated } from "../atoms/AtomHelpers";
 import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { Button } from "antd";
+import { MenuFoldOutlined } from "@ant-design/icons";
 
 const FriendsList = () => {
   // const { user, isAuthenticated } = useContext(AuthContext);
@@ -50,7 +51,7 @@ const FriendsList = () => {
       document.getElementById("friendlistToggleBtn").style.left = "10px";
     } else {
       document.getElementById("friendsListContainer").style.left = "0px";
-      document.getElementById("friendlistToggleBtn").style.left = "185px";
+      document.getElementById("friendlistToggleBtn").style.left = "50px";
     }
   };
 
@@ -61,12 +62,13 @@ const FriendsList = () => {
   return (
     <>
       <Button id="friendlistToggleBtn" type="primary" size="medium" onClick={toggleMenu}>
-        <div id="friendsMenuFoldOutlined"></div>
+        <MenuFoldOutlined style={{ fontSize: "1.5em", color: "white" }} />
         <span id="friendlistToggleBtnLabel">Friends</span>
       </Button>
       <div id="friendsListContainer" ref={refElem}>
         <div id="friendsList">
-          <h3>Friends:</h3>
+          <br />
+          <br />
           {membersQuery.status === "loading"
             ? null
             : membersQuery.data.users.map((user, i) => {

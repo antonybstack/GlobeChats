@@ -20,6 +20,7 @@ function CreateChat(props) {
 
   const addChatroomMutation = useMutation((newChatroom) => axios.post("/api/chatrooms/add", newChatroom), {
     onSuccess: async (data) => {
+      message.success("Chatroom successfully created!");
       queryClient.setQueryData("globalChatrooms", data.data);
     },
   });
@@ -69,7 +70,6 @@ function CreateChat(props) {
     setTags("");
     setIsPrivate(false);
     setIsVerified(false);
-    message.success("Chatroom successfully created!");
   };
 
   const toggleModalVisibility = () => {
@@ -91,7 +91,7 @@ function CreateChat(props) {
         onOk={() => setModalVisibility(false)}
         onCancel={() => setModalVisibility(false)}
         footer={[
-          <Button key="submit" type="primary" onClick={() => submitNewChatroom()}>
+          <Button key="submitNewChatroom" type="primary" onClick={() => submitNewChatroom()}>
             Submit
           </Button>,
         ]}

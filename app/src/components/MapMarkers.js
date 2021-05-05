@@ -7,7 +7,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import chatGroupImage from "../assets/chat-group-filled-75px.png";
-import calendarImage from "../assets/event_calendar.png";
+import calendarImage from "../assets/event_calendar_75px.png";
 import MapMarkerPopup from "./MapMarkerPopup";
 import EventMarkerPopup from "./EventMarkerPopup";
 import { useAtom } from "jotai";
@@ -31,13 +31,13 @@ const Map = () => {
       })
   );
 
-  const globalEventsQuery = useQuery("globalEvents", () => 
-      axios
-        .get("/api/events")
-        .then((res) => res.data)
-        .catch((err) => {
-          console.log(err);
-        })
+  const globalEventsQuery = useQuery("globalEvents", () =>
+    axios
+      .get("/api/events")
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+      })
   );
 
   useEffect(() => {
@@ -52,10 +52,10 @@ const Map = () => {
   const openPopup = (e, index) => {
     setSelectedChatroomMarker(index);
   };
-  
+
   const openEventPopup = (e, index) => {
     setSelectedEventMarker(index);
-  }
+  };
 
   var style3 = {
     backgroundImage: "url(" + chatGroupImage + ")",
@@ -143,7 +143,7 @@ const Map = () => {
                       }}
                       tabIndex={i}
                       className="mapEventPopup"
-                      style={{display: "none", zIndex: "4"}}
+                      style={{ display: "none", zIndex: "4" }}
                     >
                       <EventMarkerPopup feature={props} setSelectedMarker={setSelectedEventMarker} />
                     </Popup>

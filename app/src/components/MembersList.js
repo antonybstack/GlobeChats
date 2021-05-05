@@ -4,10 +4,15 @@ import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
 import { isUserAuthenticated } from "../atoms/AtomHelpers";
 import { Button } from "antd";
+import { MenuFoldOutlined } from "@ant-design/icons";
 import { useQuery, useQueryClient } from "react-query";
 import { Popover } from "antd";
+import { SettingTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
+import ChatroomInfo from "./ChatroomInfo";
 
-function MembersList(props) {
+function MembersList({ props }) {
+  const { isAdminOfCurrentChatroom, chatroom } = props;
+  console.log(isAdminOfCurrentChatroom);
   //   const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const refElem = useRef();
@@ -28,6 +33,10 @@ function MembersList(props) {
       enabled: !!isAuthenticated,
     }
   );
+
+  const kickUser = () => {
+    console.log("Kick feature not yet implemented.");
+  };
 
   useEffect(() => {
     // if (membersQuery) {
@@ -53,7 +62,7 @@ function MembersList(props) {
   };
 
   const addFriend = () => {
-    console.log("Add friend function");
+    console.log("Add friend feature not yet implemented.");
   };
 
   var imgStyle = {
@@ -62,7 +71,12 @@ function MembersList(props) {
 
   const content = (
     <div>
-      <Button id="addFriendBtn" type="primary" size="small" onClick={addFriend}>
+      {isAdminOfCurrentChatroom ? (
+        <Button className="kickUserBtn" type="danger" size="small" onClick={kickUser}>
+          <p>Kick User</p>
+        </Button>
+      ) : null}
+      <Button className="addFriendBtn" type="primary" size="small" onClick={addFriend}>
         <p>Add friend</p>
       </Button>
     </div>
@@ -71,32 +85,31 @@ function MembersList(props) {
   return (
     <>
       <Button id="memberslistToggleBtn" type="secondary" size="medium" onClick={toggleMenu}>
-        <div id="membersMenuFoldOutlined"></div>
+        <MenuFoldOutlined style={{ fontSize: "1.5em", color: "#6f6f6f" }} />
       </Button>
       <div id="membersListContainer" ref={refElem}>
-        <div id="membersList">
-          <h3>Members in Chat:</h3>
-          <>
-            {membersQuery.status === "loading"
-              ? null
-              : membersQuery.data.users.map((user, i) => {
-                  const { firstName, lastName, googleImg } = user;
+        <ChatroomInfo props={{ isAdminOfCurrentChatroom, chatroom }} />
+        <div className="membersListTitle">Members in Chat</div>
+        <div className="membersList">
+          {membersQuery.status === "loading"
+            ? null
+            : membersQuery.data.users.map((user, i) => {
+                const { firstName, lastName, googleImg } = user;
 
-                  return (
-                    <Popover placement="topLeft" content={content} trigger="click">
-                      <div onClick={addFriend} className="memberProfile">
-                        <span>
-                          <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
-                          &nbsp;
-                        </span>
-                        <span className="profileName">
-                          {firstName} {lastName ? lastName[0] + "." : ""}
-                        </span>
-                      </div>
-                    </Popover>
-                  );
-                })}
-          </>
+                return (
+                  <Popover placement="topLeft" content={content} trigger="click">
+                    <div className="memberProfile">
+                      <span>
+                        <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                        &nbsp;
+                      </span>
+                      <span className="profileName">
+                        {firstName} {lastName ? lastName[0] + "." : ""}
+                      </span>
+                    </div>
+                  </Popover>
+                );
+              })}
         </div>
       </div>
     </>
