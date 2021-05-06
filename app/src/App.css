@@ -535,6 +535,11 @@ input:checked + .slider:before {
   min-width: 30px;
 }
 
+.msgContainer.admin:hover {
+  background-color: #e8e8e8;
+  cursor: pointer;
+}
+
 /* .chatUserId {
   display: block;
   width: 80px;
@@ -970,6 +975,12 @@ input:checked + .slider:before {
 
 .anticon-close-circle svg:hover {
   color: rgb(220, 59, 59);
+}
+
+.anticon.anticon-crown {
+  position: absolute;
+  right: 15px;
+  margin-top: 2px;
 }
 
 #friendlistToggleBtn {

@@ -210,7 +210,7 @@ function Chatroom(props) {
                     <TabPanel key={chatroom._id}>
                       <div className="chat">
                         <div id="chatMessages" className="chatMessages">
-                          <Chats chatroom_id={chatroom._id} />
+                          <Chats props={{ isAdminOfCurrentChatroom: isAdminOfCurrentChatroom, chatroom_id: chatroom._id }} />
                         </div>
                         <div className="chatbar">
                           <textarea

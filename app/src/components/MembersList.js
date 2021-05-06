@@ -3,11 +3,9 @@ import axios from "axios";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
 import { userAtom, isUserAuthenticated, connectedUsersAtom } from "../atoms/AtomHelpers";
-import { Button } from "antd";
-import { MenuFoldOutlined } from "@ant-design/icons";
-import { useQuery, queryClient, useQueryClient } from "react-query";
-import { Popover, Space, message } from "antd";
-import { SettingTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
+import { MenuFoldOutlined, CrownTwoTone } from "@ant-design/icons";
+import { useQuery, useQueryClient } from "react-query";
+import { Popover, Space, message, Button } from "antd";
 
 import ChatroomInfo from "./ChatroomInfo";
 
@@ -62,6 +60,23 @@ function MembersList({ props }) {
 
   const kickUser = (_id) => {
     console.log(_id);
+    axios
+      .put("/api/users/leavechatroom/" + _id, { chatroom_id: chatroom._id })
+      .then(() => {
+        message.success("User removed from chatroom successfully!");
+        axios
+          .get("/api/users/")
+          .then((res) => {
+            console.log(res.data.users);
+            queryClient.setQueryData("profiles", res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch(() => {
+        message.error("Error removing user from chatroom.");
+      });
   };
 
   const addFriend = (_id) => {
@@ -188,6 +203,7 @@ function MembersList({ props }) {
                           <span className={"profileName" + (isFriendOnline ? " online" : "")}>
                             {firstName} {lastName ? lastName[0] + "." : ""}
                           </span>
+                          {_id === chatroom.adminId ? <CrownTwoTone style={{ fontSize: "1.3em" }} twoToneColor="gold" /> : null}
                         </div>
                       </Popover>
                     ) : (
@@ -199,6 +215,7 @@ function MembersList({ props }) {
                         <span className={"profileName" + (isFriendOnline ? " online" : "")}>
                           {firstName} {lastName ? lastName[0] + "." : ""}
                         </span>
+                        {_id === chatroom.adminId ? <CrownTwoTone style={{ fontSize: "1.3em" }} twoToneColor="gold" /> : null}
                       </div>
                     )}
                   </>
