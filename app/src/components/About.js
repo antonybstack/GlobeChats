@@ -45,14 +45,8 @@ const About = () => {
                     <br />
 
                     <h2>Technologies</h2>
-                    <p>Mongoose/MongoDB</p>
-                    <p>React JS</p>
-                    <p>Express</p>
-                    <p>Node.js</p>
-                    <p>Mapbox</p>
-                    <p>Google Identity</p>
-                    <p>Cryptr</p>
-                    <p>Ant Design</p>
+                    <p>Mongoose, MongoDB, React JS, Express, Node.js</p>
+                    <p>Mapbox, Google Identity, Cryptr, Ant Design</p>
                 </div>
 
                 
