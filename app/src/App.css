@@ -592,8 +592,12 @@ input:checked + .slider:before {
   display: flex;
 }
 
+.chatProfileName {
+  margin: 3px;
+}
+
 .profileName {
-  margin: auto;
+  margin: 3px;
   color: grey;
 }
 

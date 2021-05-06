@@ -17,7 +17,7 @@ function MembersList({ props }) {
   const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const refElem = useRef();
-  const [, setFilteredMembers] = useState([]);
+  const [filteredMembers, setFilteredMembers] = useState([]);
   const queryClient = useQueryClient();
   const [connectedUsers, setConnectedUsers] = useAtom(connectedUsersAtom);
 
@@ -37,20 +37,20 @@ function MembersList({ props }) {
     }
   );
 
-  useEffect(() => {
-    // if (membersQuery) {
-    //   if (membersQuery.data) {
-    //     if (membersQuery.data.chats) {
-    //       const temp = membersQuery.data.users.filter((user) => {
-    //         return user.chatroomId === currentTab.chatroom_id;
-    //       });
-    //       setFilteredMembers(temp);
-    //     }
-    //   }
-    // }
+  // useEffect(() => {
+  // if (membersQuery) {
+  //   if (membersQuery.data) {
+  //     if (membersQuery.data.chats) {
+  //       const temp = membersQuery.data.users.filter((user) => {
+  //         return user.chatroomId === currentTab.chatroom_id;
+  //       });
+  //       setFilteredMembers(temp);
+  //     }
+  //   }
+  // }
 
-    setFilteredMembers(membersQuery.data);
-  }, [membersQuery.data]);
+  //   setFilteredMembers(membersQuery.data);
+  // }, [membersQuery.data]);
 
   useEffect(() => {}, []);
 
@@ -102,6 +102,44 @@ function MembersList({ props }) {
     borderRadius: "20px",
   };
 
+  // useEffect(() => {
+  //   if (membersQuery) {
+  //     if (membersQuery.data) {
+  //       if (membersQuery.data.users) {
+  //         const temp = membersQuery.data.users.filter((member) => {
+  //           return member.joinedChatroomIds.filter((memberJoinedChatroom) => {
+  //             console.log(member.lastName);
+  //             console.log(memberJoinedChatroom === chatroom._id);
+  //             return memberJoinedChatroom === chatroom._id;
+  //           });
+  //           // console.log(chatroom._id);
+  //           // console.log(member);
+  //           // return member.chatroomId[0] === chatroom._id;
+  //         });
+  //         console.log(temp);
+  //         setFilteredMembers(temp);
+  //       }
+  //     }
+  //   }
+  // }, [membersQuery.data]);
+
+  useEffect(() => {
+    if (membersQuery) {
+      if (membersQuery.data) {
+        if (membersQuery.data.users) {
+          const temp = membersQuery.data.users.filter((member) => {
+            let match = false;
+            member.joinedChatroomIds.forEach((memberJoinedChatroom) => {
+              if (memberJoinedChatroom === chatroom._id) match = true;
+            });
+            if (match) return member;
+          });
+          setFilteredMembers(temp);
+        }
+      }
+    }
+  }, [membersQuery.data]);
+
   return (
     <>
       <Space />
@@ -114,8 +152,14 @@ function MembersList({ props }) {
         <div className="membersList">
           {membersQuery.status === "loading"
             ? null
-            : membersQuery.data.users.map((tempUser, i) => {
+            : filteredMembers.map((tempUser, i) => {
                 const { _id, firstName, lastName, googleImg } = tempUser;
+                var isFriendOnline = false;
+                connectedUsers.forEach((connectedUser) => {
+                  if (connectedUser._id === _id) {
+                    isFriendOnline = true;
+                  }
+                });
 
                 return (
                   <>
@@ -138,10 +182,10 @@ function MembersList({ props }) {
                       >
                         <div className="memberProfile">
                           <span>
-                            <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                            <img src={googleImg} className={"profileImg" + (isFriendOnline ? " online" : "")} alt="profileIcon" width="25" />
                             &nbsp;
                           </span>
-                          <span className="profileName">
+                          <span className={"profileName" + (isFriendOnline ? " online" : "")}>
                             {firstName} {lastName ? lastName[0] + "." : ""}
                           </span>
                         </div>
@@ -149,10 +193,10 @@ function MembersList({ props }) {
                     ) : (
                       <div className="memberProfile">
                         <span>
-                          <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                          <img src={googleImg} className={"profileImg" + (isFriendOnline ? " online" : "")} alt="profileIcon" width="25" />
                           &nbsp;
                         </span>
-                        <span className="profileName">
+                        <span className={"profileName" + (isFriendOnline ? " online" : "")}>
                           {firstName} {lastName ? lastName[0] + "." : ""}
                         </span>
                       </div>

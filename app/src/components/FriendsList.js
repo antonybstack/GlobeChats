@@ -19,26 +19,18 @@ const FriendsList = () => {
   // const queryClient = useQueryClient();
   // const [, setFilteredMembers] = useState([]);
 
-  useEffect(() => {
-    console.log(connectedUsers);
-  }, [connectedUsers]);
-
   const friendsQuery = useQuery(
     "friends",
     () => {
       return axios
         .get("/api/users/")
         .then((res) => {
-          console.log(connectedUsers);
           var friends = [];
           console.log(res.data);
           res.data.users.forEach((tempUser) => {
             if (user.friendlist.includes(tempUser._id)) {
               friends.push(tempUser);
             }
-            console.log(user.friendlist);
-            console.log(tempUser._id);
-            console.log(friends);
           });
           return friends;
         })
@@ -89,7 +81,6 @@ const FriendsList = () => {
         axios
           .get("/api/users/")
           .then((res) => {
-            console.log(connectedUsers);
             var friends = [];
             console.log(res.data);
             console.log(updatedUserData.data.user);

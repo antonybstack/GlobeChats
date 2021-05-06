@@ -121,7 +121,7 @@ function Chats(props) {
                       <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
                       &nbsp;
                     </span>
-                    <span className="profileName">
+                    <span className="chatProfileName">
                       {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
                     </span>
                   </div>
