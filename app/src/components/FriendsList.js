@@ -2,19 +2,20 @@ import React, { useEffect, useState, useRef } from "react";
 import Friend from "./Friend";
 import { useAtom } from "jotai";
 import { userAtom, isUserAuthenticated, connectedUsersAtom } from "../atoms/AtomHelpers";
-import { isError, useQuery, useQueryClient } from "react-query";
+import { useQuery, queryClient, useQueryClient } from "react-query";
 import axios from "axios";
-import { Button, Divider } from "antd";
+import { Popover, Button, Divider, message } from "antd";
 import { MenuFoldOutlined } from "@ant-design/icons";
 
 const FriendsList = () => {
   // const { user, isAuthenticated } = useContext(AuthContext);
   // const [user] = useAtom(userAtom);
-  const [user] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const [connectedUsers, setConnectedUsers] = useAtom(connectedUsersAtom);
   // const [friendList, setFriendList] = useState([""]);
   const refElem = useRef();
+  const queryClient = useQueryClient();
   // const queryClient = useQueryClient();
   // const [, setFilteredMembers] = useState([]);
 
@@ -78,6 +79,40 @@ const FriendsList = () => {
     }
   };
 
+  const removeFriend = (_id) => {
+    console.log(_id);
+    axios
+      .put("/api/users/removefriend/" + user._id, { friend: _id })
+      .then((updatedUserData) => {
+        setUser(updatedUserData.data.user);
+        message.success("Friend removed successfully!");
+        axios
+          .get("/api/users/")
+          .then((res) => {
+            console.log(connectedUsers);
+            var friends = [];
+            console.log(res.data);
+            console.log(updatedUserData.data.user);
+            res.data.users.forEach((tempUser) => {
+              if (updatedUserData.data.user.friendlist.includes(tempUser._id)) {
+                friends.push(tempUser);
+              }
+
+              console.log(tempUser._id);
+              console.log(friends);
+            });
+            console.log(friends);
+            queryClient.setQueryData("friends", friends);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch(() => {
+        message.error("Error removing friend.");
+      });
+  };
+
   return (
     <>
       <Button id="friendlistToggleBtn" type="primary" size="medium" onClick={toggleMenu}>
@@ -104,15 +139,27 @@ const FriendsList = () => {
 
                 if (isFriendOnline) {
                   return (
-                    <div key={user._id} className="friendProfile">
-                      <span>
-                        <img src={googleImg} className={"profileImg" + (isFriendOnline ? " online" : "")} alt="profileIcon" width="25" />
-                        &nbsp;
-                      </span>
-                      <span className={"profileName" + (isFriendOnline ? " online" : "")}>
-                        {firstName} {lastName ? lastName[0] + "." : ""}
-                      </span>
-                    </div>
+                    <Popover
+                      placement="topLeft"
+                      content={
+                        <div>
+                          <Button className="removeFriendBtn" type="danger" size="small" onClick={() => removeFriend(_id)}>
+                            <p>Remove friend</p>
+                          </Button>
+                        </div>
+                      }
+                      trigger="click"
+                    >
+                      <div key={user._id} className="friendProfile">
+                        <span>
+                          <img src={googleImg} className={"profileImg" + (isFriendOnline ? " online" : "")} alt="profileIcon" width="25" />
+                          &nbsp;
+                        </span>
+                        <span className={"profileName" + (isFriendOnline ? " online" : "")}>
+                          {firstName} {lastName ? lastName[0] + "." : ""}
+                        </span>
+                      </div>
+                    </Popover>
                   );
                 } else return null;
               })}
@@ -133,15 +180,27 @@ const FriendsList = () => {
 
                 if (!isFriendOnline) {
                   return (
-                    <div key={user._id} className="friendProfile">
-                      <span>
-                        <img src={googleImg} className={"profileImg" + (isFriendOnline ? " online" : "")} alt="profileIcon" width="25" />
-                        &nbsp;
-                      </span>
-                      <span className={"profileName" + (isFriendOnline ? " online" : "")}>
-                        {firstName} {lastName ? lastName[0] + "." : ""}
-                      </span>
-                    </div>
+                    <Popover
+                      placement="topLeft"
+                      content={
+                        <div>
+                          <Button className="removeFriendBtn" type="danger" size="small" onClick={() => removeFriend(_id)}>
+                            <p>Remove friend</p>
+                          </Button>
+                        </div>
+                      }
+                      trigger="click"
+                    >
+                      <div key={user._id} className="friendProfile">
+                        <span>
+                          <img src={googleImg} className={"profileImg" + (isFriendOnline ? " online" : "")} alt="profileIcon" width="25" />
+                          &nbsp;
+                        </span>
+                        <span className={"profileName" + (isFriendOnline ? " online" : "")}>
+                          {firstName} {lastName ? lastName[0] + "." : ""}
+                        </span>
+                      </div>
+                    </Popover>
                   );
                 } else return null;
               })}

@@ -6,7 +6,7 @@ import { userAtom, isUserAuthenticated, connectedUsersAtom } from "../atoms/Atom
 import { Button } from "antd";
 import { MenuFoldOutlined } from "@ant-design/icons";
 import { useQuery, queryClient, useQueryClient } from "react-query";
-import { Popover } from "antd";
+import { Popover, Space, message } from "antd";
 import { SettingTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
 
 import ChatroomInfo from "./ChatroomInfo";
@@ -70,6 +70,7 @@ function MembersList({ props }) {
       .put("/api/users/addfriend/" + user._id, { newFriend: _id })
       .then((updatedUserData) => {
         setUser(updatedUserData.data.user);
+        message.success("User added as a friend successfully!");
         axios
           .get("/api/users/")
           .then((res) => {
@@ -92,7 +93,9 @@ function MembersList({ props }) {
             console.log(err);
           });
       })
-      .catch((err) => {});
+      .catch(() => {
+        message.error("User already added.");
+      });
   };
 
   var imgStyle = {
@@ -101,6 +104,7 @@ function MembersList({ props }) {
 
   return (
     <>
+      <Space />
       <Button id="memberslistToggleBtn" type="secondary" size="medium" onClick={toggleMenu}>
         <MenuFoldOutlined style={{ fontSize: "1.5em", color: "#6f6f6f" }} />
       </Button>
@@ -110,36 +114,50 @@ function MembersList({ props }) {
         <div className="membersList">
           {membersQuery.status === "loading"
             ? null
-            : membersQuery.data.users.map((user, i) => {
-                const { _id, firstName, lastName, googleImg } = user;
+            : membersQuery.data.users.map((tempUser, i) => {
+                const { _id, firstName, lastName, googleImg } = tempUser;
 
                 return (
-                  <Popover
-                    placement="topLeft"
-                    content={
-                      <div>
-                        {isAdminOfCurrentChatroom ? (
-                          <Button className="kickUserBtn" type="danger" size="small" onClick={() => kickUser(_id)}>
-                            <p>Kick User</p>
-                          </Button>
-                        ) : null}
-                        <Button className="addFriendBtn" type="primary" size="small" onClick={() => addFriend(_id)}>
-                          <p>Add friend</p>
-                        </Button>
+                  <>
+                    {user._id !== _id ? (
+                      <Popover
+                        placement="topLeft"
+                        content={
+                          <div>
+                            {isAdminOfCurrentChatroom ? (
+                              <Button className="kickUserBtn" type="danger" size="small" onClick={() => kickUser(_id)}>
+                                <p>Kick User</p>
+                              </Button>
+                            ) : null}
+                            <Button className="addFriendBtn" type="primary" size="small" onClick={() => addFriend(_id)}>
+                              <p>Add friend</p>
+                            </Button>
+                          </div>
+                        }
+                        trigger="click"
+                      >
+                        <div className="memberProfile">
+                          <span>
+                            <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                            &nbsp;
+                          </span>
+                          <span className="profileName">
+                            {firstName} {lastName ? lastName[0] + "." : ""}
+                          </span>
+                        </div>
+                      </Popover>
+                    ) : (
+                      <div className="memberProfile">
+                        <span>
+                          <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                          &nbsp;
+                        </span>
+                        <span className="profileName">
+                          {firstName} {lastName ? lastName[0] + "." : ""}
+                        </span>
                       </div>
-                    }
-                    trigger="click"
-                  >
-                    <div className="memberProfile">
-                      <span>
-                        <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
-                        &nbsp;
-                      </span>
-                      <span className="profileName">
-                        {firstName} {lastName ? lastName[0] + "." : ""}
-                      </span>
-                    </div>
-                  </Popover>
+                    )}
+                  </>
                 );
               })}
         </div>

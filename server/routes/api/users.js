@@ -81,17 +81,47 @@ userRoutes.put("/addfriend/:id", (req, res) => {
       if (!user) {
         res.status(404).send("data is not found");
       } else {
-        console.log(req.body.newFriend);
-        user.friendlist.push(req.body.newFriend);
+        if (!user.friendlist.includes(req.body.newFriend)) {
+          user.friendlist.push(req.body.newFriend);
+          user
+            .save()
+            .then((user) => {
+              res.json({ user });
+            })
+            .catch((err) => {
+              res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+            });
+        } else {
+          res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+        }
+      }
+    });
+  }
+});
 
-        user
-          .save()
-          .then((user) => {
-            res.json({ user });
-          })
-          .catch((err) => {
-            res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
-          });
+userRoutes.put("/removefriend/:id", (req, res) => {
+  if (req.params.id && req.body.friend) {
+    User.findById(req.params.id, function (err, user) {
+      if (!user) {
+        res.status(404).send("data is not found");
+      } else {
+        if (user.friendlist.includes(req.body.friend)) {
+          for (var i = 0; i < user.friendlist.length; i++) {
+            if (user.friendlist[i] == req.body.friend) {
+              user.friendlist.splice(i, 1);
+            }
+          }
+          user
+            .save()
+            .then((user) => {
+              res.json({ user });
+            })
+            .catch((err) => {
+              res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+            });
+        } else {
+          res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+        }
       }
     });
   }

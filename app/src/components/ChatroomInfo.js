@@ -147,7 +147,7 @@ function ChatroomInfo({ props }) {
         onOk={() => setSettingsModalVisibility(false)}
         onCancel={() => setSettingsModalVisibility(false)}
         footer={[
-          <Button key="submitUpdatedChatroom" type="primary" onClick={() => updateChatroom()}>
+          <Button key="submitUpdatedChatroom" size="small" type="primary" onClick={() => updateChatroom()}>
             Submit
           </Button>,
 

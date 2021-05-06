@@ -653,8 +653,9 @@ input:checked + .slider:before {
   user-select: none;
 }
 
-.memberProfile:hover {
+.friendProfile:hover {
   background-color: rgb(232, 232, 232);
+  cursor: pointer;
 }
 
 .chatBlock {
@@ -945,7 +946,7 @@ input:checked + .slider:before {
   left: -175px;
   width: 175px;
   top: 63px;
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(255, 255, 255);
   height: 87vh;
   border-right: 1px solid rgb(240, 240, 240);
   overflow: auto;
@@ -1000,7 +1001,7 @@ input:checked + .slider:before {
   width: 175px;
   height: 100%;
   top: 0px;
-  background-color: rgb(250, 250, 250);
+  background-color: rgb(245, 245, 245);
   height: 100%;
   border-right: 1px solid rgb(240, 240, 240);
   overflow: hidden;
