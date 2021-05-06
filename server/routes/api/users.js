@@ -75,6 +75,28 @@ userRoutes.put("/update/:id", (req, res) => {
   }
 });
 
+userRoutes.put("/addfriend/:id", (req, res) => {
+  if (req.params.id && req.body.newFriend) {
+    User.findById(req.params.id, function (err, user) {
+      if (!user) {
+        res.status(404).send("data is not found");
+      } else {
+        console.log(req.body.newFriend);
+        user.friendlist.push(req.body.newFriend);
+
+        user
+          .save()
+          .then((user) => {
+            res.json({ user });
+          })
+          .catch((err) => {
+            res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+          });
+      }
+    });
+  }
+});
+
 userRoutes.put("/joinchatroom/:id", (req, res) => {
   if (req.params.id) {
     User.findById(req.params.id, function (err, user) {

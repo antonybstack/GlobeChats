@@ -2,21 +2,24 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { isUserAuthenticated } from "../atoms/AtomHelpers";
+import { userAtom, isUserAuthenticated, connectedUsersAtom } from "../atoms/AtomHelpers";
 import { Button } from "antd";
 import { MenuFoldOutlined } from "@ant-design/icons";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery, queryClient, useQueryClient } from "react-query";
 import { Popover } from "antd";
 import { SettingTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
+
 import ChatroomInfo from "./ChatroomInfo";
 
 function MembersList({ props }) {
   const { isAdminOfCurrentChatroom, chatroom } = props;
   console.log(isAdminOfCurrentChatroom);
-  //   const [user, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const refElem = useRef();
   const [, setFilteredMembers] = useState([]);
+  const queryClient = useQueryClient();
+  const [connectedUsers, setConnectedUsers] = useAtom(connectedUsersAtom);
 
   const membersQuery = useQuery(
     "profiles",
@@ -33,10 +36,6 @@ function MembersList({ props }) {
       enabled: !!isAuthenticated,
     }
   );
-
-  const kickUser = () => {
-    console.log("Kick feature not yet implemented.");
-  };
 
   useEffect(() => {
     // if (membersQuery) {
@@ -61,26 +60,44 @@ function MembersList({ props }) {
     else document.getElementById("membersListContainer").style.left = "0px";
   };
 
-  const addFriend = () => {
-    console.log("Add friend feature not yet implemented.");
+  const kickUser = (_id) => {
+    console.log(_id);
+  };
+
+  const addFriend = (_id) => {
+    console.log(_id);
+    axios
+      .put("/api/users/addfriend/" + user._id, { newFriend: _id })
+      .then((updatedUserData) => {
+        setUser(updatedUserData.data.user);
+        axios
+          .get("/api/users/")
+          .then((res) => {
+            console.log(connectedUsers);
+            var friends = [];
+            console.log(res.data);
+            console.log(updatedUserData.data.user);
+            res.data.users.forEach((tempUser) => {
+              if (updatedUserData.data.user.friendlist.includes(tempUser._id)) {
+                friends.push(tempUser);
+              }
+
+              console.log(tempUser._id);
+              console.log(friends);
+            });
+            console.log(friends);
+            queryClient.setQueryData("friends", friends);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {});
   };
 
   var imgStyle = {
     borderRadius: "20px",
   };
-
-  const content = (
-    <div>
-      {isAdminOfCurrentChatroom ? (
-        <Button className="kickUserBtn" type="danger" size="small" onClick={kickUser}>
-          <p>Kick User</p>
-        </Button>
-      ) : null}
-      <Button className="addFriendBtn" type="primary" size="small" onClick={addFriend}>
-        <p>Add friend</p>
-      </Button>
-    </div>
-  );
 
   return (
     <>
@@ -94,10 +111,25 @@ function MembersList({ props }) {
           {membersQuery.status === "loading"
             ? null
             : membersQuery.data.users.map((user, i) => {
-                const { firstName, lastName, googleImg } = user;
+                const { _id, firstName, lastName, googleImg } = user;
 
                 return (
-                  <Popover placement="topLeft" content={content} trigger="click">
+                  <Popover
+                    placement="topLeft"
+                    content={
+                      <div>
+                        {isAdminOfCurrentChatroom ? (
+                          <Button className="kickUserBtn" type="danger" size="small" onClick={() => kickUser(_id)}>
+                            <p>Kick User</p>
+                          </Button>
+                        ) : null}
+                        <Button className="addFriendBtn" type="primary" size="small" onClick={() => addFriend(_id)}>
+                          <p>Add friend</p>
+                        </Button>
+                      </div>
+                    }
+                    trigger="click"
+                  >
                     <div className="memberProfile">
                       <span>
                         <img src={googleImg} style={imgStyle} alt="profileIcon" width="25" />
