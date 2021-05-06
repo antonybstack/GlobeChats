@@ -14,6 +14,7 @@ const Login = () => {
   const [, setConnectedUsers] = useAtom(connectedUsersAtom);
 
   const handleGoogleLogin = (response) => {
+    alert(1);
     axios
       .post("/api/users/login", null, {
         headers: {
@@ -48,15 +49,13 @@ const Login = () => {
 
         message.success("Successfully logged in");
       })
-      .catch(function () {});
+      .catch(function () {
+        message.error("Error logging into your Google account");
+      });
   };
 
   const handleGoogleFailure = (response) => {
-    alert("error logging into your Google account");
-  };
-
-  const test = (response) => {
-    alert(response);
+    message.error("Error logging into your Google account");
   };
 
   return (
