@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AtomHelpers";
-import { Divider } from "antd";
+import { Popover, Space, message, Button, Modal, Form, Input, Switch, Divider } from "antd";
+import axios from "axios";
 
 function Profile(props) {
   // const [email, setEmail] = useState("");
@@ -9,30 +10,33 @@ function Profile(props) {
   // const [last, setLast] = useState("");
   // const [image, setImage] = useState("");
   // const [userId, setUserId] = useState("");
-  const [user] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [toggleEdit, setToggleEdit] = useState(false);
 
-  // axios
-  //   .post("/api/profile/spec", { googleId: props.googleId })
-  //   .then((res) => {
-  //     setEmail(res.data.email);
-  //     setFirst(res.data.firstName);
-  //     setLast(res.data.lastName);
-  //     setImage(res.data.googleImg);
-  //     setUserId(res.data._id);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  const settingFirstName = (e) => setFirstName(e.target.value);
+  const settingLastName = (e) => setLastName(e.target.value);
 
-  // const addNewFriend = (event) => {
-  //   event.preventDefault();
-  //   let date = moment().tz("America/New_York");
-  //   axios.post("/api/friend/new", {
-  //     user: userId,
-  //     friendedDate: date,
-  //     onlineStatus: true,
-  //   });
-  // };
+  const updateProfile = () => {
+    if (firstName === "" && lastName === "") {
+      message.error("Please make sure to fill out each field");
+      return;
+    }
+
+    axios
+      .put("/api/users/update/" + user._id, { firstName: firstName, lastName: lastName })
+      .then((res) => {
+        setUser(res.data.user);
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("Error updating profile.");
+      });
+
+    message.success("Profile successfully updated!");
+    setToggleEdit(!toggleEdit);
+  };
 
   return (
     <>
@@ -40,8 +44,11 @@ function Profile(props) {
         User Profile
       </h2>
       <Divider />
-      <p className="site-description-item-profile-p">Personal</p>
-      <div className="profile-pic">
+      <Form.Item>
+        <span className="switchEdit">Edit</span>
+        <Switch onChange={() => setToggleEdit(!toggleEdit)} name="editToggle" label="editToggle" checked={toggleEdit} />
+      </Form.Item>
+      {/* <div className="profile-pic">
         <img src={user.googleImg} alt={"Profile"} />
       </div>
       <div>
@@ -53,28 +60,62 @@ function Profile(props) {
       <div>
         <div className="profile-title">Email:</div>
         <div className="profile-text">{user.email}</div>
-      </div>
+      </div> */}
+      {toggleEdit ? (
+        <Form
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 10,
+          }}
+          layout="horizontal"
+        >
+          <div className="profile-pic">
+            <img src={user.googleImg} alt={"Profile"} />
+          </div>
+
+          <Form.Item label="First name">
+            <Input id="editProfileFirstNameInput" onChange={settingFirstName} name="tags" value={firstName} />
+          </Form.Item>
+          <Form.Item label="Last name">
+            <Input id="editProfileLastNameInput" onChange={settingLastName} name="tags" value={lastName} />
+          </Form.Item>
+          <Form.Item label="Email">
+            <Input value={user.email} disabled />
+          </Form.Item>
+          <Form.Item style={{ float: "right" }}>
+            <Button type="primary" size="default" htmlType="submit" onClick={() => updateProfile()}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      ) : (
+        <Form
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 10,
+          }}
+          layout="horizontal"
+        >
+          <div className="profile-pic">
+            <img src={user.googleImg} alt={"Profile"} />
+          </div>
+
+          <Form.Item label="First name">
+            <Input width={"30%"} onChange={settingFirstName} name="tags" value={firstName} disabled />
+          </Form.Item>
+          <Form.Item label="Last name">
+            <Input onChange={settingLastName} name="tags" value={lastName} disabled />
+          </Form.Item>
+          <Form.Item label="Email">
+            <Input value={user.email} disabled />
+          </Form.Item>
+        </Form>
+      )}
     </>
-    // <div className="event-create-container">
-    //   <div className="event-header">
-    //     <div className="event-header-middle">Profile</div>
-    //     <div className="event-close-outside" onClick={props.handleClose}>
-    //       <div className="event-close-x-left">
-    //         <div className="event-close-x-right"></div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="event-form">
-
-    //     {props.loggedInProfile ? (
-
-    //     ) : (
-    //       <button className="add-friend" onClick={addNewFriend}>
-    //         Add friend
-    //       </button>
-    //     )}
-    //   </div>
-    // </div>
   );
 }
 

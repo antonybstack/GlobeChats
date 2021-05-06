@@ -52,6 +52,8 @@ userRoutes.get("/", (req, res) => {
 });
 
 userRoutes.put("/update/:id", (req, res) => {
+  console.log(req.params.id);
+  console.log(req.body);
   if (req.params.id) {
     User.findById(req.params.id, function (err, user) {
       if (!user) {

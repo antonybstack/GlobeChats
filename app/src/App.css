@@ -416,6 +416,18 @@ input:checked + .slider:before {
   border-radius: inherit;
 }
 
+.switchEdit {
+  margin-right: 5px;
+  color: #4b4b4b;
+}
+
+#editProfileFirstNameInput,
+#editProfileLastNameInput {
+  border-color: #40a9ff !important;
+  border-right-width: 1px !important;
+  box-shadow: 0px 0px 4px 1px #40a9ff6b;
+}
+
 .profile-text {
   margin-bottom: 10px;
   display: inline;
@@ -429,9 +441,13 @@ input:checked + .slider:before {
   font-size: 12pt;
 }
 
+.ant-drawer-body > .ant-form-item {
+  margin: 0px 0px 0px 10%;
+  float: right;
+}
+
 .profile-pic {
-  display: flex;
-  margin-bottom: 10px;
+  margin: 25px 0px 25px 10%;
 }
 
 .chat {

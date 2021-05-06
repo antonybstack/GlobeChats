@@ -36,8 +36,8 @@ function ProfileButton() {
   return (
     <div>
       <div className="nav-profile" style={style} onClick={toggleDrawer}></div>
-      <Drawer width={300} placement="right" closable={false} onClose={onClose} visible={drawerVisible}>
-        <Profile googleId={user.googleId} handleClose={ProfileClick} loggedInProfile={true} />
+      <Drawer width={"30%"} placement="right" closable={false} onClose={onClose} visible={drawerVisible}>
+        <Profile />
       </Drawer>
     </div>
   );
