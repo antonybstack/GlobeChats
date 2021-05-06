@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Space } from "antd";
+import React, { useState } from "react";
+import { Modal } from "antd";
 
 const FAQ = () => {
 
