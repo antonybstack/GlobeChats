@@ -80,6 +80,7 @@ app.use("/api/profile", require("./routes/api/profile"));
 app.use("/api/chatrooms", require("./routes/api/chatrooms"));
 app.use("/api/chats", require("./routes/api/chats"));
 app.use("/api/friends", require("./routes/api/friend"));
+app.use("/api/reports", require("./routes/api/reports"));
 
 const options = {
   cors: true,
