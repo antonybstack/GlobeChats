@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { useQuery, queryClient, useQueryClient } from "react-query";
 import { isUserAuthenticated, loading } from "../atoms/AtomHelpers";
 import unknownUserImage from "../assets/5.png";
-import { Popover, Space, message, Button } from "antd";
+import { Popover, Space, message, Button, Modal, Form, Input, Switch } from "antd";
 
 function Chats({ props }) {
   console.log(props);
@@ -15,6 +15,11 @@ function Chats({ props }) {
   // const [intervalMs] = useState(1000);
   const [, setIsLoading] = useAtom(loading);
   const queryClient = useQueryClient();
+  const [modalReportVisibility, setModalReportVisibility] = useState(false);
+  const [reportMessage, setReportMessage] = useState("");
+  const [userToReport, setUserToReport] = useState("");
+
+  const settingReportMessage = (e) => setReportMessage(e.target.value);
 
   const chatsQuery = useQuery(
     "chats",
@@ -66,6 +71,7 @@ function Chats({ props }) {
     profilesQuery.data.users.forEach((profile) => {
       if (profile._id === id) {
         tempProfile = {
+          _id: profile._id,
           firstName: profile.firstName,
           lastNameInitial: profile.lastName[0].concat("."),
           googleImg: profile.googleImg,
@@ -75,6 +81,7 @@ function Chats({ props }) {
 
     if (!tempProfile.firstName) {
       tempProfile = {
+        _id: "",
         firstName: "unknown",
         lastNameInitial: "",
         googleImg: unknownUserImage,
@@ -127,6 +134,22 @@ function Chats({ props }) {
       });
   };
 
+  const reportUser = () => {
+    console.log(userToReport);
+    console.log(reportMessage);
+    axios
+      .post("/api/reports/add", { reportedUserId: userToReport, reportMessage: reportMessage })
+      .then(() => {
+        message.success("User reported successfully!");
+        setUserToReport("");
+        setReportMessage("");
+        setModalReportVisibility(false);
+      })
+      .catch(() => {
+        message.error("Error reporting user.");
+      });
+  };
+
   return (
     <>
       {chatsQuery.status === "loading" || profilesQuery.status === "loading"
@@ -138,15 +161,35 @@ function Chats({ props }) {
             return (
               <div key={i} className="chatBlock">
                 <div className="chatMessage">
-                  <div className="chatProfile">
-                    <span>
-                      <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
-                      &nbsp;
-                    </span>
-                    <span className="chatProfileName">
-                      {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
-                    </span>
-                  </div>
+                  <Popover
+                    placement="topLeft"
+                    content={
+                      <div>
+                        <Button
+                          className="reportUserBtn"
+                          type="danger"
+                          size="small"
+                          onClick={() => {
+                            setModalReportVisibility(true);
+                            setUserToReport(profile._id);
+                          }}
+                        >
+                          <p>Report user</p>
+                        </Button>
+                      </div>
+                    }
+                    trigger="click"
+                  >
+                    <div className="chatProfile">
+                      <span>
+                        <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                        &nbsp;
+                      </span>
+                      <span className="chatProfileName">
+                        {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
+                      </span>
+                    </div>
+                  </Popover>
                   {isAdminOfCurrentChatroom ? (
                     <Popover
                       placement="topLeft"
@@ -172,6 +215,33 @@ function Chats({ props }) {
               </div>
             );
           })}
+      <Space />
+      <Modal
+        title="Create new chatroom"
+        centered
+        visible={modalReportVisibility}
+        onOk={() => setModalReportVisibility(false)}
+        onCancel={() => setModalReportVisibility(false)}
+        footer={[
+          <Button key="submitNewChatroom" type="primary" onClick={reportUser}>
+            Submit
+          </Button>,
+        ]}
+      >
+        <Form
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 10,
+          }}
+          layout="horizontal"
+        >
+          <Form.Item label="Reason for report">
+            <Input onChange={settingReportMessage} name="reportMessage" value={reportMessage} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 }

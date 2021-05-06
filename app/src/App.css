@@ -650,6 +650,21 @@ input:checked + .slider:before {
   border-bottom-left-radius: 0.5em;
 }
 
+.reportUserBtn {
+  background-color: #f0c24e !important;
+  border-color: #eeb736 !important;
+}
+
+.reportUserBtn:hover {
+  background-color: #f5b615 !important;
+  border-color: #dc9a00 !important;
+}
+
+.chatProfile:hover {
+  background-color: #e8e8e8;
+  cursor: pointer;
+}
+
 .friendProfile {
   white-space: nowrap;
   color: cornflowerblue;

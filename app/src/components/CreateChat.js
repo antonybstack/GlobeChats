@@ -9,7 +9,7 @@ import { Modal, Form, Input, Button, Switch, message, Space } from "antd";
 function CreateChat(props) {
   const [user] = useAtom(userAtom);
   const queryClient = useQueryClient();
-  const [modalVisibilty, setModalVisibility] = useState(false);
+  const [modalVisibility, setModalVisibility] = useState(false);
   const [, setDisplayChatroom] = useState(false);
   const [lng, setLng] = useState(-80.8315);
   const [lat, setLat] = useState(35.21);
@@ -65,7 +65,7 @@ function CreateChat(props) {
       verifyUsers: isVerified,
       location: [lng + longitude_buffer_for_privacy, lat + latitude_buffer_for_privacy],
     });
-    setModalVisibility(!modalVisibilty);
+    setModalVisibility(!modalVisibility);
     setName("");
     setTags("");
     setIsPrivate(false);
@@ -73,7 +73,7 @@ function CreateChat(props) {
   };
 
   const toggleModalVisibility = () => {
-    setModalVisibility(!modalVisibilty);
+    setModalVisibility(!modalVisibility);
   };
 
   return (
@@ -87,7 +87,7 @@ function CreateChat(props) {
       <Modal
         title="Create new chatroom"
         centered
-        visible={modalVisibilty}
+        visible={modalVisibility}
         onOk={() => setModalVisibility(false)}
         onCancel={() => setModalVisibility(false)}
         footer={[
