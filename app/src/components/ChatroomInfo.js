@@ -15,19 +15,21 @@ function ChatroomInfo({ props }) {
 
   const [currentChatroom, setCurrentChatroom] = useState(null);
   useEffect(() => {
-    axios
-      .get("/api/chatrooms/" + chatroom._id)
-      .then((res) => {
-        console.log(res.data.chatroom);
-        setCurrentChatroom(res.data.chatroom);
-        setName(res.data.chatroom.name);
-        setTags(res.data.chatroom.tags);
-        setIsPrivate(res.data.chatroom.isPrivate);
-        setIsVerified(res.data.chatroom.verifyUsers);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (chatroom) {
+      axios
+        .get("/api/chatrooms/" + chatroom._id)
+        .then((res) => {
+          console.log(res.data.chatroom);
+          setCurrentChatroom(res.data.chatroom);
+          setName(res.data.chatroom.name);
+          setTags(res.data.chatroom.tags);
+          setIsPrivate(res.data.chatroom.isPrivate);
+          setIsVerified(res.data.chatroom.verifyUsers);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   const [name, setName] = useState("");
@@ -125,10 +127,18 @@ function ChatroomInfo({ props }) {
           }}
           layout="horizontal"
         >
-          <Form.Item label="Chatroom name">{name}</Form.Item>
-          <Form.Item label="Tags">{tags}</Form.Item>
-          <Form.Item label="Public/Private">{isPrivate.toString()}</Form.Item>
-          <Form.Item label="Anonymous/Verified">{isVerified.toString()}</Form.Item>
+          <Form.Item label="Chatroom name">
+            <Input onChange={settingName} name="chatroomName" value={name} disabled />
+          </Form.Item>
+          <Form.Item label="Tags">
+            <Input onChange={settingTags} name="tags" value={tags} disabled />
+          </Form.Item>
+          <Form.Item label="Public/Private">
+            <Switch onChange={settingIsPrivate} name="isPrivate" label="isPrivate" checked={isPrivate} disabled />
+          </Form.Item>
+          <Form.Item label="Anonymous/Verified">
+            <Switch onChange={settingIsVerified} name="isVerified" label="isVerified" checked={isVerified} disabled />
+          </Form.Item>
         </Form>
       </Modal>
       <Modal
@@ -139,7 +149,7 @@ function ChatroomInfo({ props }) {
         onOk={() => setSettingsModalVisibility(false)}
         onCancel={() => setSettingsModalVisibility(false)}
         footer={[
-          <Button key="submitUpdatedChatroom" type="primary" onClick={() => updateChatroom()}>
+          <Button key="submitUpdatedChatroom" size="small" type="primary" onClick={() => updateChatroom()}>
             Submit
           </Button>,
 

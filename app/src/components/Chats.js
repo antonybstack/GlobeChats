@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { useQuery } from "react-query";
+import { useQuery, queryClient, useQueryClient } from "react-query";
 import { isUserAuthenticated, loading } from "../atoms/AtomHelpers";
 import unknownUserImage from "../assets/5.png";
+import { Popover, Space, message, Button } from "antd";
 
-function Chats(props) {
+function Chats({ props }) {
+  console.log(props);
+  const { isAdminOfCurrentChatroom, chatroom_id } = props;
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const [filteredChats, setFilteredChats] = useState([]);
   // const [intervalMs] = useState(1000);
   const [, setIsLoading] = useAtom(loading);
+  const queryClient = useQueryClient();
 
   const chatsQuery = useQuery(
     "chats",
@@ -85,7 +89,7 @@ function Chats(props) {
       if (chatsQuery.data) {
         if (chatsQuery.data.chats) {
           const temp = chatsQuery.data.chats.filter((chat) => {
-            return chat.chatroomId === props.chatroom_id;
+            return chat.chatroomId === chatroom_id;
           });
           setFilteredChats(temp);
         }
@@ -105,12 +109,30 @@ function Chats(props) {
     else setIsLoading(false);
   }, [chatsQuery.status, profilesQuery.status]);
 
+  const removeMessage = (_id) => {
+    console.log(_id);
+    axios
+      .delete("/api/chats/delete/" + _id)
+      .then(() => {
+        message.success("Message removed from chatroom successfully!");
+        return axios
+          .get("/api/chats/")
+          .then((res) => queryClient.setQueryData("chats", res.data))
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch(() => {
+        message.error("Error removing message from chatroom.");
+      });
+  };
+
   return (
     <>
       {chatsQuery.status === "loading" || profilesQuery.status === "loading"
         ? null
         : filteredChats.map((chat, i) => {
-            const { userId, message, timestamp } = chat;
+            const { _id, userId, message, timestamp } = chat;
             let profile = findProfile(userId);
 
             return (
@@ -121,11 +143,27 @@ function Chats(props) {
                       <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
                       &nbsp;
                     </span>
-                    <span className="profileName">
+                    <span className="chatProfileName">
                       {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
                     </span>
                   </div>
-                  <div className="msgContainer">{message}</div>
+                  {isAdminOfCurrentChatroom ? (
+                    <Popover
+                      placement="topLeft"
+                      content={
+                        <div>
+                          <Button className="removeChatBtn" type="danger" size="small" onClick={() => removeMessage(_id)}>
+                            <p>Remove message</p>
+                          </Button>
+                        </div>
+                      }
+                      trigger="click"
+                    >
+                      <div className="msgContainer admin">{message}</div>
+                    </Popover>
+                  ) : (
+                    <div className="msgContainer">{message}</div>
+                  )}
                 </div>
                 <div className="chatTime">
                   {new Date(timestamp).toLocaleTimeString("en-US")}&nbsp;&nbsp;

@@ -31,7 +31,6 @@ chatroomRoutes.route("/:id").get(function (req, res) {
       if (err) {
         return res.status(500).json({ message: { msgBody: "Error retrieving specific chatroom", msgError: true }, chatroom });
       }
-      console.log(chatroom);
       return res.status(200).json({ chatroom });
     });
   }
@@ -66,7 +65,6 @@ chatroomRoutes.route("/delete/:id").delete(function (req, res) {
 });
 
 chatroomRoutes.put("/update/:id", (req, res) => {
-  console.log(req.body);
   if (req.params.id) {
     ChatroomModel.findById(req.params.id, function (err, chatroom) {
       if (!chatroom) {
@@ -81,7 +79,6 @@ chatroomRoutes.put("/update/:id", (req, res) => {
         chatroom
           .save()
           .then((chatroom) => {
-            console.log("SUCCESS!");
             res.status(200).json({ chatroom });
           })
           .catch((err) => {
