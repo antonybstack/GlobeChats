@@ -31,7 +31,7 @@ const About = () => {
                 <br />
 
                 <div className="aboutModalCenter">
-                    <p>Enter information about GlobeChats here.</p>
+                    <p>GlobeChats is a location-based chat room application that is tailored to specific interests. Users are able to be socially active around nearby individuals from the comfort of their home. GlobeChats also allows users to create and plan in-person events for those nearby to meet up safely.</p>
 
                     <br />
                     <h2>Developers</h2>
