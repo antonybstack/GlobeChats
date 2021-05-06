@@ -124,7 +124,7 @@ function MembersList({ props }) {
   // }, [membersQuery.data]);
 
   useEffect(() => {
-    if (membersQuery) {
+    if (membersQuery && chatroom) {
       if (membersQuery.data) {
         if (membersQuery.data.users) {
           const temp = membersQuery.data.users.filter((member) => {
@@ -147,7 +147,7 @@ function MembersList({ props }) {
         <MenuFoldOutlined style={{ fontSize: "1.5em", color: "#6f6f6f" }} />
       </Button>
       <div id="membersListContainer" ref={refElem}>
-        <ChatroomInfo props={{ isAdminOfCurrentChatroom, chatroom }} />
+        <ChatroomInfo props={{ isAdminOfCurrentChatroom: false, chatroom: null }} />
         <div className="membersListTitle">Members in Chat</div>
         <div className="membersList">
           {membersQuery.status === "loading"

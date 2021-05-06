@@ -139,7 +139,50 @@ function Chatroom(props) {
 
   return (
     <>
-      {chatroomsQuery.status === "loading" ? null : (
+      {chatroomsQuery.status === "loading" ? (
+        <div className="chatroom-window-container">
+          <Tabs
+            defaultIndex={tabSelect}
+            onSelect={(tabSelect) => {
+              setTabSelect(tabSelect);
+            }}
+          >
+            <TabList>
+              {chatroomsQuery.data
+                ? chatroomsQuery.data.chatrooms.map((chatroom) => {
+                    return (
+                      <Tab>
+                        loading...&nbsp;
+                        <CloseCircleFilled style={{ fontSize: ".9em", padding: ".25em", paddingLeft: ".5em", color: "#a0a0a0" }} />
+                      </Tab>
+                    );
+                  })
+                : null}
+            </TabList>
+
+            <TabPanel>
+              <div className="chat">
+                <div id="chatMessages" className="chatMessages"></div>
+                <div className="chatbar">
+                  <textarea
+                    id="textarea"
+                    className="chatinput"
+                    type="textarea"
+                    name="message"
+                    placeholder="Your Message Here"
+                    wrap="hard"
+                    value={message}
+                    onChange={handleChange}
+                    onKeyPress={handleKeyPress}
+                  />
+                  <button className="chatSend">Send</button>
+                </div>
+              </div>
+              <MembersList props={{ isAdminOfCurrentChatroom: false, chatroom: null }} />
+            </TabPanel>
+          </Tabs>
+        </div>
+      ) : (
         <div className="chatroom-window-container">
           <Tabs
             defaultIndex={tabSelect}

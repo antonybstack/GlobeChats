@@ -15,19 +15,21 @@ function ChatroomInfo({ props }) {
 
   const [currentChatroom, setCurrentChatroom] = useState(null);
   useEffect(() => {
-    axios
-      .get("/api/chatrooms/" + chatroom._id)
-      .then((res) => {
-        console.log(res.data.chatroom);
-        setCurrentChatroom(res.data.chatroom);
-        setName(res.data.chatroom.name);
-        setTags(res.data.chatroom.tags);
-        setIsPrivate(res.data.chatroom.isPrivate);
-        setIsVerified(res.data.chatroom.verifyUsers);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (chatroom) {
+      axios
+        .get("/api/chatrooms/" + chatroom._id)
+        .then((res) => {
+          console.log(res.data.chatroom);
+          setCurrentChatroom(res.data.chatroom);
+          setName(res.data.chatroom.name);
+          setTags(res.data.chatroom.tags);
+          setIsPrivate(res.data.chatroom.isPrivate);
+          setIsVerified(res.data.chatroom.verifyUsers);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   const [name, setName] = useState("");
