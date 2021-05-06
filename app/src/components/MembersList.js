@@ -162,7 +162,7 @@ function MembersList({ props }) {
         <MenuFoldOutlined style={{ fontSize: "1.5em", color: "#6f6f6f" }} />
       </Button>
       <div id="membersListContainer" ref={refElem}>
-        <ChatroomInfo props={{ isAdminOfCurrentChatroom: false, chatroom: null }} />
+        <ChatroomInfo props={{ isAdminOfCurrentChatroom: isAdminOfCurrentChatroom, chatroom: chatroom }} />
         <div className="membersListTitle">Members in Chat</div>
         <div className="membersList">
           {membersQuery.status === "loading"

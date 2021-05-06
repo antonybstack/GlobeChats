@@ -8,6 +8,7 @@ import axios from "axios";
 
 function ChatroomInfo({ props }) {
   const { isAdminOfCurrentChatroom, chatroom } = props;
+  console.log(chatroom);
   const queryClient = useQueryClient();
   const [user] = useAtom(userAtom);
   const [detailsModalVisibility, setDetailsModalVisibility] = useState(false);
