@@ -118,15 +118,15 @@ io.on("connection", (socket) => {
 
   // CHAT MESSAGE custom event
   socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
-
+    // io.emit("chat message", msg);
+    // console.log(msg);
     // server side HTTP request
     if (process.env.NODE_ENV !== "production") {
       axios
         .post("http://localhost:5000/api/chats/add", msg)
         .then((res) => {
-          // res.data.chat.message = cryptr.decrypt(res.data.chat.message);
-          // io.emit("chat message", res.data.chat);
+          res.data.chat.message = cryptr.decrypt(res.data.chat.message);
+          io.emit("chat message", res.data.chat);
         })
         .catch(function (error) {
           console.log(error);
@@ -135,8 +135,8 @@ io.on("connection", (socket) => {
       axios
         .post("http://globechats.herokuapp.com/api/chats/add", msg)
         .then((res) => {
-          // res.data.chat.message = cryptr.decrypt(res.data.chat.message);
-          // io.emit("chat message", res.data.chat);
+          res.data.chat.message = cryptr.decrypt(res.data.chat.message);
+          io.emit("chat message", res.data.chat);
         })
         .catch(function (error) {
           console.log(error);

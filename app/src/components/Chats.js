@@ -60,6 +60,7 @@ function Chats({ props }) {
 
   useEffect(() => {
     socket.on("chat message", function (msg) {
+      console.log(msg);
       if (msg.chatroomId === chatroom_id) {
         setFilteredChats((currentChats) => [...currentChats, msg]);
       }
@@ -100,10 +101,39 @@ function Chats({ props }) {
     return tempProfile;
   };
 
+  const removeMessage = (_id) => {
+    //console.log(_id);
+    axios
+      .delete("/api/chats/delete/" + _id)
+      .then((res) => {
+        message.success("Message removed from chatroom successfully!");
+        console.log(res.data);
+        const newList = filteredChats.filter((chat) => chat._id !== res.data.chat._id);
+        setFilteredChats(newList);
+        // axios
+        //   .get("/api/chats/")
+        //   .then((res) => {
+        //     console.log(res.data);
+        //     const newList = filteredChats.filter((chat) => chat._id !== res.data._id);
+        //     setFilteredChats(newList);
+        //     // console.log(res.data);
+        //     // queryClient.setQueryData("chats", res.data);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+      })
+      .catch(() => {
+        message.error("Error removing message from chatroom.");
+      });
+  };
+
   useEffect(() => {
     if (chatsQuery) {
       if (chatsQuery.data) {
+        console.log(chatsQuery.data);
         if (chatsQuery.data.chats) {
+          console.log(chatsQuery.data.chats);
           const temp = chatsQuery.data.chats.filter((chat) => {
             return chat.chatroomId === chatroom_id;
           });
@@ -125,24 +155,6 @@ function Chats({ props }) {
     if (chatsQuery.status === "loading" || profilesQuery.status === "loading") setIsLoading(true);
     else setIsLoading(false);
   }, [chatsQuery.status, profilesQuery.status]);
-
-  const removeMessage = (_id) => {
-    //console.log(_id);
-    axios
-      .delete("/api/chats/delete/" + _id)
-      .then(() => {
-        message.success("Message removed from chatroom successfully!");
-        return axios
-          .get("/api/chats/")
-          .then((res) => queryClient.setQueryData("chats", res.data))
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch(() => {
-        message.error("Error removing message from chatroom.");
-      });
-  };
 
   const reportUser = () => {
     //console.log(userToReport);
