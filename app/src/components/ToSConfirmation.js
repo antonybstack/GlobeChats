@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { GoogleLogin } from "react-google-login";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated, fetchUserAtom, fetchSocketAtom, socketAtom, connectedUsersAtom, displayTosAtom, displayPrivacyPolicyAtom } from "../atoms/AtomHelpers";
+import { userAtom, displayTosAtom, displayPrivacyPolicyAtom } from "../atoms/AtomHelpers";
 import axios from "axios";
-import { Modal, Form, Input, Button, Switch, message, Space, Checkbox, Drawer } from "antd";
-import ReCAPTCHA from "react-google-recaptcha";
+import { Modal, Form, Button, message, Space, Checkbox, Drawer } from "antd";
 import TermsOfService from "./TermsOfService";
 import Privacy from "./Privacy";
 
 const LoginConfirmation = (props) => {
-  console.log(props);
+  //console.log(props);
   const [user, setUser] = useAtom(userAtom);
 
-  const [captchaConfirmed, setCaptchaConfirmed] = useState(false);
   const [tosConfirmed, setTosConfirmed] = useState(false);
   const [agreeDisabled, setAgreeDisabled] = useState(true);
 
