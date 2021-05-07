@@ -12,15 +12,15 @@ const NavigationBar = () => {
 
   const unauthenticatedNavBar = () => {
     return (
-      <nav id="navBar">
+      <>{/*<nav id="navBar">
         <div id="logo">
           <img id="globeChatsLogo" src={logo} alt={"GlobeChats logo"} />
           <span id="logoName">GlobeChats</span>
         </div>
         <div id="account-wrapper">
           <Login />
-        </div>
-      </nav>
+        /div>
+      </nav>*/}</>
     );
   };
 
