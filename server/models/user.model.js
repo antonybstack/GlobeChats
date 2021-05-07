@@ -22,6 +22,10 @@ let User = new Schema({
     type: String,
     required: true,
   },
+  tosAgreed: {
+    type: Boolean,
+    default: false,
+  },
   joinedChatroomIds: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Chatroom",

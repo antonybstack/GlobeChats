@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { userAtom, fetchUserAtom, isUserAuthenticated, fetchSocketAtom, socketAtom, connectedUsersAtom } from "../atoms/AtomHelpers";
+import { userAtom, fetchUserAtom, isUserAuthenticated, fetchSocketAtom, socketAtom, connectedUsersAtom, displayTosAtom, displayPrivacyPolicyAtom } from "../atoms/AtomHelpers";
 import Nav from "./Nav";
 import DraggableChatroom from "./DraggableChatroom";
 import FriendsList from "./FriendsList";
@@ -9,6 +9,7 @@ import UnauthenticatedMap from "./UnauthenticatedMap";
 import { DraggableModalProvider } from "ant-design-draggable-modal";
 import CreateChat from "./CreateChat";
 import CreateEvent from "./CreateEvent";
+import ToSConfirmation from "./ToSConfirmation";
 
 const Home = () => {
   const [, fetchUser] = useAtom(fetchUserAtom);
@@ -27,58 +28,14 @@ const Home = () => {
   const [user] = useAtom(userAtom); //keep this or it will bug Login component
   const [isAuthenticated] = useAtom(isUserAuthenticated);
 
+  const [displayTos, setDisplayTos] = useAtom(displayTosAtom);
+  const [displayPrivacyPolicy, setDisplayPrivacyPolicy] = useAtom(displayPrivacyPolicyAtom);
+
   // check if logged in
   useEffect(() => {
     fetchUser();
     fetchSocket();
   }, []);
-
-  // useEffect(() => {
-  //   if (bothLoaded) {
-  //     socket.on("authenticated user", (connections) => {
-  //       setConnectedUsers(connections);
-  //     });
-
-  //     socket.on("logout user", (connections) => {
-  //       setConnectedUsers(connections);
-  //     });
-
-  //     socket.on("disconnect", (connections) => {
-  //       setConnectedUsers(connections);
-  //     });
-  //   }
-  // }, [bothLoaded]);
-
-  // useEffect(() => {
-  //   if (socket.connected) {
-  //     socket.emit("get connections");
-  //     socket.on("get connections", (data) => {
-  //       console.log(data);
-  //       setConnectedUsers(data);
-  //     });
-  //   }
-  // }, [user, socket]);
-
-  // useEffect(() => {
-  //   console.log(connectedUsers);
-  // }, [connectedUsers, setConnectedUsers]);
-
-  // useEffect(() => {
-  //   if (isAuthenticated) socket.emit("authenticated user", user);
-
-  //   // const authenticatedUser = {
-  //   //   _id: _id,
-  //   //   firstName: firstName,
-  //   //   lastName: lastName,
-  //   //   joinedChatroomIds: joinedChatroomIds,
-  //   //   friendlist: friendlist,
-  //   //   email: email,
-  //   //   googleImg: googleImg,
-  //   // };
-  //   // // console.log(req.io);
-  //   // req.io.emit("authenticated user", authenticatedUser);
-  // }, [isAuthenticated, socket, user]);
-
   return (
     <>
       {isAuthenticated ? (
@@ -91,11 +48,14 @@ const Home = () => {
           <DraggableModalProvider>
             <DraggableChatroom />
           </DraggableModalProvider>
+          {user.tosAgreed ? null : <ToSConfirmation />}
+          {displayTos ? <div>ToS</div> : null}
+          {displayPrivacyPolicy ? <div>Privacy</div> : null}
         </div>
       ) : (
         <div className="home">
           <Nav />
-          <UnauthenticatedMap />
+          {/* <UnauthenticatedMap /> */}
         </div>
       )}
     </>

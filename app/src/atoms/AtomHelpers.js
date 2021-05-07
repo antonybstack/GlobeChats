@@ -62,3 +62,9 @@ export const connectedUsersAtom = atom(
 //     set(connectedUsers, data);
 //   });
 // });
+
+// keeps track of ToS page display
+export const displayTosAtom = atom(false);
+
+// keeps track of Privacy page display
+export const displayPrivacyPolicyAtom = atom(false);

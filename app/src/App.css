@@ -443,9 +443,15 @@ input:checked + .slider:before {
   float: right;
 }
 
+.ant-checkbox {
+  top: 0.3em !important;
+}
+
+
 .profile-pic {
   margin: 25px 0px 25px 10%;
 }
+
 
 /* ultimate chatroom container */
 .chatroom {
@@ -872,16 +878,19 @@ input:checked + .slider:before {
 }
 
 #GoogleLogin > button > span {
-  padding: 10px 10px 10px 0px !important;
+  padding: 10px 10px 10px 5px !important;
   font-weight: 400 !important;
   color: #777777 !important;
-  margin-bottom: 3px !important;
   line-height: 18px !important;
   font-size: 1.2em !important;
 }
 #GoogleLogin > button > div {
   padding: 1px !important;
   margin-left: 10px !important;
+}
+
+.loadingSpinner {
+  padding-left: 5px;
 }
 
 .nav-item {
