@@ -3,8 +3,10 @@ import { GoogleLogin } from "react-google-login";
 import { useAtom } from "jotai";
 import { userAtom, isUserAuthenticated, fetchUserAtom, fetchSocketAtom, socketAtom, connectedUsersAtom, displayTosAtom, displayPrivacyPolicyAtom } from "../atoms/AtomHelpers";
 import axios from "axios";
-import { Modal, Form, Input, Button, Switch, message, Space, Checkbox } from "antd";
+import { Modal, Form, Input, Button, Switch, message, Space, Checkbox, Drawer } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
+import TermsOfService from "./TermsOfService";
+import Privacy from "./Privacy";
 
 const LoginConfirmation = (props) => {
   console.log(props);
@@ -47,9 +49,15 @@ const LoginConfirmation = (props) => {
         footer={[
           <Button type="primary" onClick={() => setDisplayTos(!displayTos)} style={{ float: "left" }}>
             Terms of Service
+            <Drawer height={"100%"} placement="bottom" closable={true} visible={displayTos}>
+              <TermsOfService />
+            </Drawer>
           </Button>,
           <Button type="primary" onClick={() => setDisplayPrivacyPolicy(!displayPrivacyPolicy)} style={{ float: "left" }}>
             Privacy Policy
+            <Drawer height={"100%"} placement="bottom" closable={true} visible={displayPrivacyPolicy}>
+              <Privacy />
+            </Drawer>
           </Button>,
           <Button type="primary" onClick={() => accept()} disabled={agreeDisabled}>
             Accept
