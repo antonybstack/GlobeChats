@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
-import ReactMapboxGl, { Marker, Popup } from "react-mapbox-gl";
+import { Marker, Popup } from "react-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax

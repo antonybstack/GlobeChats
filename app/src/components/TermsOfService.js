@@ -2,7 +2,7 @@ import React from "react";
 
 const TermsOfService = () => {
     return (
-        <div class="tos">
+        <div className="tos">
             <h1>TERMS OF USE</h1>
 
             <h4>Last updated May 7, 2021</h4>

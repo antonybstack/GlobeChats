@@ -265,9 +265,6 @@ html {
   position: absolute;
 }
 
-.type1 {
-}
-
 .outer-icon {
   padding-top: 12.5px;
   height: 87.5px;
@@ -448,9 +445,6 @@ input:checked + .slider:before {
 
 .profile-pic {
   margin: 25px 0px 25px 10%;
-}
-
-.chat {
 }
 
 /* ultimate chatroom container */
