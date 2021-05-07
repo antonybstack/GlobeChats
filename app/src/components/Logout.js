@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { GoogleLogout } from "react-google-login";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated, fetchUserAtom, socketAtom, connectedUsersAtom } from "../atoms/AtomHelpers";
+import { userAtom, isUserAuthenticated, failedToAuthenticateAtom, fetchUserAtom, socketAtom, connectedUsersAtom } from "../atoms/AtomHelpers";
 import axios from "axios";
 import { Space, message } from "antd";
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
@@ -9,6 +9,7 @@ const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 const Logout = () => {
   const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated, setIsAuthenticated] = useAtom(isUserAuthenticated);
+  const [failedToAuthenticate, setFailedToAuthenticate] = useAtom(failedToAuthenticateAtom);
   const [, fetchUser] = useAtom(fetchUserAtom);
   const [socket] = useAtom(socketAtom);
   const [, setConnectedUsers] = useAtom(connectedUsersAtom);
@@ -41,7 +42,7 @@ const Logout = () => {
           console.log(connections);
           setConnectedUsers(connections);
         });
-
+        setFailedToAuthenticate(true);
         // socket.disconnect();
         // setUser(user);
         // setIsAuthenticated(false);
