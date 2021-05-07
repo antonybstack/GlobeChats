@@ -933,7 +933,7 @@ input:checked + .slider:before {
 }
 
 .nav-item {
-  display: inline-block;
+  display: flex;
   padding: 0.5em;
 }
 
@@ -941,7 +941,7 @@ input:checked + .slider:before {
   position: absolute;
   display: flex;
   justify-content: space-between;
-  z-index: 3;
+  z-index: 4;
   background-color: rgb(74 74 74 / 17%);
   width: 100%;
 }
@@ -1255,4 +1255,92 @@ input:checked + .slider:before {
   top: 70px;
   padding-left: 7px;
   padding-right: 20px;
+}
+
+.landing-login {
+  display: block;
+  text-align: center;
+}
+
+.landingLogo {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#landingLogo {
+  width: 52.5px;
+  text-align: center;
+  padding-right: 0.5em;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+#landingLogoName {
+  color: #ffffff;
+  -webkit-text-stroke: 1px #000000;
+  font-size: 3em;
+  font-weight: 800;
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.landingName {
+  vertical-align: middle;
+}
+
+.landing {
+  background-image: url("./assets/landing-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100%;
+  min-width: 100%;
+  position:absolute;
+}
+
+.privacyLock {
+  width: 150px;
+}
+
+.landingText {
+  display: block;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.landingRow {
+  display: flex;
+  text-align: center;
+}
+
+.landingGroup {
+  flex: 33.33%;
+  padding: 5px;
+}
+
+.landing-login .nav-item {
+  display: inline-block;
+  padding: 0.5em;
 }

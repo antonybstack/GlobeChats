@@ -10,20 +10,14 @@ import { DraggableModalProvider } from "ant-design-draggable-modal";
 import CreateChat from "./CreateChat";
 import CreateEvent from "./CreateEvent";
 import ToSConfirmation from "./ToSConfirmation";
+import Landing from "./Landing";
 
 const Home = () => {
   const [, fetchUser] = useAtom(fetchUserAtom);
   const [, fetchSocket] = useAtom(fetchSocketAtom);
   const [socket] = useAtom(socketAtom);
   const [connectedUsers, setConnectedUsers] = useAtom(connectedUsersAtom);
-  const friend = [
-    { id: 1, name: "Roderick" },
-    { id: 2, name: "Matt" },
-    { id: 3, name: "Antony" },
-    { id: 4, name: "Josh" },
-    { id: 5, name: "Tony" },
-    { id: 6, name: "Anna" },
-  ];
+  
   // eslint-disable-next-line no-unused-vars
   const [user] = useAtom(userAtom); //keep this or it will bug Login component
   const [isAuthenticated] = useAtom(isUserAuthenticated);
@@ -54,8 +48,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="home">
-          <Nav />
-          {/* <UnauthenticatedMap /> */}
+          <Landing />
         </div>
       )}
     </>
