@@ -12,8 +12,8 @@ const MapMarkerPopup = (props) => {
 
   //const [globalChatrooms] = useAtom(globalChatroomsAtom);
   const { _id, name, tags, verifyUsers, isPrivate, timestamp } = props.feature.chatroom;
-  //console.log(props.feature.chatroom.timestamp);
-  //console.log(moment(props.feature.chatroom.timestamp).format("DD/MM/YYYY"));
+  console.log(props.feature.chatroom.timestamp);
+  console.log(moment(props.feature.chatroom.timestamp).format("DD/MM/YYYY"));
 
   const joinChatroomMutation = useMutation((newChatroom) => axios.put("/api/users/joinchatroom/" + user._id, newChatroom), {
     onSuccess: async (data) => {
