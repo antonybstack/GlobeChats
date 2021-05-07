@@ -59,7 +59,8 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("../app/build"));
   app.get("*", (req, res) => {
     // creating an index.html file in the directory and serve our html in there
-    res.sendFile(path.resolve(__dirname, "app", "build", "index.html"));
+    // res.sendFile(path.resolve(process.cwd(), "app", "build", "index.html"));
+    res.sendFile(path.resolve(process.cwd(), "app/build/index.html"));
   });
 } else {
   app.get("/", (req, res) => {
