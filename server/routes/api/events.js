@@ -3,14 +3,14 @@ const eventRoutes = express.Router();
 
 const Event = require("../../models/event.model");
 
-eventRoutes.route("/").get(function(req, res) {
-  Event.find(function(err, events) {
+eventRoutes.route("/").get(function (req, res) {
+  Event.find(function (err, events) {
     if (err) {
       res.status(500).json({ error: "Something went wrong." });
     } else {
       res.status(200).json({ events });
     }
-  })
+  });
 });
 
 eventRoutes.post("/new", (req, res) => {
@@ -18,7 +18,13 @@ eventRoutes.post("/new", (req, res) => {
   event
     .save()
     .then((event) => {
-      res.status(200).json({ event });
+      Event.find(function (err, events) {
+        if (err) {
+          res.status(500).json({ error: "Something went wrong." });
+        } else {
+          res.status(200).json({ events });
+        }
+      });
     })
     .catch((err) => {
       console.log(err);
