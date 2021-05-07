@@ -83,12 +83,12 @@ const MapMarkers = () => {
   useEffect(() => {
     if (globalChatroomsQuery.status === "loading") setIsLoading(true);
     else setIsLoading(false);
-  }, [globalChatroomsQuery.status]);
+  }, [globalChatroomsQuery.status, setIsLoading]);
 
   useEffect(() => {
     if (globalEventsQuery.status === "loading") setIsLoading(true);
     else setIsLoading(false);
-  }, [globalEventsQuery.status]);
+  }, [globalEventsQuery.status, setIsLoading]);
 
   return (
     <>

@@ -7,7 +7,7 @@ import { userAtom, loading, socketAtom } from "../atoms/AtomHelpers";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import MembersList from "./MembersList";
 import { CloseCircleFilled } from "@ant-design/icons";
 import { Popconfirm } from "antd";
@@ -20,8 +20,6 @@ function Chatroom(props) {
   const [tabSelect, setTabSelect] = useState(0);
   const [, setIsLoading] = useAtom(loading);
   const [socket] = useAtom(socketAtom);
-
-  const queryClient = useQueryClient();
 
   const chatroomsQuery = useQuery(
     ["chatrooms", user],
@@ -58,7 +56,7 @@ function Chatroom(props) {
 
   useEffect(() => {
     setCurrentChatroomTab(user.joinedChatroomIds[0]);
-  }, []);
+  }, [user.joinedChatroomIds]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -91,14 +89,14 @@ function Chatroom(props) {
   };
 
   const closeTab = (chatroom_id) => {
-    console.log(chatroom_id);
+    //console.log(chatroom_id);
     leaveChatroomMutation.mutate({ chatroom_id: chatroom_id });
   };
 
   useEffect(() => {
     if (chatroomsQuery.status === "loading") setIsLoading(true);
     else setIsLoading(false);
-  }, [chatroomsQuery.status]);
+  }, [chatroomsQuery.status, setIsLoading]);
 
   useEffect(() => {
     user.joinedChatroomIds.forEach((chatroomId) => {
@@ -117,7 +115,7 @@ function Chatroom(props) {
         else setIsAdminOfCurrentChatroom(false);
       }
     }
-  }, [currentTab, chatroomsQuery.data]);
+  }, [currentTab, chatroomsQuery.data, user._id]);
 
   return (
     <>
