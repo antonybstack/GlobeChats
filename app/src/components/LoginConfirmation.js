@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { GoogleLogin } from "react-google-login";
-import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated, fetchUserAtom, fetchSocketAtom, socketAtom, connectedUsersAtom } from "../atoms/AtomHelpers";
-import axios from "axios";
-import { Modal, Form, Input, Button, Switch, message, Space, Checkbox } from "antd";
+import React, { useState } from "react";
+import { Modal, Button, message, Space } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const LoginConfirmation = (props) => {
-  console.log(props);
+  //console.log(props);
   const [declineDisabled, setDeclineDisabled] = useState(true);
 
   function createCookie(name, value, days) {
@@ -23,7 +19,7 @@ const LoginConfirmation = (props) => {
   }
 
   const onChange = (value) => {
-    console.log("Captcha value:", value);
+    //console.log("Captcha value:", value);
 
     createCookie("captcha", "authenticated", 7);
 

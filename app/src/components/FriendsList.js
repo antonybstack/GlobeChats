@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { useAtom } from "jotai";
-import { userAtom, isUserAuthenticated, connectedUsersAtom } from "../atoms/AtomHelpers";
-import { useQuery, queryClient, useQueryClient } from "react-query";
+import { userAtom, connectedUsersAtom } from "../atoms/AtomHelpers";
+import { useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { Popover, Button, Divider, message } from "antd";
 import { MenuFoldOutlined } from "@ant-design/icons";
@@ -10,8 +10,7 @@ const FriendsList = () => {
   // const { user, isAuthenticated } = useContext(AuthContext);
   // const [user] = useAtom(userAtom);
   const [user, setUser] = useAtom(userAtom);
-  const [isAuthenticated] = useAtom(isUserAuthenticated);
-  const [connectedUsers, setConnectedUsers] = useAtom(connectedUsersAtom);
+  const [connectedUsers,] = useAtom(connectedUsersAtom);
   // const [friendList, setFriendList] = useState([""]);
   const refElem = useRef();
   const queryClient = useQueryClient();
@@ -25,7 +24,7 @@ const FriendsList = () => {
         .get("/api/users/")
         .then((res) => {
           var friends = [];
-          console.log(res.data);
+          //console.log(res.data);
           res.data.users.forEach((tempUser) => {
             if (user.friendlist.includes(tempUser._id)) {
               friends.push(tempUser);
@@ -56,9 +55,9 @@ const FriendsList = () => {
   //   }
   // }, [isAuthenticated, user]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log(friendsQuery);
-  }, [friendsQuery]);
+  }, [friendsQuery]);*/
 
   const toggleMenu = () => {
     if (refElem.current.offsetLeft === 0) {
@@ -71,7 +70,7 @@ const FriendsList = () => {
   };
 
   const removeFriend = (_id) => {
-    console.log(_id);
+    //console.log(_id);
     axios
       .put("/api/users/removefriend/" + user._id, { friend: _id })
       .then((updatedUserData) => {
@@ -81,17 +80,17 @@ const FriendsList = () => {
           .get("/api/users/")
           .then((res) => {
             var friends = [];
-            console.log(res.data);
-            console.log(updatedUserData.data.user);
+            //console.log(res.data);
+            //console.log(updatedUserData.data.user);
             res.data.users.forEach((tempUser) => {
               if (updatedUserData.data.user.friendlist.includes(tempUser._id)) {
                 friends.push(tempUser);
               }
 
-              console.log(tempUser._id);
-              console.log(friends);
+              //console.log(tempUser._id);
+              //console.log(friends);
             });
-            console.log(friends);
+            //console.log(friends);
             queryClient.setQueryData("friends", friends);
           })
           .catch((err) => {
