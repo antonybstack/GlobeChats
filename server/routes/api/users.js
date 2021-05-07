@@ -21,10 +21,10 @@ const signToken = (userID) => {
 userRoutes.post("/login", passport.authenticate("bearer", { session: false }), (req, res, next) => {
   const token = signToken(req.user._id);
   res.cookie("access_token", token, { httpOnly: true, sameSite: true });
-  const { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } = req.user;
+  const { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds, tosAgreed } = req.user;
   res.status(200).json({
     isAuthenticated: true,
-    user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds },
+    user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds, tosAgreed },
     message: { msgBody: "Account successfully logged in", msgError: false },
   });
 });
@@ -38,8 +38,8 @@ userRoutes.post("/logout", passport.authenticate("jwt", { session: false }), (re
 
 //CHECK IF AUTHENTICATED
 userRoutes.get("/authenticated", passport.authenticate("jwt", { session: false }), (req, res) => {
-  const { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } = req.user;
-  res.status(200).json({ isAuthenticated: true, user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds } });
+  const { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds, tosAgreed } = req.user;
+  res.status(200).json({ isAuthenticated: true, user: { _id, googleId, email, firstName, lastName, googleImg, register_date, friendlist, joinedChatroomIds, tosAgreed } });
 });
 
 userRoutes.get("/", (req, res) => {
@@ -184,6 +184,27 @@ userRoutes.put("/leavechatroom/:id", (req, res) => {
               });
           }
         }
+      }
+    });
+  }
+});
+
+userRoutes.put("/agreetoterms/:id", (req, res) => {
+  if (req.params.id) {
+    User.findById(req.params.id, function (err, user) {
+      if (!user) {
+        res.status(404).send("data is not found");
+      } else {
+        user.tosAgreed = true;
+
+        user
+          .save()
+          .then((user) => {
+            res.json({ user });
+          })
+          .catch((err) => {
+            res.status(400).json({ message: { msgBody: "Error updating user", msgError: true } });
+          });
       }
     });
   }
