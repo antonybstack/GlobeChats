@@ -3,14 +3,14 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { userAtom, loading, currentTab } from "../atoms/AtomHelpers";
+import { userAtom, loading } from "../atoms/AtomHelpers";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import MembersList from "./MembersList";
 import { CloseCircleFilled } from "@ant-design/icons";
-import { Popconfirm, message } from "antd";
+import { Popconfirm } from "antd";
 
 function Chatroom(props) {
   const [user, setUser] = useAtom(userAtom);

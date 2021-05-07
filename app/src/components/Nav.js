@@ -1,6 +1,8 @@
 import React from "react";
 import Login from "./Login";
 import Logout from "./Logout";
+import FAQ from "./FAQ";
+import About from "./About";
 import { useAtom } from "jotai";
 import { isUserAuthenticated } from "../atoms/AtomHelpers";
 import ProfileButton from "./ProfileButton";
@@ -17,6 +19,9 @@ const NavigationBar = () => {
           <img id="globeChatsLogo" src={logo} alt={"GlobeChats logo"} />
           <span id="logoName">GlobeChats</span>
         </div>
+        <About />
+        <FAQ />
+        <a class="links" href="/tos">Terms of Service</a>
         <div id="account-wrapper">
           <Login />
         </div>
@@ -31,6 +36,9 @@ const NavigationBar = () => {
           <img id="globeChatsLogo" src={logo} alt={"GlobeChats logo"} />
           <span id="logoName">GlobeChats</span>
         </div>
+        <About />
+        <FAQ />
+        <a class="links" href="/tos">Terms of Service</a>
         <div id="account-wrapper">
           <ProfileButton />
           <Logout />

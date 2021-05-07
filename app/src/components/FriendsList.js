@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import Friend from "./Friend";
 import { useAtom } from "jotai";
 import { userAtom, isUserAuthenticated, connectedUsersAtom } from "../atoms/AtomHelpers";
 import { useQuery, queryClient, useQueryClient } from "react-query";

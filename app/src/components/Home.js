@@ -4,7 +4,6 @@ import { userAtom, fetchUserAtom, isUserAuthenticated, fetchSocketAtom, socketAt
 import Nav from "./Nav";
 import DraggableChatroom from "./DraggableChatroom";
 import FriendsList from "./FriendsList";
-import CreateButtons from "./CreateButtons";
 import Map from "./Map";
 import UnauthenticatedMap from "./UnauthenticatedMap";
 import { DraggableModalProvider } from "ant-design-draggable-modal";
