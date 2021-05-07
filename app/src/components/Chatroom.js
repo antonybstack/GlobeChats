@@ -45,12 +45,6 @@ function Chatroom(props) {
     },
   });
 
-  const addChatMutation = useMutation((newChat) => axios.post("/api/chats/add", newChat), {
-    onSuccess: async (data) => {
-      queryClient.setQueryData("chats", data.data);
-    },
-  });
-
   const changeCurrentTab = (key) => {
     setCurrentChatroomTab(key);
   };
@@ -87,10 +81,10 @@ function Chatroom(props) {
         message: message,
         timestamp: date,
       };
-      // addChatMutation.mutate(chatPacket);
-
+      // chat sent to socket.io, socket.io adds to database
+      // database returns encrypted chat packet
+      // it is decrypted and then emitted back to client
       socket.emit("chat message", chatPacket);
-      axios.post("/api/chats/add", chatPacket);
     }
 
     setMessage("");
@@ -112,10 +106,6 @@ function Chatroom(props) {
     });
   }, [currentTab, user.joinedChatroomIds]);
 
-  // useEffect(() => {
-  //   console.log(isAdminOfCurrentChatroom);
-  // }, [isAdminOfCurrentChatroom]);
-
   //sets as Admin if current user is an admin of the chatroom
   useEffect(() => {
     if (chatroomsQuery && chatroomsQuery.data && chatroomsQuery.data.chatrooms) {
@@ -128,18 +118,6 @@ function Chatroom(props) {
       }
     }
   }, [currentTab, chatroomsQuery.data]);
-
-  // useEffect(() => {
-  //   if (chatroomsQuery && chatroomsQuery.data && chatroomsQuery.data.chatrooms) {
-  //     let currentTabChatroom = chatroomsQuery.data.chatrooms.find((chatroom) => {
-  //       return chatroom._id === currentTab;
-  //     });
-  //     if (currentTabChatroom) {
-  //       if (currentTabChatroom.adminId === user._id) setIsAdminOfCurrentChatroom(true);
-  //       else setIsAdminOfCurrentChatroom(false);
-  //     }
-  //   }
-  // }, [currentTab]);
 
   return (
     <>

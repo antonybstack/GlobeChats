@@ -47,27 +47,31 @@ chatRoutes.route("/chatroom/:id").get(function (req, res) {
 });
 
 chatRoutes.post("/add", (req, res) => {
+  console.log("/add");
+  console.log(req.body);
   const encryptedString = cryptr.encrypt(req.body.message);
   req.body.message = encryptedString;
-
+  console.log("encrypted");
+  console.log(req.body);
   let Chat = new ChatModel(req.body);
   Chat.save()
     .then((chat) => {
-      ChatModel.find(function (err, chats) {
-        if (err) {
-        } else {
-          Object.keys(chats).forEach(function (i) {
-            var decryptedString;
-            try {
-              decryptedString = cryptr.decrypt(chats[i].message);
-            } catch (err) {
-              decryptedString = "Error: Invalid encryption key - unable to decrypt chat message ";
-            }
-            chats[i].message = decryptedString;
-          });
-          res.status(200).json({ chats });
-        }
-      });
+      res.status(200).json({ chat });
+      // ChatModel.find(function (err, chats) {
+      //   if (err) {
+      //   } else {
+      //     Object.keys(chats).forEach(function (i) {
+      //       var decryptedString;
+      //       try {
+      //         decryptedString = cryptr.decrypt(chats[i].message);
+      //       } catch (err) {
+      //         decryptedString = "Error: Invalid encryption key - unable to decrypt chat message ";
+      //       }
+      //       chats[i].message = decryptedString;
+      //     });
+      //     res.status(200).json({ chats });
+      //   }
+      // });
     })
     .catch((err) => {
       console.log(err);
