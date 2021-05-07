@@ -1,5 +1,7 @@
 import React from "react";
-import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
+// import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import mapboxgl from "!mapbox-gl/dist/mapbox-gl-csp";
 import ReactMapboxGl from "react-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
