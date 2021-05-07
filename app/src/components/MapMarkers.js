@@ -41,7 +41,7 @@ const MapMarkers = () => {
   );
 
   useEffect(() => {
-    console.log(selectedEventMarker);
+    //console.log(selectedEventMarker);
     let arr = document.getElementsByClassName("mapPopup");
     for (var i = 0; i < arr.length; i++) {
       arr.item(i).style.display = "none";
@@ -61,8 +61,8 @@ const MapMarkers = () => {
   };
 
   const openEventPopup = (e, index) => {
-    console.log("@@##########@@@");
-    console.log(index);
+    //console.log("@@##########@@@");
+    //console.log(index);
     setSelectedEventMarker(index);
   };
 
