@@ -1,15 +1,20 @@
 import React from "react";
 // import mapboxgl from "mapbox-gl/dist/mapbox-gl-csp";
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import mapboxgl from "!mapbox-gl/dist/mapbox-gl-csp";
+
 import ReactMapboxGl from "react-mapbox-gl";
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import mapboxgl from "!mapbox-gl";
+
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
-import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
+// import MapboxWorker from "worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker";
 import MapMarkers from "./MapMarkers";
 
-mapboxgl.workerClass = MapboxWorker;
+// mapboxgl.workerClass = MapboxWorker;
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 mapboxgl.accessToken = "pk.eyJ1IjoibXJvc3NpNCIsImEiOiJja2x3bGM3OXgwMWI1MnFudjdwZDNoN2RuIn0.Ny-kDL7ny_0OmzPf7ZZtVA";
 
 const MapGL = ReactMapboxGl({
