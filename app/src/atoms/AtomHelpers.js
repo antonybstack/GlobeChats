@@ -8,6 +8,9 @@ export const loading = atom(false);
 // current user autheticated and logged in
 export const user = atom({});
 export const isUserAuthenticated = atom(false);
+
+export const failedToAuthenticateAtom = atom(false);
+
 export const userAtom = atom(
   async (get) => get(user),
   async (get, set, tempUser) => {
@@ -23,9 +26,12 @@ export const fetchUserAtom = atom(null, (get, set) => {
       const temp = await res.data;
       set(user, temp.user);
       set(isUserAuthenticated, temp.isAuthenticated);
+      set(failedToAuthenticateAtom, false);
     })
     .catch((err) => {
-      console.log(err);
+      if (err.message.includes("401")) {
+        set(failedToAuthenticateAtom, true);
+      }
     });
 });
 
