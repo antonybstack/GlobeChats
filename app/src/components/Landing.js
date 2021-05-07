@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "antd";
+import { Modal, Space } from "antd";
 import Login from "./Login";
 import logo from "../assets/logo512.png";
 
