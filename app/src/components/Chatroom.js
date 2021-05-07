@@ -3,7 +3,7 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { userAtom, loading } from "../atoms/AtomHelpers";
+import { userAtom, loading, socketAtom } from "../atoms/AtomHelpers";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
@@ -19,6 +19,7 @@ function Chatroom(props) {
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
   const [, setIsLoading] = useAtom(loading);
+  const [socket] = useAtom(socketAtom);
 
   const queryClient = useQueryClient();
 
@@ -41,12 +42,6 @@ function Chatroom(props) {
   const leaveChatroomMutation = useMutation((leavingChatroom) => axios.put("/api/users/leavechatroom/" + user._id, leavingChatroom), {
     onSuccess: async (data) => {
       setUser(data.data.user);
-    },
-  });
-
-  const addChatMutation = useMutation((newChat) => axios.post("/api/chats/add", newChat), {
-    onSuccess: async (data) => {
-      queryClient.setQueryData("chats", data.data);
     },
   });
 
@@ -86,7 +81,10 @@ function Chatroom(props) {
         message: message,
         timestamp: date,
       };
-      addChatMutation.mutate(chatPacket);
+      // chat sent to socket.io, socket.io adds to database
+      // database returns encrypted chat packet
+      // it is decrypted and then emitted back to client
+      socket.emit("chat message", chatPacket);
     }
 
     setMessage("");
@@ -108,10 +106,6 @@ function Chatroom(props) {
     });
   }, [currentTab, user.joinedChatroomIds]);
 
-  // useEffect(() => {
-  //   console.log(isAdminOfCurrentChatroom);
-  // }, [isAdminOfCurrentChatroom]);
-
   //sets as Admin if current user is an admin of the chatroom
   useEffect(() => {
     if (chatroomsQuery && chatroomsQuery.data && chatroomsQuery.data.chatrooms) {
@@ -124,18 +118,6 @@ function Chatroom(props) {
       }
     }
   }, [currentTab, chatroomsQuery.data]);
-
-  // useEffect(() => {
-  //   if (chatroomsQuery && chatroomsQuery.data && chatroomsQuery.data.chatrooms) {
-  //     let currentTabChatroom = chatroomsQuery.data.chatrooms.find((chatroom) => {
-  //       return chatroom._id === currentTab;
-  //     });
-  //     if (currentTabChatroom) {
-  //       if (currentTabChatroom.adminId === user._id) setIsAdminOfCurrentChatroom(true);
-  //       else setIsAdminOfCurrentChatroom(false);
-  //     }
-  //   }
-  // }, [currentTab]);
 
   return (
     <>

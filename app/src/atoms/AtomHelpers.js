@@ -68,3 +68,11 @@ export const displayTosAtom = atom(false);
 
 // keeps track of Privacy page display
 export const displayPrivacyPolicyAtom = atom(false);
+
+export const chats = atom([]);
+export const chatsAtom = atom(
+  async (get) => get(chats),
+  async (get, set, tempChats) => {
+    set(chats, tempChats);
+  }
+);

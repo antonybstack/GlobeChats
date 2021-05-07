@@ -3,9 +3,10 @@ import axios from "axios";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
 import { useQuery, queryClient, useQueryClient } from "react-query";
-import { isUserAuthenticated, loading } from "../atoms/AtomHelpers";
+import { isUserAuthenticated, loading, socketAtom } from "../atoms/AtomHelpers";
 import unknownUserImage from "../assets/5.png";
 import { Popover, Space, message, Button, Modal, Form, Input, Switch } from "antd";
+import scrollDown from "scroll-down";
 
 function Chats({ props }) {
   console.log(props);
@@ -18,6 +19,7 @@ function Chats({ props }) {
   const [modalReportVisibility, setModalReportVisibility] = useState(false);
   const [reportMessage, setReportMessage] = useState("");
   const [userToReport, setUserToReport] = useState("");
+  const [socket] = useAtom(socketAtom);
 
   const settingReportMessage = (e) => setReportMessage(e.target.value);
 
@@ -56,6 +58,14 @@ function Chats({ props }) {
       enabled: !!isAuthenticated,
     }
   );
+
+  useEffect(() => {
+    socket.on("chat message", function (msg) {
+      if (msg.chatroomId === chatroom_id) {
+        setFilteredChats((currentChats) => [...currentChats, msg]);
+      }
+    });
+  }, []);
 
   var imgStyle = {
     borderRadius: "20px",
@@ -107,6 +117,7 @@ function Chats({ props }) {
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
       var elem = document.getElementById("chatMessages");
+      console.log(elem);
       elem.scrollTop = elem.scrollHeight;
     }
   }, [filteredChats]);

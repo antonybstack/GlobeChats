@@ -8,7 +8,10 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 const app = express();
+const axios = require("axios");
 app.use(cors());
+const Cryptr = require("cryptr");
+const cryptr = new Cryptr(process.env.CHAT_ENCRYPT_SECRET);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -113,33 +116,32 @@ io.on("connection", (socket) => {
     io.emit("get connections", connections);
   });
 
-  //CHAT MESSAGE custom event
-  // socket.on("chat message", (msg) => {
-  //   io.emit("chat message", msg);
+  // CHAT MESSAGE custom event
+  socket.on("chat message", (msg) => {
+    // server side HTTP request
 
-  //   // server side HTTP request
-  //   const addChat = async () => {
-  //     await axios
-  //       .post("http://localhost:5000/api/chats/add", msg)
-  //       .then((res) => {
-  //         console.log("chat added!", msg);
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error);
-  //         axios
-  //           .post("http://tonysgrotto.herokuapp.com/api/chats/add", msg)
-  //           .then((res) => {
-  //             console.log("chat added!", msg);
-  //           })
-  //           .catch(function (error) {
-  //             console.log(error);
-  //           });
-  //       });
-  //   };
-  //   addChat();
-
-  //   console.log(msg);
-  // });
+    if (process.env.NODE_ENV !== "production") {
+      axios
+        .post("http://localhost:5000/api/chats/add", msg)
+        .then((res) => {
+          res.data.chat.message = cryptr.decrypt(res.data.chat.message);
+          io.emit("chat message", res.data.chat);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      axios
+        .post("http://globechats.herokuapp.com/api/chats/add", msg)
+        .then((res) => {
+          res.data.chat.message = cryptr.decrypt(res.data.chat.message);
+          io.emit("chat message", res.data.chat);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  });
 
   //AUTHENTICATED USER custom event
   socket.on("authenticated user", function (data) {

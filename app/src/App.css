@@ -447,11 +447,9 @@ input:checked + .slider:before {
   top: 0.3em !important;
 }
 
-
 .profile-pic {
   margin: 25px 0px 25px 10%;
 }
-
 
 /* ultimate chatroom container */
 .chatroom {
@@ -469,6 +467,8 @@ input:checked + .slider:before {
 
 .chatroom-window-container {
   background-color: white;
+  width: 100%;
+  height: 100%;
 }
 
 .chatroom-window-header {
@@ -574,14 +574,14 @@ input:checked + .slider:before {
 
 .chatMessages {
   background-color: white;
-  padding: 0.1em;
   width: 100%;
+  height: 100%;
   color: black;
-  overflow-y: auto;
+  overflow: auto;
   padding-bottom: 1em;
   position: inherit;
-  display: block;
-  padding: 50px 0px 70px 0px;
+  display: inline-block;
+  padding: 40px 0px 10px 0px;
 }
 
 .chatMessages::-webkit-scrollbar {
@@ -601,6 +601,14 @@ input:checked + .slider:before {
 /* Handle on hover */
 .chatMessages::-webkit-scrollbar-thumb:hover {
   background: rgb(190, 190, 190);
+}
+
+.chatMessages::-webkit-scrollbar-button:start {
+  height: 36px;
+}
+
+.chatMessages::-webkit-scrollbar-button:end {
+  height: 0px;
 }
 
 .chatMessage {
@@ -818,6 +826,21 @@ input:checked + .slider:before {
   margin: 0px 0px 0px 5px;
 }
 
+.react-tabs__tab-panel {
+  width: 100%;
+  height: calc(100% - 120px);
+}
+
+.react-tabs {
+  width: 100%;
+  height: 100%;
+}
+
+.chat {
+  width: 100%;
+  height: 100%;
+}
+
 .tabCloseButton {
   display: inline-block;
   font-size: 8pt;
@@ -907,7 +930,8 @@ input:checked + .slider:before {
   width: 100%;
 }
 
-.links, .links.a {
+.links,
+.links.a {
   display: flex;
   justify-content: right;
   align-items: center;
