@@ -3,15 +3,13 @@ import axios from "axios";
 
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AtomHelpers";
-import { useMutation, useQueryClient } from "react-query";
-import { Modal, Form, Input, Button, Switch, message, Space, DatePicker } from "antd";
-import moment from "moment-timezone";
+import { useQueryClient } from "react-query";
+import { Modal, Form, Input, Button, message, Space } from "antd";
 
 function CreateEvent(props) {
   const [user] = useAtom(userAtom);
   const queryClient = useQueryClient();
   const [modalVisibilty, setModalVisibility] = useState(false);
-  const [, setDisplayChatroom] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [lng, setLng] = useState(-80.8315);

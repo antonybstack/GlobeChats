@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AtomHelpers";
-import { Popover, Space, message, Button, Modal, Form, Input, Switch, Divider } from "antd";
+import { message, Button, Form, Input, Switch, Divider } from "antd";
 import axios from "axios";
 
 function Profile(props) {
