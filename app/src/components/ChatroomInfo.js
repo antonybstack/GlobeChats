@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { SettingTwoTone, InfoCircleTwoTone } from "@ant-design/icons";
-import { Modal, Form, Input, Button, Switch, message, Space, Label } from "antd";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { Modal, Form, Input, Button, Switch, message, Space } from "antd";
+import { useMutation, useQueryClient } from "react-query";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/AtomHelpers";
 import axios from "axios";
 
 function ChatroomInfo({ props }) {
   const { isAdminOfCurrentChatroom, chatroom } = props;
-  console.log(chatroom);
+  //console.log(chatroom);
   const queryClient = useQueryClient();
   const [user] = useAtom(userAtom);
   const [detailsModalVisibility, setDetailsModalVisibility] = useState(false);
@@ -20,7 +20,7 @@ function ChatroomInfo({ props }) {
       axios
         .get("/api/chatrooms/" + chatroom._id)
         .then((res) => {
-          console.log(res.data.chatroom);
+          //console.log(res.data.chatroom);
           setCurrentChatroom(res.data.chatroom);
           setName(res.data.chatroom.name);
           setTags(res.data.chatroom.tags);
@@ -31,7 +31,7 @@ function ChatroomInfo({ props }) {
           console.log(err);
         });
     }
-  }, []);
+  }, [chatroom]);
 
   const [name, setName] = useState("");
   const [tags, setTags] = useState("");
