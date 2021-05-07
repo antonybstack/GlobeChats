@@ -5,8 +5,7 @@ import { useAtom } from "jotai";
 import { useQuery, queryClient, useQueryClient } from "react-query";
 import { isUserAuthenticated, loading, socketAtom } from "../atoms/AtomHelpers";
 import unknownUserImage from "../assets/5.png";
-import { Popover, Space, message, Button, Modal, Form, Input, Switch } from "antd";
-import scrollDown from "scroll-down";
+import { Popover, Space, message, Button, Modal, Form, Input, Switch, Skeleton, List } from "antd";
 
 function Chats({ props }) {
   console.log(props);
@@ -163,69 +162,76 @@ function Chats({ props }) {
 
   return (
     <>
-      {chatsQuery.status === "loading" || profilesQuery.status === "loading"
-        ? null
-        : filteredChats.map((chat, i) => {
-            const { _id, userId, message, timestamp } = chat;
-            let profile = findProfile(userId);
+      {chatsQuery.status === "loading" || profilesQuery.status === "loading" ? (
+        <div style={{ margin: "15px" }}>
+          <Skeleton active avatar title={false} paragraph={true} />
+          <Skeleton active avatar title={false} paragraph={true} />
+          <Skeleton active avatar title={false} paragraph={true} />
+          <Skeleton active avatar title={false} paragraph={true} />
+        </div>
+      ) : (
+        filteredChats.map((chat, i) => {
+          const { _id, userId, message, timestamp } = chat;
+          let profile = findProfile(userId);
 
-            return (
-              <div key={i} className="chatBlock">
-                <div className="chatMessage">
+          return (
+            <div key={i} className="chatBlock">
+              <div className="chatMessage">
+                <Popover
+                  placement="topLeft"
+                  content={
+                    <div>
+                      <Button
+                        className="reportUserBtn"
+                        type="danger"
+                        size="small"
+                        onClick={() => {
+                          setModalReportVisibility(true);
+                          setUserToReport(profile._id);
+                        }}
+                      >
+                        <p>Report user</p>
+                      </Button>
+                    </div>
+                  }
+                  trigger="click"
+                >
+                  <div className="chatProfile">
+                    <span>
+                      <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
+                      &nbsp;
+                    </span>
+                    <span className="chatProfileName">
+                      {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
+                    </span>
+                  </div>
+                </Popover>
+                {isAdminOfCurrentChatroom ? (
                   <Popover
                     placement="topLeft"
                     content={
                       <div>
-                        <Button
-                          className="reportUserBtn"
-                          type="danger"
-                          size="small"
-                          onClick={() => {
-                            setModalReportVisibility(true);
-                            setUserToReport(profile._id);
-                          }}
-                        >
-                          <p>Report user</p>
+                        <Button className="removeChatBtn" type="danger" size="small" onClick={() => removeMessage(_id)}>
+                          <p>Remove message</p>
                         </Button>
                       </div>
                     }
                     trigger="click"
                   >
-                    <div className="chatProfile">
-                      <span>
-                        <img src={profile.googleImg} style={imgStyle} alt="profileIcon" width="25" />
-                        &nbsp;
-                      </span>
-                      <span className="chatProfileName">
-                        {profile.firstName} {profile.lastNameInitial ? profile.lastNameInitial : ""}
-                      </span>
-                    </div>
+                    <div className="msgContainer admin">{message}</div>
                   </Popover>
-                  {isAdminOfCurrentChatroom ? (
-                    <Popover
-                      placement="topLeft"
-                      content={
-                        <div>
-                          <Button className="removeChatBtn" type="danger" size="small" onClick={() => removeMessage(_id)}>
-                            <p>Remove message</p>
-                          </Button>
-                        </div>
-                      }
-                      trigger="click"
-                    >
-                      <div className="msgContainer admin">{message}</div>
-                    </Popover>
-                  ) : (
-                    <div className="msgContainer">{message}</div>
-                  )}
-                </div>
-                <div className="chatTime">
-                  {new Date(timestamp).toLocaleTimeString("en-US")}&nbsp;&nbsp;
-                  {new Date(timestamp).toLocaleDateString("en-US", DATE_OPTIONS)}
-                </div>
+                ) : (
+                  <div className="msgContainer">{message}</div>
+                )}
               </div>
-            );
-          })}
+              <div className="chatTime">
+                {new Date(timestamp).toLocaleTimeString("en-US")}&nbsp;&nbsp;
+                {new Date(timestamp).toLocaleDateString("en-US", DATE_OPTIONS)}
+              </div>
+            </div>
+          );
+        })
+      )}
       <Space />
       <Modal
         title="Create new chatroom"

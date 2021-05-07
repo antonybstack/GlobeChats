@@ -41,13 +41,25 @@ code {
   display: none;
 }
 
-.mapboxgl-popup-content {
+/* .mapboxgl-popup-content {
   background-color: rgb(255, 255, 255, 90%) !important;
   border-radius: 5px;
+} */
+
+.mapMarkerPopup {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.mapboxgl-popup-content {
+  transition: transform 250ms;
+}
+
+.mapboxgl-popup-content:hover {
+  transform: translateY(-3px);
 }
 
 .popupTitle {
-  font-size: 14pt;
+  font-size: 16pt;
   display: inline;
 }
 
@@ -570,6 +582,10 @@ input:checked + .slider:before {
 
 .ant-switch-disabled {
   opacity: 0.75 !important;
+}
+
+.ant-skeleton {
+  padding-bottom: 10px !important;
 }
 
 .chatMessages {

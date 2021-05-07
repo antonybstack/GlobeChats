@@ -41,10 +41,17 @@ const MapMarkers = () => {
   );
 
   useEffect(() => {
+    console.log(selectedEventMarker);
     let arr = document.getElementsByClassName("mapPopup");
     for (var i = 0; i < arr.length; i++) {
       arr.item(i).style.display = "none";
     }
+
+    arr = document.getElementsByClassName("mapEventPopup");
+    for (i = 0; i < arr.length; i++) {
+      arr.item(i).style.display = "none";
+    }
+
     if (selectedChatroomMarker != null) document.getElementsByClassName("mapPopup")[selectedChatroomMarker].style.display = "block";
     if (selectedEventMarker != null) document.getElementsByClassName("mapEventPopup")[selectedEventMarker].style.display = "block";
   }, [selectedChatroomMarker, selectedEventMarker]);
@@ -54,6 +61,8 @@ const MapMarkers = () => {
   };
 
   const openEventPopup = (e, index) => {
+    console.log("@@##########@@@");
+    console.log(index);
     setSelectedEventMarker(index);
   };
 

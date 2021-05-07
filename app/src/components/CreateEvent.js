@@ -50,6 +50,7 @@ function CreateEvent(props) {
     axios
       .post("/api/events/new", { title: title, description: description, location: [lng, lat], eventDate: date, creator: user._id })
       .then((res) => {
+        queryClient.setQueryData("globalEvents", res.data);
         message.success("Event successfully created!");
         setModalVisibility(!modalVisibilty);
         setTitle("");
