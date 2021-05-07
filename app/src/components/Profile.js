@@ -64,17 +64,18 @@ function Profile(props) {
       {toggleEdit ? (
         <Form
           labelCol={{
-            span: 8,
+            span: 5,
           }}
           wrapperCol={{
-            span: 10,
+            span: 16,
           }}
           layout="horizontal"
         >
-          <div className="profile-pic">
-            <img src={user.googleImg} alt={"Profile"} />
-          </div>
-
+          <Form.Item>
+            <div className="profile-pic">
+              <img src={user.googleImg} alt={"Profile"} />
+            </div>
+          </Form.Item>
           <Form.Item label="First name">
             <Input id="editProfileFirstNameInput" onChange={settingFirstName} name="tags" value={firstName} />
           </Form.Item>
@@ -93,19 +94,20 @@ function Profile(props) {
       ) : (
         <Form
           labelCol={{
-            span: 8,
+            span: 5,
           }}
           wrapperCol={{
-            span: 10,
+            span: 16,
           }}
           layout="horizontal"
         >
-          <div className="profile-pic">
-            <img src={user.googleImg} alt={"Profile"} />
-          </div>
-
+          <Form.Item>
+            <div className="profile-pic">
+              <img src={user.googleImg} alt={"Profile"} />
+            </div>
+          </Form.Item>
           <Form.Item label="First name">
-            <Input width={"30%"} onChange={settingFirstName} name="tags" value={firstName} disabled />
+            <Input onChange={settingFirstName} name="tags" value={firstName} disabled />
           </Form.Item>
           <Form.Item label="Last name">
             <Input onChange={settingLastName} name="tags" value={lastName} disabled />
