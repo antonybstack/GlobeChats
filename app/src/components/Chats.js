@@ -8,7 +8,7 @@ import unknownUserImage from "../assets/5.png";
 import { Popover, Space, message, Button, Modal, Form, Input, Switch, Skeleton, List } from "antd";
 
 function Chats({ props }) {
-  console.log(props);
+  //console.log(props);
   const { isAdminOfCurrentChatroom, chatroom_id } = props;
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const [filteredChats, setFilteredChats] = useState([]);
@@ -116,7 +116,7 @@ function Chats({ props }) {
   useEffect(() => {
     if (document.getElementById("chatMessages")) {
       var elem = document.getElementById("chatMessages");
-      console.log(elem);
+      //console.log(elem);
       elem.scrollTop = elem.scrollHeight;
     }
   }, [filteredChats]);
@@ -127,7 +127,7 @@ function Chats({ props }) {
   }, [chatsQuery.status, profilesQuery.status]);
 
   const removeMessage = (_id) => {
-    console.log(_id);
+    //console.log(_id);
     axios
       .delete("/api/chats/delete/" + _id)
       .then(() => {
@@ -145,8 +145,8 @@ function Chats({ props }) {
   };
 
   const reportUser = () => {
-    console.log(userToReport);
-    console.log(reportMessage);
+    //console.log(userToReport);
+    //console.log(reportMessage);
     axios
       .post("/api/reports/add", { reportedUserId: userToReport, reportMessage: reportMessage })
       .then(() => {

@@ -11,7 +11,7 @@ import ChatroomInfo from "./ChatroomInfo";
 
 function MembersList({ props }) {
   const { isAdminOfCurrentChatroom, chatroom } = props;
-  console.log(isAdminOfCurrentChatroom);
+  //console.log(isAdminOfCurrentChatroom);
   const [user, setUser] = useAtom(userAtom);
   const [isAuthenticated] = useAtom(isUserAuthenticated);
   const refElem = useRef();
@@ -53,13 +53,13 @@ function MembersList({ props }) {
   useEffect(() => {}, []);
 
   const toggleMenu = () => {
-    console.log(refElem);
+    //console.log(refElem);
     if (refElem.current.offsetLeft === 0) document.getElementById("membersListContainer").style.left = "-175px";
     else document.getElementById("membersListContainer").style.left = "0px";
   };
 
   const kickUser = (_id) => {
-    console.log(_id);
+    //console.log(_id);
     axios
       .put("/api/users/leavechatroom/" + _id, { chatroom_id: chatroom._id })
       .then(() => {
@@ -67,7 +67,7 @@ function MembersList({ props }) {
         axios
           .get("/api/users/")
           .then((res) => {
-            console.log(res.data.users);
+            //console.log(res.data.users);
             queryClient.setQueryData("profiles", res.data);
           })
           .catch((err) => {
@@ -80,7 +80,7 @@ function MembersList({ props }) {
   };
 
   const addFriend = (_id) => {
-    console.log(_id);
+    //console.log(_id);
     axios
       .put("/api/users/addfriend/" + user._id, { newFriend: _id })
       .then((updatedUserData) => {
@@ -89,19 +89,19 @@ function MembersList({ props }) {
         axios
           .get("/api/users/")
           .then((res) => {
-            console.log(connectedUsers);
+            //console.log(connectedUsers);
             var friends = [];
-            console.log(res.data);
-            console.log(updatedUserData.data.user);
+            //console.log(res.data);
+            //console.log(updatedUserData.data.user);
             res.data.users.forEach((tempUser) => {
               if (updatedUserData.data.user.friendlist.includes(tempUser._id)) {
                 friends.push(tempUser);
               }
 
-              console.log(tempUser._id);
-              console.log(friends);
+              //console.log(tempUser._id);
+              //console.log(friends);
             });
-            console.log(friends);
+            //console.log(friends);
             queryClient.setQueryData("friends", friends);
           })
           .catch((err) => {

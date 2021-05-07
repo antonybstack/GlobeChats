@@ -7,7 +7,7 @@ import { Modal, Form, Input, Button, Switch, message, Space, Checkbox } from "an
 import ReCAPTCHA from "react-google-recaptcha";
 
 const LoginConfirmation = (props) => {
-  console.log(props);
+  //console.log(props);
   const [declineDisabled, setDeclineDisabled] = useState(true);
 
   function createCookie(name, value, days) {
@@ -23,7 +23,7 @@ const LoginConfirmation = (props) => {
   }
 
   const onChange = (value) => {
-    console.log("Captcha value:", value);
+    //console.log("Captcha value:", value);
 
     createCookie("captcha", "authenticated", 7);
 

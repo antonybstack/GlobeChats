@@ -9,7 +9,7 @@ import TermsOfService from "./TermsOfService";
 import Privacy from "./Privacy";
 
 const LoginConfirmation = (props) => {
-  console.log(props);
+  //console.log(props);
   const [user, setUser] = useAtom(userAtom);
 
   const [captchaConfirmed, setCaptchaConfirmed] = useState(false);

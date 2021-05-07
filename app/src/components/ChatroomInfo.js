@@ -8,7 +8,7 @@ import axios from "axios";
 
 function ChatroomInfo({ props }) {
   const { isAdminOfCurrentChatroom, chatroom } = props;
-  console.log(chatroom);
+  //console.log(chatroom);
   const queryClient = useQueryClient();
   const [user] = useAtom(userAtom);
   const [detailsModalVisibility, setDetailsModalVisibility] = useState(false);
@@ -20,7 +20,7 @@ function ChatroomInfo({ props }) {
       axios
         .get("/api/chatrooms/" + chatroom._id)
         .then((res) => {
-          console.log(res.data.chatroom);
+          //console.log(res.data.chatroom);
           setCurrentChatroom(res.data.chatroom);
           setName(res.data.chatroom.name);
           setTags(res.data.chatroom.tags);

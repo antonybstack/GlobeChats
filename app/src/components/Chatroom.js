@@ -91,7 +91,7 @@ function Chatroom(props) {
   };
 
   const closeTab = (chatroom_id) => {
-    console.log(chatroom_id);
+    //console.log(chatroom_id);
     leaveChatroomMutation.mutate({ chatroom_id: chatroom_id });
   };
 
