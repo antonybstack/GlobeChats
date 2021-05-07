@@ -113,33 +113,36 @@ io.on("connection", (socket) => {
     io.emit("get connections", connections);
   });
 
-  //CHAT MESSAGE custom event
-  // socket.on("chat message", (msg) => {
-  //   io.emit("chat message", msg);
+  // CHAT MESSAGE custom event
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
 
-  //   // server side HTTP request
-  //   const addChat = async () => {
-  //     await axios
-  //       .post("http://localhost:5000/api/chats/add", msg)
-  //       .then((res) => {
-  //         console.log("chat added!", msg);
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error);
-  //         axios
-  //           .post("http://tonysgrotto.herokuapp.com/api/chats/add", msg)
-  //           .then((res) => {
-  //             console.log("chat added!", msg);
-  //           })
-  //           .catch(function (error) {
-  //             console.log(error);
-  //           });
-  //       });
-  //   };
-  //   addChat();
+    // server side HTTP request
+    // const addChat = async () => {
+    //   if (process.env.NODE_ENV === "production") {
+    //     await axios
+    //       .post("http://localhost:5000/api/chats/add", msg)
+    //       .then((res) => {
+    //         console.log("chat added!", msg);
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error);
+    //       });
+    //   } else {
+    //     await axios
+    //       .post("http://globechats.herokuapp.com/api/chats/add", msg)
+    //       .then((res) => {
+    //         console.log("chat added!", msg);
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error);
+    //       });
+    //   }
+    // };
+    // addChat();
 
-  //   console.log(msg);
-  // });
+    console.log(msg);
+  });
 
   //AUTHENTICATED USER custom event
   socket.on("authenticated user", function (data) {

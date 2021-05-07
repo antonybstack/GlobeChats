@@ -3,7 +3,7 @@ import axios from "axios";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useAtom } from "jotai";
-import { userAtom, loading } from "../atoms/AtomHelpers";
+import { userAtom, loading, socketAtom } from "../atoms/AtomHelpers";
 // import { chatsAtom, fetchChatsAtom } from "../atoms/ChatAtom";
 import Chats from "./Chats";
 import moment from "moment-timezone";
@@ -19,6 +19,7 @@ function Chatroom(props) {
   const [message, setMessage] = useState("");
   const [tabSelect, setTabSelect] = useState(0);
   const [, setIsLoading] = useAtom(loading);
+  const [socket] = useAtom(socketAtom);
 
   const queryClient = useQueryClient();
 
@@ -86,7 +87,10 @@ function Chatroom(props) {
         message: message,
         timestamp: date,
       };
-      addChatMutation.mutate(chatPacket);
+      // addChatMutation.mutate(chatPacket);
+
+      socket.emit("chat message", chatPacket);
+      axios.post("/api/chats/add", chatPacket);
     }
 
     setMessage("");
