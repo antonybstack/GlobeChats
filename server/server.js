@@ -61,6 +61,7 @@ if (process.env.NODE_ENV === "production") {
     // creating an index.html file in the directory and serve our html in there
     // res.sendFile(path.resolve(process.cwd(), "app", "build", "index.html"));
     res.sendFile(path.resolve(process.cwd(), "app/build/index.html"));
+    //change
   });
 } else {
   app.get("/", (req, res) => {
