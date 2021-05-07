@@ -28,10 +28,9 @@ Join chat rooms with other users, locally or from around the world, to talk abou
 ### Other libraries
 - [Socket.io](https://socket.io/docs/v4/index.html) (real-time chatroom)
 - [Mapbox](https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-react/) (interactable map)
-- [Password-jwt](http://www.passportjs.org/packages/passport-jwt/) (authentication/authorization)
+- [Passport-jwt](http://www.passportjs.org/packages/passport-jwt/) (authentication/authorization)
 - [Heroku](https://id.heroku.com/) (webserver to build and deploy our app)
-- Poll library/api?
-- TBD Google accounts api?
+- [Google Auth Library](https://github.com/googleapis/google-auth-library-nodejs) (google oauth & user login)
 - [Parcel](https://parceljs.org/) bundler for speed on production build?
 
 ## Technology Stack
