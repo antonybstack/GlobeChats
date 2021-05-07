@@ -25,7 +25,7 @@ const FriendsList = () => {
         .get("/api/users/")
         .then((res) => {
           var friends = [];
-          console.log(res.data);
+          //console.log(res.data);
           res.data.users.forEach((tempUser) => {
             if (user.friendlist.includes(tempUser._id)) {
               friends.push(tempUser);
@@ -57,7 +57,7 @@ const FriendsList = () => {
   // }, [isAuthenticated, user]);
 
   useEffect(() => {
-    console.log(friendsQuery);
+    //console.log(friendsQuery);
   }, [friendsQuery]);
 
   const toggleMenu = () => {
@@ -71,7 +71,7 @@ const FriendsList = () => {
   };
 
   const removeFriend = (_id) => {
-    console.log(_id);
+    //console.log(_id);
     axios
       .put("/api/users/removefriend/" + user._id, { friend: _id })
       .then((updatedUserData) => {
@@ -81,17 +81,17 @@ const FriendsList = () => {
           .get("/api/users/")
           .then((res) => {
             var friends = [];
-            console.log(res.data);
-            console.log(updatedUserData.data.user);
+            //console.log(res.data);
+            //console.log(updatedUserData.data.user);
             res.data.users.forEach((tempUser) => {
               if (updatedUserData.data.user.friendlist.includes(tempUser._id)) {
                 friends.push(tempUser);
               }
 
-              console.log(tempUser._id);
-              console.log(friends);
+              //console.log(tempUser._id);
+              //console.log(friends);
             });
-            console.log(friends);
+            //console.log(friends);
             queryClient.setQueryData("friends", friends);
           })
           .catch((err) => {

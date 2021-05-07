@@ -42,7 +42,7 @@ const Login = () => {
   // };
 
   useEffect(() => {
-    console.log(googlePayload);
+    //console.log(googlePayload);
     if (loginConfirmed && !isAuthenticated) {
       axios
         .post("/api/users/login", null, {
@@ -83,7 +83,7 @@ const Login = () => {
 
   const toggleLoginConfirmationModal = (response) => {
     setGooglePayload(response);
-    console.log(getCookie("captcha"));
+    //console.log(getCookie("captcha"));
     if (getCookie("captcha") === "authenticated") setLoginConfirmed(true);
     else setModalVisibility(true);
   };

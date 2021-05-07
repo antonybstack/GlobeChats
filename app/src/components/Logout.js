@@ -22,12 +22,12 @@ const Logout = () => {
       });
     }
     socket.on("logout user", (connections) => {
-      console.log(connections);
+      //console.log(connections);
       setConnectedUsers(connections);
     });
 
     socket.on("disconnected", (connections) => {
-      console.log(connections);
+      //console.log(connections);
       setConnectedUsers(connections);
     });
   }, [isAuthenticated]);
@@ -39,7 +39,7 @@ const Logout = () => {
         const { user } = res.data;
         socket.emit("logout user");
         socket.on("logout user", (connections) => {
-          console.log(connections);
+          //console.log(connections);
           setConnectedUsers(connections);
         });
         setFailedToAuthenticate(true);
