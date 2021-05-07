@@ -74,7 +74,7 @@ function CreateEvent(props) {
         </div>
       </div>
       <Modal
-        title="Create new event"
+        title="Create New Event"
         centered
         visible={modalVisibilty}
         onOk={() => setModalVisibility(false)}
@@ -94,16 +94,16 @@ function CreateEvent(props) {
           }}
           layout="horizontal"
         >
-          <Form.Item label="Event name">
+          <Form.Item label="Event Name">
             <Input onChange={settingTitle} name="title" value={title} />
           </Form.Item>
-          <Form.Item label="description">
+          <Form.Item label="Description">
             <Input onChange={settingDescription} name="description" value={description} />
           </Form.Item>
-          <Form.Item label="longitude">
+          <Form.Item label="Longitude">
             <Input onChange={settingLongitude} name="longitude" value={lng} />
           </Form.Item>
-          <Form.Item label="latitude">
+          <Form.Item label="Latitude">
             <Input onChange={settingLatitude} name="latitude" value={lat} />
           </Form.Item>
           <Form.Item label="Date">

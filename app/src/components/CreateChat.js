@@ -85,7 +85,7 @@ function CreateChat(props) {
         </div>
       </div>
       <Modal
-        title="Create new chatroom"
+        title="Create New Chatroom"
         centered
         visible={modalVisibility}
         onOk={() => setModalVisibility(false)}
@@ -105,7 +105,7 @@ function CreateChat(props) {
           }}
           layout="horizontal"
         >
-          <Form.Item label="Chatroom name">
+          <Form.Item label="Chatroom Name">
             <Input onChange={settingName} name="chatroomName" value={name} />
           </Form.Item>
           <Form.Item label="Tags">
