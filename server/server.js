@@ -53,6 +53,14 @@ mongoose
   .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log("mongoose connection error!", err));
 
+//express routes
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/events", require("./routes/api/events"));
+app.use("/api/profile", require("./routes/api/profile"));
+app.use("/api/chatrooms", require("./routes/api/chatrooms"));
+app.use("/api/chats", require("./routes/api/chats"));
+app.use("/api/reports", require("./routes/api/reports"));
+
 //serve static assets if in heroku production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
@@ -75,14 +83,6 @@ if (process.env.NODE_ENV === "production") {
 //     origin: "*",
 //   },
 // });
-
-//express routes
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/events", require("./routes/api/events"));
-app.use("/api/profile", require("./routes/api/profile"));
-app.use("/api/chatrooms", require("./routes/api/chatrooms"));
-app.use("/api/chats", require("./routes/api/chats"));
-app.use("/api/reports", require("./routes/api/reports"));
 
 const options = {
   cors: true,
