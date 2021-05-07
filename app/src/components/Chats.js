@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { useQuery, useQueryClient } from "react-query";
 import { isUserAuthenticated, loading, socketAtom } from "../atoms/AtomHelpers";
 import unknownUserImage from "../assets/5.png";
-import { Popover, Space, message, Button, Modal, Form, Input } from "antd";
+import { Popover, Space, message, Button, Modal, Form, Input, Skeleton } from "antd";
 
 function Chats({ props }) {
   //console.log(props);
